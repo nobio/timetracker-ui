@@ -1,17 +1,52 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>
-      Home
-    </ion-title>
+    <ion-title>Timetracker</ion-title>
+    <!-- TODO Later - ??? put this to a component ???
+    <span *ngIf="online.onlineStatus; else offlineTemplate">
+      <ion-icon name="thumbs-up"></ion-icon>
+    </span>
+    <ng-template #offlineTemplate>
+      <ion-icon name="thumbs-down"></ion-icon>
+    </ng-template>
+     -->
   </ion-toolbar>
+
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Home</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content>
+  <!------ enter and leave buttons ------>
+  <ion-button class="button button-full" icon-left ion-button color="primary" (click)="enter()">
+    <ion-icon name="log-in"></ion-icon>&nbsp;Kommen ({{ date | date: 'EEE, dd.MM.yyyy - HH:mm' }})
+  </ion-button>
+  <ion-button class="button button-full" icon-left ion-button color="secondary" (click)="leave()">
+    <ion-icon name="log-out"></ion-icon>&nbsp;Gehen ({{ date | date: 'EEE, dd.MM.yyyy - HH:mm' }})
+  </ion-button>
+  <!------------------------------------->
 
-  <app-explore-container name="Home page"></app-explore-container>
+  <!------- Date picker used for enter/leave buttons ------>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="3">
+        <ion-datetime displayFormat="HH:mm" pickerFormat="DDD MMM YYYY H mm" [(ngModel)]="localDate"></ion-datetime>
+      </ion-col>
+      <ion-col size="6">
+        <ion-button (click)="setYesterday()">
+          <ion-icon name="arrow-back"></ion-icon>
+        </ion-button>
+        <ion-button (click)="setToday()">
+          <ion-icon name="calendar"></ion-icon>
+        </ion-button>
+        <ion-button (click)="setTomorrow()">
+          <ion-icon name="arrow-forward"></ion-icon>
+        </ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-button color="light" outline (click)="showTimeEntryErrors()">
+          <ion-icon name="hammer"></ion-icon>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <!------------------------------------->
+
 </ion-content>

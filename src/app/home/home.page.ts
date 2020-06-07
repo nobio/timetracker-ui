@@ -9,4 +9,12 @@ export class HomePage {
 
   constructor() {}
 
+  public date = new Date();
+  public localDate;
+  public enter() {}
+  public leave() {}
+  public setYesterday() {}
+  public setToday() {}
+  public setTomorrow() {}
+  public showTimeEntryErrors() {}
 }
