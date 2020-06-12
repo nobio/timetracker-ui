@@ -16,6 +16,7 @@ export class HomePage {
   ionViewWillEnter() {
     this.date = new Date().toISOString();
     this.timeEntryService.loadEntriesByDate(this.date);
+    this.timeEntryService.loadWorkingTime(this.date)
   }
   public enter() { }
   public leave() { }
@@ -26,19 +27,19 @@ export class HomePage {
     yesterday.setDate(yesterday.getDate() - 1);
     this.date = yesterday.toISOString();
     this.timeEntryService.loadEntriesByDate(this.date);
-    //##this.backend.loadWorkingTime(this.date);
+    this.timeEntryService.loadWorkingTime(this.date)
   }
   public setToday(): void {
     this.date = new Date().toISOString();
     this.timeEntryService.loadEntriesByDate(this.date);
-    //##this.backend.loadWorkingTime(this.date);
+    this.timeEntryService.loadWorkingTime(this.date);
   }
   public setTomorrow():void { 
     let tomorrow = new Date(this.date);
     tomorrow.setDate(tomorrow.getDate() + 1);
     this.date = tomorrow.toISOString();
     this.timeEntryService.loadEntriesByDate(this.date);
-    //##this.backend.loadWorkingTime(this.date);
+    this.timeEntryService.loadWorkingTime(this.date);
   }
   /* ===================== Time handling ===================== */
 
