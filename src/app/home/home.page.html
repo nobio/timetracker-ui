@@ -1,6 +1,8 @@
-<ion-header>
+<ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>Timetracker</ion-title>
+    <ion-title>
+      Timetracker
+    </ion-title>
     <!-- TODO Later - ??? put this to a component ???
     <span *ngIf="online.onlineStatus; else offlineTemplate">
       <ion-icon name="thumbs-up"></ion-icon>
@@ -10,26 +12,34 @@
     </ng-template>
      -->
   </ion-toolbar>
-
 </ion-header>
 
-<ion-content>
-  <!------ enter and leave buttons ------>
-  <ion-button class="button button-full" icon-left ion-button color="primary" (click)="enter()">
-    <ion-icon name="log-in"></ion-icon>&nbsp;Kommen ({{ date | date: 'EEE, dd.MM.yyyy - HH:mm' }})
-  </ion-button>
-  <ion-button class="button button-full" icon-left ion-button color="secondary" (click)="leave()">
-    <ion-icon name="log-out"></ion-icon>&nbsp;Gehen ({{ date | date: 'EEE, dd.MM.yyyy - HH:mm' }})
-  </ion-button>
-  <!------------------------------------->
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="medium">Timetracker - Erfassung</ion-title>
+    </ion-toolbar>
+  </ion-header>
 
-  <!------- Date picker used for enter/leave buttons ------>
   <ion-grid>
     <ion-row>
-      <ion-col size="3">
-        <ion-datetime displayFormat="HH:mm" pickerFormat="DDD MMM YYYY H mm" [(ngModel)]="localDate"></ion-datetime>
+      <!------ enter and leave buttons ------>
+      <ion-col size="12" size-sm="8" offset-sm="2">
+        <ion-button class="button button-full" icon-left color="primary" (click)="enter()">
+          <ion-icon name="log-in"></ion-icon>&nbsp;Kommen ({{ date | date: 'EEE, dd.MM.yyyy - HH:mm' }})
+        </ion-button>
+        <ion-button class="button button-full" icon-left color="secondary" (click)="enter()">
+          <ion-icon name="log-out"></ion-icon>&nbsp;Kommen ({{ date | date: 'EEE, dd.MM.yyyy - HH:mm' }})
+        </ion-button>
       </ion-col>
-      <ion-col size="6">
+    </ion-row>
+    <ion-row>
+      <!------- Date picker used for enter/leave buttons ------>
+      <ion-col size="large">
+        <ion-datetime displayFormat="HH:mm" pickerFormat="DDD MMM YYYY H mm" [(ngModel)]="date"></ion-datetime>
+      </ion-col>
+      <!------- Navigation Buttons ------>
+      <ion-col size="9">
         <ion-button (click)="setYesterday()">
           <ion-icon name="arrow-back"></ion-icon>
         </ion-button>
@@ -39,14 +49,46 @@
         <ion-button (click)="setTomorrow()">
           <ion-icon name="arrow-forward"></ion-icon>
         </ion-button>
-      </ion-col>
-      <ion-col>
         <ion-button color="light" outline (click)="showTimeEntryErrors()">
           <ion-icon name="hammer"></ion-icon>
         </ion-button>
       </ion-col>
     </ion-row>
-  </ion-grid>
-  <!------------------------------------->
+    <ion-row>
+      <ion-col size="12" size-sm="8" offset-sm="2">
+        <!-- statistic for selected day -->
+        <ion-item>
+          <ion-label class="headline-small" color="primary">
+            here comes statistics of working day
+            <!-- Gesamt {{ backend.totalWorkload }} | Arbeit {{ backend.workingTime }} | Pause {{ backend.pause }} -->
+          </ion-label>
+        </ion-item>
 
+        <!-- list of entries of given date (see date picker) -->
+        <ion-list *ngFor="let entry of timeEntryService.entriesByDate">
+          <ion-item-sliding>
+            <ion-item-options side="end">
+              <ion-item-option expandable color="danger" (click)="deleteEntry(entry.id)">Löschen</ion-item-option>
+            </ion-item-options>
+            <ion-item detail (click)="editEntryDetails(entry.id)">
+
+              <!-- Iocon left side-->
+              <ion-label item-start>
+                <ion-icon size="large" name="{{ entry.ion_direction_icon }}" color="{{ entry.ion_color }}"></ion-icon>
+              </ion-label>
+
+              <!-- Time and mode (enter/go)-->
+              <h3>{{ entry.entryDate | date: 'HH:mm' }}</h3>
+              <ion-label slot="end" color="{{ entry.ion_color }}">
+                {{ entry.direction_translated }}
+              </ion-label>
+            </ion-item>
+          </ion-item-sliding>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <!----------------------------------------------------------------------------------------->
+
+  <!----------------------------------------------------------------------------------------->
 </ion-content>
