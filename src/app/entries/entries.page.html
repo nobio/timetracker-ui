@@ -17,7 +17,7 @@
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="medium">Timetracker - Erfassung</ion-title>
+      <ion-title size="large">Einträge</ion-title>
     </ion-toolbar>
   </ion-header>
 
@@ -58,25 +58,24 @@
       <ion-col size="12" size-sm="8" offset-sm="2">
         <!-- statistic for selected day -->
         <ion-item>
-          <ion-label size="small" color="warning">
-            Gesamt {{ timeEntryService.entryStats.totalWorkload }}
-            Arbeit {{ timeEntryService.entryStats.workingTime }}
+          <ion-label class="info-line" color="warning">
+            Gesamt {{ timeEntryService.entryStats.totalWorkload }} |
+            Arbeit {{ timeEntryService.entryStats.workingTime }} |
             Pause {{ timeEntryService.entryStats.pause }}
           </ion-label>
         </ion-item>
         <!-- list of entries of given date (see date picker) -->
         <ion-list *ngFor="let entry of timeEntryService.entriesByDate">
           <ion-item-sliding>
+            <!--Options-->
             <ion-item-options side="end">
               <ion-item-option expandable color="danger" (click)="deleteEntry(entry.id)">Löschen</ion-item-option>
             </ion-item-options>
             <ion-item detail (click)="editEntryDetails(entry.id)">
-
               <!-- Iocon left side-->
               <ion-label item-start>
                 <ion-icon size="large" name="{{ entry.ion_direction_icon }}" color="{{ entry.ion_color }}"></ion-icon>
               </ion-label>
-
               <!-- Time and mode (enter/go)-->
               <h3>{{ entry.entryDate | date: 'HH:mm' }}</h3>
               <ion-label slot="end" color="{{ entry.ion_color }}">

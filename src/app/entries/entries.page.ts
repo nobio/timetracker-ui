@@ -1,16 +1,18 @@
 import { Component } from '@angular/core';
 import { TimeEntriesService } from '../service/datasource/time-entries.service';
+import { AlertController } from '@ionic/angular';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: 'home.page.html',
-  styleUrls: ['home.page.scss']
+  selector: 'app-entries',
+  templateUrl: 'entries.page.html',
+  styleUrls: ['entries.page.scss']
 })
-export class HomePage {
+export class EntriesPage {
   public date: string;
 
   constructor(
-    public timeEntryService: TimeEntriesService
+    public timeEntryService: TimeEntriesService,
+    private alertCtrl: AlertController
   ) { }
 
   ionViewWillEnter() {
@@ -45,8 +47,27 @@ export class HomePage {
 
   public showTimeEntryErrors() { }
 
-  deleteEntry(id: string, slidingItem: any): void {
+  public async deleteEntry (id: string) {
     console.log('deleting entry ' + id);
+    
+    const confirm = await this.alertCtrl.create({
+      header: 'Wirklich löschen?',
+      message: 'Soll dieser Eintrag tatsächlich gelöscht werden?',
+      buttons: [
+        {
+          text: 'Abbrechen',
+          role: 'cancel', 
+        },
+        {
+          text: 'Löschen',
+          handler: () => {
+            this.timeEntryService.deleteEntry(id, this.date);
+          }
+        }
+      ]
+    });
+    await confirm.present();
+
   }
 
   showEntryDetails(id: string, slidingItem: any): void {

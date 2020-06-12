@@ -14,7 +14,9 @@ export class TimeEntriesService {
   public entriesByDate: Entry[] = [];
   public entryStats: EntryStatistics = new EntryStatistics();
 
-  private baseUrl: string = "http://localhost:30000";
+  //private baseUrl: string = "http://localhost:30000";
+  //private baseUrl: string = "nobio.myhome-server.de:30043";
+  private baseUrl: string = "https://nobio.myhome-server.de:30043";
 
   constructor(
     private httpClient: HttpClient
@@ -75,7 +77,7 @@ export class TimeEntriesService {
   loadWorkingTime(dt: string): void {
     // reset entry stats
     this.entryStats = new EntryStatistics();
-    
+
     if (dt === undefined) {
       this.entryStats.workingTime = 'na.';
       this.entryStats.pause = 'na.';
@@ -96,6 +98,21 @@ export class TimeEntriesService {
           this.entryStats.pause = this.millisecToReadbleTime(data['pause']);
         }
       )
+  }
+
+  /**
+   * deletes a time entry by it's id
+   * @param id unique id of time entry
+   * @param dt date to reload the data after deletion
+   */
+  deleteEntry(id: string, dt: string) {
+    if(!id) return;
+
+    console.log(`calling ${this.baseUrl + '/api/entries/' + id} to delete entry`)
+    this.httpClient
+      .delete(this.baseUrl + '/api/entries/' + id, this.httpOptions)
+      .pipe(retry(2), catchError(this.handleError))
+      .subscribe(delResp => this.loadEntriesByDate(dt))
   }
 
   millisecToReadbleTime(millisec: number): string {
