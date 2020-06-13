@@ -12,6 +12,10 @@ const routes: Routes = [
         loadChildren: () => import('../entries/entries.module').then(m => m.EntriesPageModule)
       },
       {
+        path: 'entries/:id',
+        loadChildren: () => import('../entries/details/entry/entry.module').then(m => m.EntryPageModule)
+      },    
+      {
         path: 'stats',
         loadChildren: () => import('../stats/stats.module').then(m => m.StatsPageModule)
       },

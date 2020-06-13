@@ -70,11 +70,11 @@ export class EntriesPage {
 
   }
 
-  showEntryDetails(id: string, slidingItem: any): void {
+  showEntry(id: string): void {
     console.log('show entry for ' + id);
   }
   
-  editEntryDetails(id: string, slidingItem: any): void {
+  editEntry(id: string): void {
     console.log('editing item ' + id);
   }
 
