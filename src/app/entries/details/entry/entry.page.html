@@ -7,6 +7,56 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content padding>
+  <!-- ID (Headline) -->
+  <ion-item>
+    <ion-label color="primary" position="stacked">ID</ion-label>
+    <ion-input>{{ timeEntryService.selectedEntry.id }}</ion-input>
+  </ion-item>
+  <!-- Enter/Go -->
+  <ion-item>
+    <ion-label position="stacked" color="primary">Kommen/Gehen <ion-icon name="pencil-outline"></ion-icon>
+    </ion-label>
+    <ion-select [(ngModel)]="timeEntryService.selectedEntry.direction">
+      <ion-select-option value="enter">Kommen</ion-select-option>
+      <ion-select-option value="go">Gehen</ion-select-option>
+    </ion-select>
+  </ion-item>
+  <!-- Date -->
+  <ion-item>
+    <ion-label color="primary" position="stacked">Datum <ion-icon name="pencil-outline"></ion-icon>
+    </ion-label>
+    <ion-datetime displayFormat="DDD DD MMM YYYY HH:mm" pickerFormat="H mm"
+      [(ngModel)]="timeEntryService.selectedEntry.localEntryDate"></ion-datetime>
+  </ion-item>
+  <!-- Date of last change -->
+  <ion-item>
+    <ion-label color="primary" position="stacked">Datum der letzten Änderung</ion-label>
+    <ion-input>{{ timeEntryService.selectedEntry.lastChanged | date: 'EEE dd MMM yyyy H:mm'}}</ion-input>
+  </ion-item>
+  <!-- Geo Location -->
+  <ion-item>
+    <ion-label color="primary" position="stacked">Geo Location Longitude</ion-label>
+    <ion-input>{{ timeEntryService.selectedEntry.longitude }}</ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label color="primary" position="stacked">Geo Location Latitude</ion-label>
+    <ion-input>{{ timeEntryService.selectedEntry.latitude }}</ion-input>
+  </ion-item>
 
+  <!-- Action buttons -->
+  <div align="center">
+    <ion-button color="danger" (click)="delete()">
+      <ion-icon name="trash">&nbsp;Löschen</ion-icon>
+    </ion-button>
+    &nbsp;
+    <ion-button color="primary" (click)="save()">
+      <ion-icon name="save">&nbsp;Speichern</ion-icon>
+    </ion-button>
+    &nbsp;
+    <ion-button color="secondary" (click)="showMap()"
+      *ngIf="timeEntryService.selectedEntry.latitude != null && timeEntryService.selectedEntry.longitude != 0">
+      <ion-icon name="map">&nbsp;Karte</ion-icon>
+    </ion-button>
+  </div>
 </ion-content>

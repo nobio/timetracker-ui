@@ -66,23 +66,17 @@
         </ion-item>
         <!-- list of entries of given date (see date picker) -->
         <ion-list>
-          <ion-item-sliding *ngFor="let entry of timeEntryService.entriesByDate" [routerLink]="['./', entry.id]">
-            <!--Options-->
-            <ion-item-options side="end">
-              <ion-item-option expandable color="danger" (click)="deleteEntry(entry.id)">Löschen</ion-item-option>
-            </ion-item-options>
-            <ion-item detail (click)="editEntry(entry.id)">
-              <!-- Iocon left side-->
-              <ion-label item-start>
-                <ion-icon size="large" name="{{ entry.ion_direction_icon }}" color="{{ entry.ion_color }}"></ion-icon>
-              </ion-label>
-              <!-- Time and mode (enter/go)-->
-              <h3>{{ entry.entryDate | date: 'HH:mm' }}</h3>
-              <ion-label slot="end" color="{{ entry.ion_color }}">
-                {{ entry.direction_translated }}
-              </ion-label>
-            </ion-item>
-          </ion-item-sliding>
+          <ion-item *ngFor="let entry of timeEntryService.entriesByDate" [routerLink]="['./', entry.id]">
+            <ion-icon size="large" name="{{ entry.ion_direction_icon }}" color="{{ entry.ion_color }}"></ion-icon>
+            &nbsp;
+            <!-- Time and mode (enter/go)-->
+            <ion-label lot="end">
+              {{ entry.entryDate | date: 'HH:mm' }} Uhr
+            </ion-label>
+            <ion-label slot="end" color="{{ entry.ion_color }}">
+              {{ entry.direction_translated }}
+            </ion-label>
+          </ion-item>
         </ion-list>
       </ion-col>
     </ion-row>

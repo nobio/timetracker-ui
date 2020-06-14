@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpClientModule, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import { throwError, Observable } from 'rxjs';
 
-import { Observable, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 import { Entry } from 'src/app/model/entry';
 import { EntryStatistics } from 'src/app/model/entry-statistics';
@@ -12,6 +12,7 @@ import { EntryStatistics } from 'src/app/model/entry-statistics';
 
 export class TimeEntriesService {
   public entriesByDate: Entry[] = [];
+  public selectedEntry: Entry = new Entry();
   public entryStats: EntryStatistics = new EntryStatistics();
 
   //private baseUrl: string = "http://localhost:30000";
@@ -58,7 +59,7 @@ export class TimeEntriesService {
     this.httpClient
       .get<Entry[]>(this.baseUrl + '/api/entries?dt=' + date)
       .pipe(retry(2), catchError(this.handleError))
-      .subscribe(data => {
+      .subscribe((data: Entry[]) => {
 
         this.entriesByDate = [];
         data.forEach((element) => {
@@ -66,8 +67,22 @@ export class TimeEntriesService {
           e.encodeEntry(element);
           this.entriesByDate.push(e);
         });
-      
+
       })
+  }
+
+  loadEntry(id: string): void {
+
+    console.log(`loading entry ${id}`);
+    if (!id) return;
+
+    this.httpClient
+      .get<Entry>(this.baseUrl + '/api/entries/' + id)
+      .pipe(retry(2), catchError(this.handleError))
+      .subscribe(data => {
+        this.selectedEntry = new Entry();
+        this.selectedEntry.encodeEntry(data);
+      });
   }
 
   /**
@@ -103,16 +118,26 @@ export class TimeEntriesService {
   /**
    * deletes a time entry by it's id
    * @param id unique id of time entry
-   * @param dt date to reload the data after deletion
    */
-  deleteEntry(id: string, dt: string) {
-    if(!id) return;
+  deleteSelectedEntry(): Observable<any> {
 
-    console.log(`calling ${this.baseUrl + '/api/entries/' + id} to delete entry`)
-    this.httpClient
-      .delete(this.baseUrl + '/api/entries/' + id, this.httpOptions)
+    console.log(`calling ${this.baseUrl + '/api/entries/' + this.selectedEntry.id} to delete entry`)
+    return this.httpClient
+      .delete(this.baseUrl + '/api/entries/' + this.selectedEntry.id, this.httpOptions)
       .pipe(retry(2), catchError(this.handleError))
-      .subscribe(delResp => this.loadEntriesByDate(dt))
+
+  }
+
+  /**
+   * saves the selected Entry to databse
+   */
+  saveSelectedEntry(): Observable<any> {
+
+    console.log(`calling ${this.baseUrl + '/api/entries/' + this.selectedEntry.id} to save entry`)
+    return this.httpClient
+      .put(this.baseUrl + '/api/entries/' + this.selectedEntry.id, JSON.stringify(this.selectedEntry.decodeEntry()), this.httpOptions)
+      .pipe(retry(2), catchError(this.handleError))
+
   }
 
   millisecToReadbleTime(millisec: number): string {
@@ -122,9 +147,12 @@ export class TimeEntriesService {
     }
     let dt = new Date();
     dt.setTime(millisec);
-    return (dt.getUTCHours() < 10 ? '0' + dt.getUTCHours() : dt.getUTCHours())
-      + ':' + (dt.getUTCMinutes() < 10 ? '0' + dt.getUTCMinutes() : dt.getUTCMinutes())
-    //      + ':' + (dt.getUTCSeconds() < 10 ? '0' + dt.getUTCSeconds() : dt.getUTCSeconds());
+    return (
+      dt.getUTCHours() < 10 ? '0'
+        + dt.getUTCHours() : dt.getUTCHours())
+      + ':' + (dt.getUTCMinutes() < 10 ? '0'
+        + dt.getUTCMinutes() : dt.getUTCMinutes()
+      )
   }
 
 }

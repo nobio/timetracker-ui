@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 export class Entry {
     public id: string;
     public direction: string;
@@ -9,6 +11,21 @@ export class Entry {
     direction_translated: string;
     ion_direction_icon: string;
     ion_color: string;
+
+    /** getter for a localized time */
+    public get localEntryDate(): string {
+        // console.log('get localDate from orig date: ' + this.entryDate);
+        if (this.entryDate) {
+            return moment(this.entryDate).format('YYYY-MM-DDTHH:mm:ss.SSSZ');
+        } else {
+            return undefined;
+        }
+    }
+    public set localEntryDate(dt: string) {
+        // console.log('set localDate: ' + dt);
+        this.entryDate = moment(dt).format('YYYY-MM-DDTHH:mm:ss.SSSZ');
+    }
+
 
     /**
    * Rework, enrich, filter, etc. the database entries
