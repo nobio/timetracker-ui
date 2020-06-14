@@ -13,8 +13,12 @@ const routes: Routes = [
       },
       {
         path: 'entries/:id',
-        loadChildren: () => import('../entries/details/entry/entry.module').then(m => m.EntryPageModule)
-      },    
+        loadChildren: () => import('../entries/entry/entry.module').then(m => m.EntryPageModule)
+      },
+      {
+        path: 'entries/:id/map',
+        loadChildren: () => import('../entries/map/map.module').then(m => m.MapPageModule)
+      },
       {
         path: 'stats',
         loadChildren: () => import('../stats/stats.module').then(m => m.StatsPageModule)
@@ -45,4 +49,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class TabsPageRoutingModule {}
+export class TabsPageRoutingModule { }

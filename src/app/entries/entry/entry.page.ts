@@ -53,4 +53,5 @@ export class EntryPage {
     this.timeEntryService.saveSelectedEntry()
       .subscribe(e => this.navCtrl.navigateBack('/tabs/entries'));
   }
+
 }

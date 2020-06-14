@@ -3,7 +3,7 @@
     <ion-button slot="start">
       <ion-back-button defaultHrf="/entries"></ion-back-button>
     </ion-button>
-    <ion-title>Entry Details</ion-title>
+    <ion-title>Eintragdetail</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -54,11 +54,10 @@
       <ion-icon name="save">&nbsp;Speichern</ion-icon>
     </ion-button>
     &nbsp;
-    <!--
-    <ion-button color="secondary" (click)="showMap()"
+    <ion-button color="secondary" routerLink="map" 
       *ngIf="timeEntryService.selectedEntry.latitude != null && timeEntryService.selectedEntry.longitude != 0">
       <ion-icon name="map">&nbsp;Karte</ion-icon>
     </ion-button>
-    -->
+
   </div>
 </ion-content>
