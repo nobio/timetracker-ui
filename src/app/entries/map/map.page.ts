@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { TimeEntriesService } from 'src/app/service/datasource/time-entries.service';
-import {} from 'google-maps';
+import { } from 'google-maps';
 
 @Component({
   selector: 'google-map',
@@ -18,7 +18,7 @@ export class MapPage implements OnInit {
   ngOnInit() {
     this.initMap();
   }
-  ionViewDidLoad(){
+  ionViewDidLoad() {
     this.initMap();
   }
 
@@ -33,7 +33,12 @@ export class MapPage implements OnInit {
       zoom: 18,
       tilt: 45,
       mapTypeId: google.maps.MapTypeId.ROADMAP,
-      rotateControl: true
+      rotateControl: true,
+      zoomControl: true,
+      mapTypeControl: true,
+      scaleControl: true,
+      streetViewControl: true,
+      fullscreenControl: true
     }
 
     this.map = new google.maps.Map(document.getElementById("map"), mapOptions);
@@ -46,10 +51,10 @@ export class MapPage implements OnInit {
 
     // workaround: reload map after 500ms otherwise the canvas remains empty
     setTimeout(() => {
-//      this.map.panBy(0, 0);
-      this.map.setZoom(this.map.getZoom());  
-//      google.maps.event.trigger(this.map, 'resize');
+      this.map.panBy(0, 0);
+      this.map.setZoom(this.map.getZoom());
+      google.maps.event.trigger(this.map, 'resize');
     }, 500)
-     
+
   }
 }
