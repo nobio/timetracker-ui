@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { Toggles } from '../model/toggles';
 import { ToastController } from '@ionic/angular';
 import { AdminService } from '../service/datasource/admin.service';
-import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-admin',
@@ -99,14 +98,12 @@ export class AdminPage {
       .then(toggle => this.presentMessage(toggle, 1000))
       .catch(err => this.presentMessage(err, 2000));
   }
-
-  presentMessage(msg: string, duration: number) {
-    console.log('present message ' + msg)
-    this.toastCtrl.create({
+  async presentMessage(msg: string, duration: number) {
+    const toast = await this.toastCtrl.create({
       message: msg,
       duration: duration
     });
-//    }).present();
+    toast.present();
   }
 
 }
