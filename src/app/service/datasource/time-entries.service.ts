@@ -1,52 +1,26 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
-import { throwError, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 
 import { catchError, retry } from 'rxjs/operators';
 import { Entry } from 'src/app/model/entry';
 import { EntryStatistics } from 'src/app/model/entry-statistics';
+import { BaseService } from './base.service';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 
-export class TimeEntriesService {
+export class TimeEntriesService extends BaseService {
   public entriesByDate: Entry[] = [];
   public selectedEntry: Entry = new Entry();
   public entryStats: EntryStatistics = new EntryStatistics();
 
-  //private baseUrl: string = "http://localhost:30000";
-  //private baseUrl: string = "nobio.myhome-server.de:30043";
-  private baseUrl: string = "https://nobio.myhome-server.de:30043";
-
   constructor(
-    private httpClient: HttpClient
-  ) { }
-
-  // Http Options
-  httpOptions = {
-    headers: new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'
-    })
+    public httpClient: HttpClient
+  ) {
+    super();
   }
-
-  // Handle API errors
-  handleError(error: HttpErrorResponse) {
-    if (error.error instanceof ErrorEvent) {
-      // A client-side or network error occurred. Handle it accordingly.
-      console.error('An error occurred:', error.error.message);
-    } else {
-      // The backend returned an unsuccessful response code.
-      // The response body may contain clues as to what went wrong,
-      console.error(
-        `Backend returned code ${error.status}, ` +
-        `body was: ${error.error}`);
-    }
-    // return an observable with a user-facing error message
-    return throwError(
-      'Something bad happened; please try again later.');
-  };
 
   /**
    * load entries for a given date
@@ -54,11 +28,12 @@ export class TimeEntriesService {
    */
   loadEntriesByDate(dt: string): void {
     console.log('loading entries for ' + dt);
+    console.log(super.baseUrl);
     const date: number = new Date(dt).getTime();
 
     this.httpClient
-      .get<Entry[]>(this.baseUrl + '/api/entries?dt=' + date)
-      .pipe(retry(2), catchError(this.handleError))
+      .get<Entry[]>(super.baseUrl + '/api/entries?dt=' + date)
+      .pipe(retry(2), catchError(super.handleError))
       .subscribe((data: Entry[]) => {
 
         this.entriesByDate = [];
@@ -77,8 +52,8 @@ export class TimeEntriesService {
     if (!id) return;
 
     this.httpClient
-      .get<Entry>(this.baseUrl + '/api/entries/' + id)
-      .pipe(retry(2), catchError(this.handleError))
+      .get<Entry>(super.baseUrl + '/api/entries/' + id)
+      .pipe(retry(2), catchError(super.handleError))
       .subscribe(data => {
         this.selectedEntry = new Entry();
         this.selectedEntry.encodeEntry(data);
@@ -103,8 +78,8 @@ export class TimeEntriesService {
     const date: number = new Date(dt).getTime();
 
     this.httpClient
-      .get(this.baseUrl + '/api/entries?busy=' + date)
-      .pipe(retry(2), catchError(this.handleError))
+      .get(super.baseUrl + '/api/entries?busy=' + date)
+      .pipe(retry(2), catchError(super.handleError))
       .subscribe(
         data => {
           console.log(data)
@@ -121,10 +96,10 @@ export class TimeEntriesService {
    */
   deleteSelectedEntry(): Observable<any> {
 
-    console.log(`calling ${this.baseUrl + '/api/entries/' + this.selectedEntry.id} to delete entry`)
+    console.log(`calling ${super.baseUrl + '/api/entries/' + this.selectedEntry.id} to delete entry`)
     return this.httpClient
-      .delete(this.baseUrl + '/api/entries/' + this.selectedEntry.id, this.httpOptions)
-      .pipe(retry(2), catchError(this.handleError))
+      .delete(super.baseUrl + '/api/entries/' + this.selectedEntry.id, super.httpOptions)
+      .pipe(retry(2), catchError(super.handleError))
 
   }
 
@@ -133,10 +108,10 @@ export class TimeEntriesService {
    */
   saveSelectedEntry(): Observable<any> {
 
-    console.log(`calling ${this.baseUrl + '/api/entries/' + this.selectedEntry.id} to save entry`)
+    console.log(`calling ${super.baseUrl + '/api/entries/' + this.selectedEntry.id} to save entry`)
     return this.httpClient
-      .put(this.baseUrl + '/api/entries/' + this.selectedEntry.id, JSON.stringify(this.selectedEntry.decodeEntry()), this.httpOptions)
-      .pipe(retry(2), catchError(this.handleError))
+      .put(super.baseUrl + '/api/entries/' + this.selectedEntry.id, JSON.stringify(this.selectedEntry.decodeEntry()), this.httpOptions)
+      .pipe(retry(2), catchError(super.handleError))
 
   }
 
