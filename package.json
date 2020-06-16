@@ -10,7 +10,8 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "deploy": "firebase deploy"
+    "deploy": "firebase deploy",
+    "rebuild": "ng run app:build:production; firebase deploy"
   },
   "private": true,
   "dependencies": {

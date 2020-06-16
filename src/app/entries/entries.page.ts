@@ -7,7 +7,7 @@ import { TimeEntriesService } from '../service/datasource/time-entries.service';
   styleUrls: ['entries.page.scss']
 })
 export class EntriesPage {
-  public date: string;
+  private _date: string = new Date().toISOString();
 
   constructor(
     public timeEntryService: TimeEntriesService,
@@ -22,24 +22,27 @@ export class EntriesPage {
   public leave() { }
 
   /* ===================== Time handling ===================== */
+  set date(dt: string) {
+    this._date = dt;
+    this.timeEntryService.loadEntriesByDate(this.date);
+    this.timeEntryService.loadWorkingTime(this.date)
+  }
+  get date(): string {
+    return this._date;
+  }
+
   public setYesterday(): void {
     let yesterday = new Date(this.date);
     yesterday.setDate(yesterday.getDate() - 1);
     this.date = yesterday.toISOString();
-    this.timeEntryService.loadEntriesByDate(this.date);
-    this.timeEntryService.loadWorkingTime(this.date)
   }
   public setToday(): void {
     this.date = new Date().toISOString();
-    this.timeEntryService.loadEntriesByDate(this.date);
-    this.timeEntryService.loadWorkingTime(this.date);
   }
   public setTomorrow(): void {
     let tomorrow = new Date(this.date);
     tomorrow.setDate(tomorrow.getDate() + 1);
     this.date = tomorrow.toISOString();
-    this.timeEntryService.loadEntriesByDate(this.date);
-    this.timeEntryService.loadWorkingTime(this.date);
   }
   /* ===================== Time handling ===================== */
 

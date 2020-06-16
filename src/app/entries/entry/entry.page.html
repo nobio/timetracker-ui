@@ -1,17 +1,17 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHrf="/entries" text="zurück"></ion-back-button>
+      <ion-back-button color="primary" text="Zurück" defaultHrf="/entries"></ion-back-button>
     </ion-buttons>
-    <ion-title>Eintragdetail</ion-title>
+    <ion-title>Details</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content padding>
   <!-- ID (Headline) -->
   <ion-item>
-    <ion-label color="primary" position="stacked">ID</ion-label>
-    <ion-input>{{ timeEntryService.selectedEntry.id }}</ion-input>
+    <ion-label position="stacked" color="primary" position="stacked">ID</ion-label>
+    <ion-input disabled="false">{{ timeEntryService.selectedEntry.id }}</ion-input>
   </ion-item>
   <!-- Enter/Go -->
   <ion-item>
@@ -32,16 +32,12 @@
   <!-- Date of last change -->
   <ion-item>
     <ion-label color="primary" position="stacked">Datum der letzten Änderung</ion-label>
-    <ion-input>{{ timeEntryService.selectedEntry.lastChanged | date: 'EEE dd MMM yyyy H:mm'}}</ion-input>
+    <ion-input disabled="false">{{ timeEntryService.selectedEntry.lastChanged | date: 'EEE dd MMM yyyy H:mm'}}</ion-input>
   </ion-item>
   <!-- Geo Location -->
   <ion-item>
-    <ion-label color="primary" position="stacked">Geo Location Longitude</ion-label>
-    <ion-input>{{ timeEntryService.selectedEntry.longitude }}</ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-label color="primary" position="stacked">Geo Location Latitude</ion-label>
-    <ion-input>{{ timeEntryService.selectedEntry.latitude }}</ion-input>
+    <ion-label color="primary" position="stacked">Geo Location</ion-label>
+    <ion-input disabled="false">Long: {{ timeEntryService.selectedEntry.longitude | number:'2.1-3'}}, Lat: {{ timeEntryService.selectedEntry.latitude | number:'2.1-3' }}</ion-input>
   </ion-item>
 
   <!-- Action buttons -->
