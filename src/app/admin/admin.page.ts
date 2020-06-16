@@ -44,7 +44,6 @@ export class AdminPage {
    * dump data to file system
    */
   dumpData() {
-
     this.presentMessage('Daten ins File System dumpen...', 2000);
     this.adminSrv
       .dumpTimeEntries()
@@ -54,14 +53,12 @@ export class AdminPage {
       .catch(err => {
         this.presentMessage(err, 3000);
       });
-
   }
 
   /**
    * back data to database
    */
   backupData() {
-
     this.presentMessage('Daten in Datenbank sichern...', 2000);
     this.adminSrv
       .backupTimeEntries()
@@ -78,7 +75,6 @@ export class AdminPage {
    * Results are stored in database and can be read by another endpoint   * 
    */
   evaluateData() {
-
     this.presentMessage('Daten werden untersucht...', 2000);
     this.adminSrv
       .evaluateTimeEntries()
@@ -90,14 +86,23 @@ export class AdminPage {
       });
   }
 
+  /**
+   * save a toggle
+   */
   saveToggle(toggleName: string) {
-    console.log('save toggle ' + toggleName);
+    console.log('saving toggle ' + toggleName);
 
     const t = this.toggles.getToggle(toggleName);
     this.adminSrv.saveToggle(t)
       .then(toggle => this.presentMessage(toggle, 1000))
       .catch(err => this.presentMessage(err, 2000));
   }
+
+  /**
+   * shows message box at the bottom (toast)
+   * @param msg 
+   * @param duration 
+   */
   async presentMessage(msg: string, duration: number) {
     const toast = await this.toastCtrl.create({
       message: msg,
