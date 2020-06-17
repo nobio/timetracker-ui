@@ -125,15 +125,12 @@ export class AdminService extends BaseService {
   }
 
   saveToggle(toggle: Toggle): Promise<any> {
-    console.log("##############################")
-    console.log(JSON.stringify(toggle))
     return new Promise((resolve, reject) => {
       this.httpClient
         .put(super.baseUrl + "/api/toggles/" + toggle.id, toggle, super.httpOptions)
         .pipe(retry(2), catchError(super.handleError))
         .subscribe(
           res => {
-            console.log(res);
             console.log("successfully saved a toggle");
             resolve("Toggle " + toggle.name + " has successfully been saved");
           },

@@ -31,8 +31,7 @@ export class TimeEntriesService extends BaseService {
     console.log(super.baseUrl);
     const date: number = new Date(dt).getTime();
 
-    this.httpClient
-      .get<Entry[]>(super.baseUrl + '/api/entries?dt=' + date)
+    this.httpClient.get<Entry[]>(super.baseUrl + '/api/entries?dt=' + date)
       .pipe(retry(2), catchError(super.handleError))
       .subscribe((data: Entry[]) => {
 
@@ -51,13 +50,36 @@ export class TimeEntriesService extends BaseService {
     console.log(`loading entry ${id}`);
     if (!id) return;
 
-    this.httpClient
-      .get<Entry>(super.baseUrl + '/api/entries/' + id)
+    this.httpClient.get<Entry>(super.baseUrl + '/api/entries/' + id)
       .pipe(retry(2), catchError(super.handleError))
       .subscribe(data => {
         this.selectedEntry = new Entry();
         this.selectedEntry.encodeEntry(data);
       });
+  }
+
+  createEntry(entry: Entry, dt: string) {
+    const body = {
+      direction: entry.direction,
+      datetime: entry.entryDate,
+      longitude: entry.longitude,
+      latitude: entry.latitude
+    }
+
+    this.httpClient.post(super.baseUrl + '/api/entries/', body, super.httpOptions)
+      .pipe(retry(2), catchError(super.handleError))
+      .subscribe(
+        res => {
+          this.loadEntriesByDate(dt)
+        },
+        err => {
+          console.log(err);
+          console.log(err._body);
+          this.loadEntriesByDate(dt);
+          throw new Error(err);
+        }
+      )
+
   }
 
   /**

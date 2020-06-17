@@ -1,5 +1,7 @@
 {
   "name": "timetracker-ui",
-  "integrations": {},
+  "integrations": {
+    "capacitor": {}
+  },
   "type": "angular"
 }
