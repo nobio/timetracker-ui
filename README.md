@@ -1,0 +1,1 @@
+ionic integrations enable capacitor

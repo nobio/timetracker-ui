@@ -34,7 +34,13 @@ export class EntriesPage {
 
   private async createEntry(direction: string) {
     const entry = {} as Entry;
-    const geoLocPosition: GeolocationPosition = await Geolocation.getCurrentPosition();
+    let geoLocPosition: GeolocationPosition;
+    try {
+      geoLocPosition = await Geolocation.getCurrentPosition(); 
+    } catch (error) {
+      console.error(`no geolocation available: ${error.message}`);
+      geoLocPosition = undefined;
+    }
 
     entry.direction = direction;
     entry.entryDate = this.date;
