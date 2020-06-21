@@ -90,6 +90,7 @@ export class AdminPage {
    * save a toggle
    */
   saveToggle(toggleName: string) {
+    console.log(toggleName)
     console.log('saving toggle ' + toggleName);
 
     const t = this.toggles.getToggle(toggleName);
