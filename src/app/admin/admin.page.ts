@@ -90,12 +90,11 @@ export class AdminPage {
    * save a toggle
    */
   saveToggle(toggleName: string) {
-    console.log(toggleName)
     console.log('saving toggle ' + toggleName);
 
     const t = this.toggles.getToggle(toggleName);
     this.adminSrv.saveToggle(t)
-      .then(toggle => this.presentMessage(toggle, 1000))
+      //.then(toggle => this.presentMessage(toggle, 1000))
       .catch(err => this.presentMessage(err, 2000));
   }
 
