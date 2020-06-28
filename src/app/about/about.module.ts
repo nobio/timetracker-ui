@@ -3,16 +3,16 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AboutPage as AboutPage } from './about.page';
-import { ExploreContainerComponentModule } from '../explore-container/explore-container.module';
 
 import { AboutPageRoutingModule } from './about-routing.module';
+import { OnlineStatusComponentModule } from '../online-status/online-status.module';
 
 @NgModule({
   imports: [
     IonicModule,
     CommonModule,
     FormsModule,
-    ExploreContainerComponentModule,
+    OnlineStatusComponentModule,
     AboutPageRoutingModule
   ],
   declarations: [AboutPage]

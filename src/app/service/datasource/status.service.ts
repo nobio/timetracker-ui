@@ -24,11 +24,11 @@ export class StatusService extends BaseService {
       .pipe(retry(2), catchError(super.handleError))
       .subscribe(
         (res) => {
-          this.serverInfo.onlineStatus = true;
+          this.serverInfo.isOnline = true;
         },
         (err) => {
           console.log("failed to check online status " + err);
-          this.serverInfo.onlineStatus = false;
+          this.serverInfo.isOnline = false;
         }
       );
   }

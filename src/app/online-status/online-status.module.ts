@@ -4,11 +4,11 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { ExploreContainerComponent } from './explore-container.component';
+import { OnlineStatusComponent } from './online-status.component';
 
 @NgModule({
   imports: [ CommonModule, FormsModule, IonicModule],
-  declarations: [ExploreContainerComponent],
-  exports: [ExploreContainerComponent]
+  declarations: [OnlineStatusComponent],
+  exports: [OnlineStatusComponent]
 })
-export class ExploreContainerComponentModule {}
+export class OnlineStatusComponentModule {}

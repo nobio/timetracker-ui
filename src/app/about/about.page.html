@@ -22,10 +22,10 @@
           </ion-card-header>
           <ion-card-content>
             <!--<p>Environment: <b>{{ statusSrv.serverInfo.env }}</b></p>-->
-            <p>Base URL: <br/><b>{{ statusSrv.serverInfo.baseUrl }}</b></p>
             <!--<p>Build Version: <b>{{ statusSrv.serverInfo.buildVersion }}</b></p>-->
-            <p>Server Build Version: <br/><b>{{ statusSrv.serverInfo.serverBuildVersion }}</b></p>
-            <p>Last Server Build: <br/><b>{{ statusSrv.serverInfo.serverBuildTimeAsString }}</b></p>
+            <p>Base URL: <br /><b>{{ statusSrv.serverInfo.baseUrl }}</b></p>
+            <p>Server Build Version: <br /><b>{{ statusSrv.serverInfo.serverBuildVersion }}</b></p>
+            <p>Last Server Build: <br /><b>{{ statusSrv.serverInfo.serverBuildTimeAsString }}</b></p>
           </ion-card-content>
         </ion-card>
 
@@ -35,29 +35,13 @@
             <h1>Online Status</h1>
           </ion-card-header>
           <ion-card-content>
-            <div *ngIf="statusSrv.serverInfo.onlineStatus; else notOnline">
-              <ion-item color="success">
-                Server ist online
-              </ion-item>
-            </div>
-            <ng-template #notOnline>
-              <ion-item color="danger">
-                Server ist offline
-              </ion-item>
-            </ng-template>
-            <div *ngIf="statusSrv.serverInfo.isSlackEnabled; else notSlackEnabled">
-              <ion-item color="success">
-                Slack ist aktiviert
-              </ion-item>
-            </div>
-            <ng-template #notSlackEnabled>
-              <ion-item color="danger">
-                Slack ist deaktiviert
-              </ion-item>
-            </ng-template>
+            <online-status-component 
+              displaySize="big">
+            </online-status-component>
           </ion-card-content>
         </ion-card>
       </ion-col>
     </ion-row>
   </ion-grid>
+
 </ion-content>

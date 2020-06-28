@@ -4,7 +4,7 @@ export class ServerInformation {
   public serverBuildVersion: string = 'n.a.';
   public serverBuildTime: Date;
   public isSlackEnabled: boolean = false;
-  public onlineStatus: boolean = false;
+  public isOnline: boolean = false;
   public baseUrl: string;
   public env: string;
   public buildVersion: string;

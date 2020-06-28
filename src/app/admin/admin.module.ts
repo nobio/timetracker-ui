@@ -4,7 +4,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AdminPage } from './admin.page';
-import { ExploreContainerComponentModule } from '../explore-container/explore-container.module';
 
 import { AdminPageRoutingModule } from './admin-routing.module'
 
@@ -13,7 +12,6 @@ import { AdminPageRoutingModule } from './admin-routing.module'
     IonicModule,
     CommonModule,
     FormsModule,
-    ExploreContainerComponentModule,
     RouterModule.forChild([{ path: '', component: AdminPage }]),
     AdminPageRoutingModule,
   ],
