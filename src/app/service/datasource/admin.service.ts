@@ -1,18 +1,15 @@
-import { Injectable } from '@angular/core';
-import { Toggles } from 'src/app/model/toggles';
-import { Toggle } from 'src/app/model/toggle';
-import { HttpClient } from '@angular/common/http';
-import { BaseService } from './base.service';
-import { catchError, retry } from 'rxjs/operators';
+import { Injectable } from "@angular/core";
+import { Toggles } from "src/app/model/toggles";
+import { Toggle } from "src/app/model/toggle";
+import { HttpClient } from "@angular/common/http";
+import { BaseService } from "./base.service";
+import { catchError, retry } from "rxjs/operators";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class AdminService extends BaseService {
-
-  constructor(
-    public httpClient: HttpClient
-  ) {
+  constructor(public httpClient: HttpClient) {
     super();
   }
 
@@ -22,18 +19,18 @@ export class AdminService extends BaseService {
    * @param entry JSON of new entry
    */
   calculateStatistics(): Promise<string> {
-    console.log('calculate busy time');
+    console.log("calculate busy time");
 
     return new Promise((resolve, reject) => {
       this.httpClient
         .put(super.baseUrl + "/api/stats", super.httpOptions)
         .pipe(retry(2), catchError(super.handleError))
         .subscribe(
-          res => {
+          (res) => {
             console.log("successfully recalculated");
             resolve("Berechnung erfolgreich durchgeführt");
           },
-          err => {
+          (err) => {
             console.log("failed to recalculate " + err);
             reject("Fehler bei Berechnung: " + err);
           }
@@ -48,18 +45,22 @@ export class AdminService extends BaseService {
    * @memberof AdminBackendProvider
    */
   dumpTimeEntries(): Promise<any> {
-
     return new Promise((resolve, reject) => {
       this.httpClient
         .post(super.baseUrl + "/api/entries/dump", super.httpOptions)
         .pipe(retry(2), catchError(super.handleError))
         .subscribe(
-          res => {
+          (res) => {
             console.log(res);
             console.log("successfully dumped data");
-            resolve(res['size'] + " Datensätze erfolgreich als Datei gesichert (" + res['filename'] + ")");
+            resolve(
+              res["size"] +
+                " Datensätze erfolgreich als Datei gesichert (" +
+                res["filename"] +
+                ")"
+            );
           },
-          err => {
+          (err) => {
             console.log("failed to save file " + err);
             reject("Fehler bei der Sicherung der Daten: " + err);
           }
@@ -74,19 +75,21 @@ export class AdminService extends BaseService {
    * @memberof AdminBackendProvider
    */
   backupTimeEntries(): Promise<any> {
-    console.log('backup data');
+    console.log("backup data");
 
     return new Promise((resolve, reject) => {
       this.httpClient
         .post(super.baseUrl + "/api/entries/backup", super.httpOptions)
         .pipe(retry(2), catchError(super.handleError))
         .subscribe(
-          res => {
+          (res) => {
             console.log(JSON.stringify(res));
             console.log("successfully backed up data to MongoDB");
-            resolve(res['size'] + " Datensätze erfolgreich als MongoDB gesichert");
+            resolve(
+              res["size"] + " Datensätze erfolgreich als MongoDB gesichert"
+            );
           },
-          err => {
+          (err) => {
             console.log("failed to backup data to MongoDB " + err);
             reject("Fehler bei der Sicherung der Daten in MongoDB: " + err);
           }
@@ -110,13 +113,13 @@ export class AdminService extends BaseService {
             console.log("loaded toggles: " + JSON.stringify(toggles));
 
             let to: Toggles = new Toggles();
-            toggles.forEach(toggle => {
+            toggles.forEach((toggle) => {
               to.setToggle(toggle);
             });
 
             resolve(to);
           },
-          err => {
+          (err) => {
             console.log("failed to load toggles " + err);
             reject("Toggles konnten nicht geladen werden: " + err);
           }
@@ -127,14 +130,18 @@ export class AdminService extends BaseService {
   saveToggle(toggle: Toggle): Promise<any> {
     return new Promise((resolve, reject) => {
       this.httpClient
-        .put(super.baseUrl + "/api/toggles/" + toggle.id, toggle, super.httpOptions)
+        .put(
+          super.baseUrl + "/api/toggles/" + toggle.id,
+          toggle,
+          super.httpOptions
+        )
         .pipe(retry(2), catchError(super.handleError))
         .subscribe(
-          res => {
+          (res) => {
             console.log("successfully saved a toggle");
             resolve("Toggle " + toggle.name + " has successfully been saved");
           },
-          err => {
+          (err) => {
             console.log("failed to save toggle " + err);
             reject("Error while saving toggle " + err);
           }
@@ -143,23 +150,24 @@ export class AdminService extends BaseService {
   }
 
   evaluateTimeEntries(): Promise<any> {
-    console.log('evaluate data');
+    console.log("evaluate data");
 
     return new Promise((resolve, reject) => {
       this.httpClient
         .post(super.baseUrl + "/api/entries/error/evaluate", super.httpOptions)
         .pipe(retry(2), catchError(super.handleError))
         .subscribe(
-          res => {
+          (res) => {
             console.log(res);
             console.log("successfully initiated evaluation of time entries");
-            resolve(res['message']);
+            resolve(res["message"]);
           },
-          err => {
+          (err) => {
             console.log("failed to save toggle " + err);
             reject("Error while saving toggle " + err);
           }
         );
     });
   }
+
 }
