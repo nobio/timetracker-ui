@@ -11,6 +11,9 @@ export class TabsPage {
     this.startOnlineStatusThread();
   }
 
+  /**
+   * Repetitive task (check server status, ...)
+   */
   private startOnlineStatusThread() {
     this.statusSrv.ping();
     setInterval(() => {
