@@ -1,17 +1,15 @@
 <div id="container" *ngIf="displaySize === 'small'; else templateBig">
-  <!-- online status -->
   <ion-grid>
     <ion-row>
-      <ion-col>
+      <!-- Online status -->
+      <ion-col size="10" size-sm="6" offset-sm="4">
         <div *ngIf="statusSrv.serverInfo.isOnline === true; else offlineTemplate">
           <ion-icon color="success" name="thumbs-up"></ion-icon>
         </div>
         <ng-template #offlineTemplate>
           <ion-icon color="danger" name="thumbs-down"></ion-icon>
         </ng-template>
-      </ion-col>
-      <ion-col>
-        <!-- Slack status -->
+      <!-- Slack status -->
         <div *ngIf="statusSrv.serverInfo.isSlackEnabled === true; else slackInactiveTemplate">
           <ion-icon color="success" name="logo-slack"></ion-icon>
         </div>

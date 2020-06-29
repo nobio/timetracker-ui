@@ -24,6 +24,7 @@ export class StatusService extends BaseService {
       .pipe(retry(2), catchError(super.handleError))
       .subscribe(
         (res) => {
+          console.log(res);
           this.serverInfo.isOnline = true;
         },
         (err) => {

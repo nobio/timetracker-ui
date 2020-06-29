@@ -12,6 +12,8 @@ export class OnlineStatusComponent implements OnInit {
   constructor(public statusSrv: StatusService) { }
 
   ngOnInit() {
+    this.statusSrv.ping();
+    this.statusSrv.loadServerInformation();
   }
 
 }

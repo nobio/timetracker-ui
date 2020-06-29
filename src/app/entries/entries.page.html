@@ -3,15 +3,8 @@
     <ion-title>
       Timetracker
     </ion-title>
-    <!-- TODO Later - ??? put this to a component ???
-    <span *ngIf="online.onlineStatus; else offlineTemplate">
-      <ion-icon name="thumbs-up"></ion-icon>
-    </span>
-    <ng-template #offlineTemplate>
-      <ion-icon name="thumbs-down"></ion-icon>
-    </ng-template>
-     -->
   </ion-toolbar>
+  <online-status-component displaySize="small"></online-status-component>
 </ion-header>
 
 <ion-content [fullscreen]="true">

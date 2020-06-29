@@ -12,6 +12,7 @@ export class TabsPage {
   }
 
   private startOnlineStatusThread() {
+    this.statusSrv.ping();
     setInterval(() => {
       this.statusSrv.ping();
     }, 20000);

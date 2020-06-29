@@ -12,6 +12,7 @@ export class BaseService {
 
   public get baseUrl(): string {
     return "https://nobio.myhome-server.de:30043";
+    //return  "http://localhost:30000";
   }
 
 
