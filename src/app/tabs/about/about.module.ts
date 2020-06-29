@@ -2,10 +2,10 @@ import { IonicModule } from '@ionic/angular';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { EntriesPage as AboutPage } from './entries.page';
+import { AboutPage as AboutPage } from './about.page';
 
-import { EntriesPageRoutingModule } from './entries-routing.module';
-import { OnlineStatusComponentModule } from '../online-status/online-status.module';
+import { AboutPageRoutingModule } from './about-routing.module';
+import { OnlineStatusComponentModule } from '../../online-status/online-status.module';
 
 @NgModule({
   imports: [
@@ -13,8 +13,8 @@ import { OnlineStatusComponentModule } from '../online-status/online-status.modu
     CommonModule,
     FormsModule,
     OnlineStatusComponentModule,
-    EntriesPageRoutingModule
+    AboutPageRoutingModule
   ],
   declarations: [AboutPage]
 })
-export class EntriesPageModule {}
+export class AboutPageModule {}

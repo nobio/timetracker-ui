@@ -9,27 +9,27 @@ const routes: Routes = [
     children: [
       {
         path: 'entries',
-        loadChildren: () => import('../entries/entries.module').then(m => m.EntriesPageModule)
+        loadChildren: () => import('./entries/entries.module').then(m => m.EntriesPageModule)
       },
       {
         path: 'entries/:id',
-        loadChildren: () => import('../entries/entry/entry.module').then(m => m.EntryPageModule)
+        loadChildren: () => import('./entries/entry/entry.module').then(m => m.EntryPageModule)
       },
       {
         path: 'entries/:id/map',
-        loadChildren: () => import('../entries/map/map.module').then(m => m.MapPageModule)
+        loadChildren: () => import('./entries/map/map.module').then(m => m.MapPageModule)
       },
       {
         path: 'stats',
-        loadChildren: () => import('../stats/stats.module').then(m => m.StatsPageModule)
+        loadChildren: () => import('./stats/stats.module').then(m => m.StatsPageModule)
       },
       {
         path: 'admin',
-        loadChildren: () => import('../admin/admin.module').then(m => m.AdminPageModule)
+        loadChildren: () => import('./admin/admin.module').then(m => m.AdminPageModule)
       },
       {
         path: 'about',
-        loadChildren: () => import('../about/about.module').then(m => m.AboutPageModule)
+        loadChildren: () => import('./about/about.module').then(m => m.AboutPageModule)
       },
       {
         path: '',

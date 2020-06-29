@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { TimeEntriesService } from '../service/datasource/time-entries.service';
-import { Entry } from '../model/entry';
+import { TimeEntriesService } from '../../service/datasource/time-entries.service';
+import { Entry } from '../../model/entry';
 import { Plugins, GeolocationPosition } from '@capacitor/core';
 import { ToastController } from '@ionic/angular';
 

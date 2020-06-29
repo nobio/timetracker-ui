@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { Toggles } from '../model/toggles';
+import { Toggles } from '../../model/toggles';
 import { ToastController } from '@ionic/angular';
-import { AdminService } from '../service/datasource/admin.service';
+import { AdminService } from '../../service/datasource/admin.service';
 
 @Component({
   selector: 'app-admin',

@@ -1,10 +1,10 @@
 import { Component, ViewChild } from '@angular/core';
 import { AlertController } from '@ionic/angular';
-import { TimeUnit, SwipeDirection } from '../model/enums';
-import { StatisticsService } from '../service/datasource/statistics.service';
-import { Statistics } from '../model/statistics';
+import { TimeUnit, SwipeDirection } from '../../model/enums';
+import { StatisticsService } from '../../service/datasource/statistics.service';
+import { Statistics } from '../../model/statistics';
 import { Chart } from 'chart.js';
-import { Util } from '../lib/Util';
+import { Util } from '../../lib/Util';
 
 
 @Component({
