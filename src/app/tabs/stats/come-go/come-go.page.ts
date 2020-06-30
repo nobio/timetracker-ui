@@ -1,15 +1,148 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { NavController, AlertController, ActionSheetController } from '@ionic/angular';
+import { Chart } from "chart.js";
+import { StatisticsService } from 'src/app/service/datasource/statistics.service';
+import { Statistics } from 'src/app/model/statistics';
+import { Direction } from 'src/app/model/enums';
 
 @Component({
   selector: 'app-come-go',
   templateUrl: './come-go.page.html',
   styleUrls: ['./come-go.page.scss'],
 })
-export class ComeGoPage implements OnInit {
+export class ComeGoPage {
+  @ViewChild("lineCanvas") lineCanvas;
 
-  constructor() { }
+  private lineChart: Chart;
+  private _interval:number = 40;
+  private _direction:Direction = undefined;
 
-  ngOnInit() {
+  constructor(
+    public navCtrl: NavController,
+    private alertCtrl: AlertController,
+    private statsSrv: StatisticsService,
+    private actionSheetCtrl: ActionSheetController,
+  ) {}
+
+  ionViewDidEnter() {
+    // initialize Graph
+    this.initGraph();
+    // load today's data
+    this.loadGraphData();
+  }
+
+  /* setter/getter for _interval */
+  set interval(interval: number) {
+    if(interval < 1) {
+      this._interval = 1; // minimum value is 1
+    } else {
+      this._interval = interval;
+    }
+    this.loadGraphData();
+  }
+  get interval(): number {
+    return this._interval;
+  }
+
+  /* setter/getter for _direction */
+  set direction(direction: Direction) {
+    if('all' === direction.toString()) {
+      this._direction = undefined;  // 'all' is not in Direction enum. We need to translate to undefined
+    } else {
+      this._direction = direction;
+    }
+    this.loadGraphData();
+  }
+  get direction(): Direction {
+    return this._direction;
+  }
+
+  /**
+   * initializes Graph object; data and labels are missing!
+   */
+  private initGraph() {
+    this.lineChart = new Chart(this.lineCanvas.nativeElement, {
+      type: "bar",
+      responsive: true,
+      data: {
+        datasets: [
+          {
+            label: "Anwesenheit pro Zeiteinheit",
+            fill: false,
+            backgroundColor: "rgb(52, 102, 189)",
+            borderColor: "rgb(52, 102, 189)",
+            hoverBackgroundColor: "rgb(6, 175, 34)",
+            hoverBorderColor: "rgb(6, 175, 34)",
+            hoverBorderWidth: 4
+          }
+        ]
+      },
+      options: {
+        scales: {
+          xAxes: [
+            {
+              ticks: {
+                maxRotation: 60
+              }
+            }
+          ]
+        }
+      }
+    });
+  }
+
+  /**
+   * Loads statisctic data
+   */
+  private loadGraphData() {
+
+    this.statsSrv.loadStatisticHistogramDataByInterval(this.interval, this.direction)
+      .then((resp: Statistics) => {
+        //console.log(resp);
+        this.updateGraph(resp, this.lineChart);
+      })
+      .catch((error: string) => {
+        //Util.showAlert(error, this.alertCtrl);
+        console.log(error);
+      });
+
+    }
+
+  /**
+   * takes statistics data and updates the Graph accordingly
+   * @param stats statistic data
+   */
+  private updateGraph(stats: Statistics, lineChart: any) {
+    let label: string[] = [];
+    let data: number[] = [];
+
+    for (let n = 0; n < stats.data.length; n++) {
+      // reverse data order because server delivers data with the latest upfront
+      // label.push(new Date(stats.data[n].x).toLocaleDateString());
+      label.push(stats.data[n].x);
+      data.push(stats.data[n].y);
+    }
+
+    lineChart.data.labels = label;
+    lineChart.data.datasets[0].data = data;
+    lineChart.update({
+      duration: 600,
+      easing: "easeOutBounce"
+    });
+  }
+    
+  async showDirectionDialog() {
+    const actionSheet = await this.actionSheetCtrl.create({
+      header: 'Richtung (Kommen/Gehen)',
+      buttons: [
+        { text: 'Alle', handler: () => {this.direction = Direction.none} },
+        { text: 'Kommen', icon: 'enter', handler: () => {this.direction = Direction.enter}  },
+        { text: 'Gehen', icon: 'exit', handler: () => {this.direction = Direction.go} },
+        { text: 'Abbrechen', role: 'cancel' }
+      ]
+    });
+
+    await actionSheet.present();
   }
 
 }

@@ -17,8 +17,6 @@ export class AggregatPage {
 
   private lineChart: Chart;
   timeUnit: TimeUnit = TimeUnit.month;
-  private _interval: number = 40;
-  private _direction: Direction = undefined;
 
 
   constructor(
@@ -33,34 +31,6 @@ export class AggregatPage {
     // load today's data
     this.loadGraphData();
   }
-
-  /* setter/getter for _interval */
-  set interval(interval: number) {
-    if (interval < 1) {
-      this._interval = 1; // minimum value is 1
-    } else {
-      this._interval = interval;
-    }
-    this.loadGraphData();
-  }
-  get interval(): number {
-    return this._interval;
-  }
-
-  /* setter/getter for _direction */
-  set direction(direction: Direction) {
-    console.log(direction);
-    if ('all' === direction.toString()) {
-      this._direction = undefined;  // 'all' is not in Direction enum. We need to translate to undefined
-    } else {
-      this._direction = direction;
-    }
-    this.loadGraphData();
-  }
-  get direction(): Direction {
-    return this._direction;
-  }
-
 
   /**
    * initializes Graph object; data and labels are missing!

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BaseService } from './base.service';
 import { HttpClient } from '@angular/common/http';
-import { TimeUnit } from 'src/app/model/enums';
+import { TimeUnit, Direction } from 'src/app/model/enums';
 import { Statistics } from 'src/app/model/statistics';
 import { catchError, retry } from 'rxjs/operators';
 import { Util } from 'src/app/lib/Util';
@@ -123,4 +123,43 @@ export class StatisticsService extends BaseService {
     });
   }
 
+  /**
+ * 
+ * @param interval 
+ * @param direction 
+ */
+  loadStatisticHistogramDataByInterval(interval: Number, direction: Direction): Promise<Statistics> {
+
+    return new Promise<Statistics>((resolve, reject) => {
+
+      let url: string = super.baseUrl + "/api/statistics/histogram/" + interval;
+      if (direction) {
+        url += "?direction=" + direction
+      }
+
+      this.httpClient.get(url, super.httpOptions)
+        .pipe(retry(2), catchError(super.handleError))
+        .subscribe(
+          (histogramData: []) => {
+            let data: any = [];
+            for (let n = 0; n < histogramData.length; n++) {
+              data.push(
+                {
+                  "x": new Date(histogramData[n]['time']).getUTCHours() + ':00',
+                  "y": histogramData[n]['histValue']
+                }
+              );
+            }
+
+            let stats = {} as Statistics;
+            stats.data = data;
+            resolve(stats);
+          },
+          err => {
+            console.log("failed to load historic data " + err);
+            reject("Fehler beim Laden der historischen Daten: " + err);
+          }
+        );
+    });
+  }
 }
