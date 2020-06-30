@@ -60,23 +60,23 @@ export class StatisticsService extends BaseService {
   /**
    * loads statistics for break time 
    */
-  loadStatisticBreakTime(realData: boolean, interval:number): Promise<BreakTimes> {
+  loadStatisticBreakTime(realData: boolean, interval: number): Promise<BreakTimes> {
     return new Promise<BreakTimes>((resolve, reject) => {
 
       this.httpClient.get(super.baseUrl + "/api/statistics/breaktime/" + interval + "?real=" + realData, super.httpOptions)
         .pipe(retry(2), catchError(super.handleError))
         .subscribe(
           (breaktimeData: []) => {
-            let data:any = [];
+            let data: any = [];
             for (let n = 0; n < breaktimeData.length; n++) {
-              data.push( 
+              data.push(
                 {
-                  "breakTime": breaktimeData[n]['breakTime'], 
+                  "breakTime": breaktimeData[n]['breakTime'],
                   "time": breaktimeData[n]['time']
                 }
               );
             }
-        
+
             let stats = {} as BreakTimes;
             stats.data = data;
             resolve(stats);
@@ -88,4 +88,39 @@ export class StatisticsService extends BaseService {
         );
     });
   }
+
+  /**
+ * Loads historic aggregated data for all the data (time) and a given time unit
+ * 
+ * /statistics/aggregate?timeUnit=month
+ * 
+ * @param unit time unit: day, week, month
+ */
+  loadStatisticAggregatedDataByUnit(unit: TimeUnit): Promise<Statistics> {
+    const timeUnit: string = TimeUnit[unit];
+    console.log("loading data for time unit " + unit) + "(" + timeUnit + ")";
+
+    return new Promise<Statistics>((resolve, reject) => {
+      this.httpClient.get(super.baseUrl + "/api/statistics/aggregate?timeUnit=" + timeUnit, super.httpOptions)
+        .pipe(retry(2), catchError(super.handleError))
+        .subscribe(
+          res => {
+            console.log("aggregated data successfully loaded: " + JSON.stringify(res));
+            console.log(res['chart_data']['main'][0]['data'])
+            let stats = {} as Statistics;
+            stats.actualWorkingTime = res['actual_working_time'];
+            stats.averageWorkingTime = res['average_working_time'];
+            stats.plannedWorkingTime = res['planned_working_time'];
+            stats.data = res['chart_data']['main'][0]['data'];
+
+            resolve(stats);
+          },
+          err => {
+            console.log("failed to load historc data " + err);
+            reject("Fehler beim Laden der historischen Daten: " + err);
+          }
+        );
+    });
+  }
+
 }

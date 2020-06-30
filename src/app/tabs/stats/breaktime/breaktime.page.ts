@@ -14,7 +14,6 @@ export class BreaktimePage {
   @ViewChild("lineCanvas") lineCanvas;
 
   ionViewDidEnter() {
-    console.log(this.lineCanvas)
     // initialize Graph
     this.initGraph();
     // load today's data
@@ -95,8 +94,7 @@ export class BreaktimePage {
    */
   private loadGraphData() {
 
-    this.statsSrv
-      .loadStatisticBreakTime(this._realData, this._interval)
+    this.statsSrv.loadStatisticBreakTime(this._realData, this._interval)
       .then((resp: BreakTimes) => {
         //console.log(resp);
         this.updateGraph(resp, this.lineChart);

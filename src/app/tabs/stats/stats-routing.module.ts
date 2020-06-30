@@ -14,6 +14,10 @@ const routes: Routes = [
   {
     path: 'come-go',
     loadChildren: () => import('./come-go/come-go.module').then( m => m.ComeGoPageModule)
+  },
+  {
+    path: 'aggregat',
+    loadChildren: () => import('./aggregat/aggregat.module').then( m => m.AggregatPageModule)
   }
 ];
 
