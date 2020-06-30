@@ -6,12 +6,10 @@ import { throwError } from 'rxjs';
   providedIn: 'root'
 })
 export class BaseService {
-  //private baseUrl: string = "http://localhost:30000";
-  //private baseUrl: string = "nobio.myhome-server.de:30043";
-//  public baseUrl: string = "https://nobio.myhome-server.de:30043";
 
   public get baseUrl(): string {
     return "https://nobio.myhome-server.de:30043";
+    //return "http://nobio.myhome-server.de:30030";
     //return  "http://localhost:30000";
   }
 
@@ -38,7 +36,7 @@ export class BaseService {
     }
     // return an observable with a user-facing error message
     return throwError(
-      'Something bad happened; please try again later.');
+      'Something bad happened; please try again later.' + JSON.stringify(error));
   };
 
 }
