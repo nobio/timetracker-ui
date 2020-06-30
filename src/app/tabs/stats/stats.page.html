@@ -31,19 +31,25 @@
           <ion-datetime size="large" displayFormat="DD.MM.YYYY" pickerFormat="DDD MMM YYYY" [(ngModel)]="date">
           </ion-datetime>
         </ion-button>
+        <ion-button color="dark" [routerLink]="['./breaktime']">
+          <ion-icon name="pause"></ion-icon>
+        </ion-button>
+        <ion-button color="dark" [routerLink]="['./come-go']">
+          <ion-icon name="podium"></ion-icon>
+        </ion-button>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col>
         <ion-segment [(ngModel)]="timeUnit" color="primary">
-          <ion-segment-button (click)="setToday()" value="2">
-            Woche
+          <ion-segment-button (click)="setToday()" value="0">
+            Jahr
           </ion-segment-button>
           <ion-segment-button (click)="setToday()" value="1">
             Monat
           </ion-segment-button>
-          <ion-segment-button (click)="setToday()" value="0">
-            Jahr
+          <ion-segment-button (click)="setToday()" value="2">
+            Woche
           </ion-segment-button>
         </ion-segment>
       
@@ -53,7 +59,7 @@
       <ion-col size="12" size-sm="8" offset-sm="2">
         <ion-card>
           <ion-card-content>
-            <canvas height="400px" #lineCanvas></canvas>
+            <canvas height="300px" #lineCanvas></canvas>
           </ion-card-content>
         </ion-card>
       </ion-col>

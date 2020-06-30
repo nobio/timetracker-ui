@@ -24,6 +24,14 @@ const routes: Routes = [
         loadChildren: () => import('./stats/stats.module').then(m => m.StatsPageModule)
       },
       {
+        path: 'breaktime',
+        loadChildren: () => import('./stats/breaktime/breaktime.module').then(m => m.BreaktimePageModule)
+      },
+      {
+        path: 'pause',
+        loadChildren: () => import('./stats/come-go/come-go.module').then(m => m.ComeGoPageModule)
+      },
+      {
         path: 'admin',
         loadChildren: () => import('./admin/admin.module').then(m => m.AdminPageModule)
       },

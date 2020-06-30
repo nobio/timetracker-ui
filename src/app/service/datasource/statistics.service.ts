@@ -5,6 +5,7 @@ import { TimeUnit } from 'src/app/model/enums';
 import { Statistics } from 'src/app/model/statistics';
 import { catchError, retry } from 'rxjs/operators';
 import { Util } from 'src/app/lib/Util';
+import { BreakTimes } from 'src/app/model/break-time';
 
 @Injectable({
   providedIn: 'root'
@@ -56,4 +57,35 @@ export class StatisticsService extends BaseService {
     });
   }
 
+  /**
+   * loads statistics for break time 
+   */
+  loadStatisticBreakTime(realData: boolean, interval:number): Promise<BreakTimes> {
+    return new Promise<BreakTimes>((resolve, reject) => {
+
+      this.httpClient.get(super.baseUrl + "/api/statistics/breaktime/" + interval + "?real=" + realData, super.httpOptions)
+        .pipe(retry(2), catchError(super.handleError))
+        .subscribe(
+          (breaktimeData: []) => {
+            let data:any = [];
+            for (let n = 0; n < breaktimeData.length; n++) {
+              data.push( 
+                {
+                  "breakTime": breaktimeData[n]['breakTime'], 
+                  "time": breaktimeData[n]['time']
+                }
+              );
+            }
+        
+            let stats = {} as BreakTimes;
+            stats.data = data;
+            resolve(stats);
+          },
+          err => {
+            console.log("failed to load break time data " + err);
+            reject("Fehler beim Laden der Pausendaten: " + err);
+          }
+        );
+    });
+  }
 }

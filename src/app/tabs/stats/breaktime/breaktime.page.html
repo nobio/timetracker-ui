@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button color="primary" text="Zurück" defaultHrf="/entries"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Pausenzeiten</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12" size-sm="8" offset-sm="2">
+        <ion-item>
+          <ion-label>Nur gemessene Daten:</ion-label>
+          <ion-toggle [(ngModel)]="realData" checked="true"></ion-toggle>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12" size-sm="8" offset-sm="2">
+        <ion-item>
+          <ion-range min="1" max="10" step="1" snaps="true" pin="true" color="primary" debounce="500"
+            [(ngModel)]="interval">
+            <ion-icon range-left small name="time"></ion-icon>
+            <ion-icon range-right name="time"></ion-icon>
+          </ion-range>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12" size-sm="8" offset-sm="2">
+        <ion-card>
+          <ion-card-content>
+            <canvas height="300px" #lineCanvas></canvas>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
