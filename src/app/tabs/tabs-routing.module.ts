@@ -12,24 +12,8 @@ const routes: Routes = [
         loadChildren: () => import('./entries/entries.module').then(m => m.EntriesPageModule)
       },
       {
-        path: 'entries/:id',
-        loadChildren: () => import('./entries/entry/entry.module').then(m => m.EntryPageModule)
-      },
-      {
-        path: 'entries/:id/map',
-        loadChildren: () => import('./entries/map/map.module').then(m => m.MapPageModule)
-      },
-      {
         path: 'stats',
         loadChildren: () => import('./stats/stats.module').then(m => m.StatsPageModule)
-      },
-      {
-        path: 'breaktime',
-        loadChildren: () => import('./stats/breaktime/breaktime.module').then(m => m.BreaktimePageModule)
-      },
-      {
-        path: 'pause',
-        loadChildren: () => import('./stats/come-go/come-go.module').then(m => m.ComeGoPageModule)
       },
       {
         path: 'admin',

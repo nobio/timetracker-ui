@@ -18,7 +18,7 @@ const routes: Routes = [
   {
     path: 'aggregat',
     loadChildren: () => import('./aggregat/aggregat.module').then( m => m.AggregatPageModule)
-  }
+  },
 ];
 
 @NgModule({
