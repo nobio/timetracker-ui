@@ -38,7 +38,7 @@
         <ion-button (click)="setTomorrow()">
           <ion-icon name="arrow-forward"></ion-icon>
         </ion-button>
-        <ion-button color="warning" outline (click)="showTimeEntryErrors()">
+        <ion-button color="warning" outline [routerLink]="['./fails']">
           <ion-icon name="hammer"></ion-icon>
         </ion-button>
         <ion-button color="light">
@@ -60,7 +60,7 @@
         </ion-item>
         <!-- list of entries of given date (see date picker) -->
         <ion-list>
-          <ion-item *ngFor="let entry of timeEntryService.entriesByDate" [routerLink]="['./', entry.id]">
+          <ion-item *ngFor="let entry of timeEntryService.entriesByDate" [routerLink]="['./entries', entry.id]">
             <ion-icon size="large" name="{{ entry.ion_direction_icon }}" color="{{ entry.ion_color }}"></ion-icon>
             &nbsp;
             <!-- Time and mode (enter/go)-->

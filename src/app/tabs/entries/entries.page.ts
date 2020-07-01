@@ -81,8 +81,6 @@ export class EntriesPage {
   }
   /* ===================== Time handling ===================== */
 
-  public showTimeEntryErrors() { }
-
   /**
    * shows message box at the bottom (toast)
    * @param msg 
