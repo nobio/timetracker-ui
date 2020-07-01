@@ -1,9 +1,33 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>fails</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button color="primary" text="Zurück" defaultHrf="/entries"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Fehlerhafte Daten</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content padding>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-list>
+          <ion-item *ngFor="let entry of failDates" [routerLink]="['/tabs/entries', entry.urlDate]">
+            <ion-icon size="large" name="hammer" color="warning"></ion-icon>
+            &nbsp;
+            <!-- Time and mode (enter/go)-->
+            <ion-label lot="end">
+              {{ entry.date | date: 'dd.MM.yyyy' }}
+            </ion-label>
+            <ion-label slot="end" color="success">
+              {{ entry.type }}
+            </ion-label>
+          </ion-item>
+        </ion-list>
+
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
 </ion-content>

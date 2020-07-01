@@ -1,42 +1,51 @@
-import { Component } from '@angular/core';
-import { TimeEntriesService } from '../../service/datasource/time-entries.service';
-import { Entry } from '../../model/entry';
-import { Plugins, GeolocationPosition } from '@capacitor/core';
-import { ToastController } from '@ionic/angular';
+import { Component } from "@angular/core";
+import { TimeEntriesService } from "../../service/datasource/time-entries.service";
+import { Entry } from "../../model/entry";
+import { Plugins, GeolocationPosition } from "@capacitor/core";
+import { ToastController } from "@ionic/angular";
+import { ActivatedRoute } from "@angular/router";
+import moment from 'moment';
 
 const { Geolocation } = Plugins;
 
-
 @Component({
-  selector: 'app-entries',
-  templateUrl: 'entries.page.html',
-  styleUrls: ['entries.page.scss']
+  selector: "app-entries",
+  templateUrl: "entries.page.html",
+  styleUrls: ["entries.page.scss"],
 })
 export class EntriesPage {
   private _date: string = new Date().toISOString();
+  hasNoFailedDates: boolean = false;
 
   constructor(
     public timeEntryService: TimeEntriesService,
-    private toastCtrl: ToastController
-  ) { }
+    private toastCtrl: ToastController,
+    private route: ActivatedRoute,
+  ) {}
 
   ionViewWillEnter() {
+    if (this.route.snapshot.params.date) this.date = moment(this.route.snapshot.params.date).toISOString();
     if (!this.date) this.date = new Date().toISOString();
     this.timeEntryService.loadEntriesByDate(this.date);
     this.timeEntryService.loadWorkingTime(this.date);
+    this.timeEntryService.loadDatesWithFailedEntries()
+      .then( (res:[]) => this.hasNoFailedDates = res.length === 0)
   }
 
   /** enters a new entry 'enter' to the database */
-  public async enter() { this.createEntry('enter'); }
+  public async enter() {
+    this.createEntry("enter");
+  }
   /** enters a new entry 'go' to the database */
-  public leave() { this.createEntry('go'); }
-
+  public leave() {
+    this.createEntry("go");
+  }
 
   private async createEntry(direction: string) {
     const entry = {} as Entry;
     let geoLocPosition: GeolocationPosition;
     try {
-      geoLocPosition = await Geolocation.getCurrentPosition(); 
+      geoLocPosition = await Geolocation.getCurrentPosition();
     } catch (error) {
       console.error(`no geolocation available: ${error.message}`);
       geoLocPosition = undefined;
@@ -52,7 +61,7 @@ export class EntriesPage {
     try {
       await this.timeEntryService.createEntry(entry, this.date);
     } catch (err) {
-      this.presentMessage(err, 20000)
+      this.presentMessage(err, 20000);
     }
   }
 
@@ -60,7 +69,7 @@ export class EntriesPage {
   set date(dt: string) {
     this._date = dt;
     this.timeEntryService.loadEntriesByDate(this.date);
-    this.timeEntryService.loadWorkingTime(this.date)
+    this.timeEntryService.loadWorkingTime(this.date);
   }
   get date(): string {
     return this._date;
@@ -83,15 +92,14 @@ export class EntriesPage {
 
   /**
    * shows message box at the bottom (toast)
-   * @param msg 
-   * @param duration 
+   * @param msg
+   * @param duration
    */
   async presentMessage(msg: string, duration: number) {
     const toast = await this.toastCtrl.create({
       message: msg,
-      duration: duration
+      duration: duration,
     });
     toast.present();
   }
-
 }

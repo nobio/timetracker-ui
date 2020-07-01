@@ -38,7 +38,7 @@
         <ion-button (click)="setTomorrow()">
           <ion-icon name="arrow-forward"></ion-icon>
         </ion-button>
-        <ion-button color="warning" outline [routerLink]="['./fails']">
+        <ion-button color="warning" outline disabled={{hasNoFailedDates}} [routerLink]="['./fails']">
           <ion-icon name="hammer"></ion-icon>
         </ion-button>
         <ion-button color="light">

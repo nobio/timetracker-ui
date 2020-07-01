@@ -12,6 +12,10 @@ const routes: Routes = [
         loadChildren: () => import('./entries/entries.module').then(m => m.EntriesPageModule)
       },
       {
+        path: 'entries/:date',
+        loadChildren: () => import('./entries/entries.module').then(m => m.EntriesPageModule)
+      },
+          {
         path: 'stats',
         loadChildren: () => import('./stats/stats.module').then(m => m.StatsPageModule)
       },
