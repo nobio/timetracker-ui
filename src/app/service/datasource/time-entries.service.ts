@@ -161,7 +161,7 @@ export class TimeEntriesService extends BaseService {
         .pipe(retry(2), catchError(super.handleError))
         .subscribe(
           (data: []) => {
-            console.log(data)
+            //console.log(data)
             data.forEach((element) => {
               failDates.push({
                 type: element["error-type"],
