@@ -1,60 +1,71 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { TimeEntriesService } from 'src/app/service/datasource/time-entries.service';
-import { } from 'google-maps';
+import { Component } from "@angular/core";
+import { TimeEntriesService } from "src/app/service/datasource/time-entries.service";
+import * as Leaflet from "leaflet";
+//import { antPath } from "leaflet-ant-path";
+import "leaflet/dist/images/marker-shadow.png";
+import "leaflet/dist/images/marker-icon-2x.png";
+import { NavController } from '@ionic/angular';
 
 @Component({
-  selector: 'google-map',
-  templateUrl: './map.page.html',
-  styleUrls: ['./map.page.scss'],
+  selector: "map",
+  templateUrl: "./map.page.html",
+  styleUrls: ["./map.page.scss"],
 })
-export class MapPage implements OnInit {
-
-  private map: google.maps.Map;
+export class MapPage {
+  private map: Leaflet.Map;
 
   constructor(
-    public timeEntryService: TimeEntriesService,
-  ) { }
+    private timeEntryService: TimeEntriesService,
+    private navCtrl: NavController,
+    ) { }
 
-  ngOnInit() {
+  ionViewDidEnter() {
     this.initMap();
   }
-  ionViewDidLoad() {
-    this.initMap();
-  }
 
-  initMap(): void {
-    const coords = new google.maps.LatLng(
-      this.timeEntryService.selectedEntry.latitude,
-      this.timeEntryService.selectedEntry.longitude
-    );
+  initMap() {
 
-    const mapOptions: google.maps.MapOptions = {
-      center: coords,
-      zoom: 18,
-      tilt: 45,
-      mapTypeId: google.maps.MapTypeId.ROADMAP,
-      rotateControl: true,
-      zoomControl: true,
-      mapTypeControl: true,
-      scaleControl: true,
-      streetViewControl: true,
-      fullscreenControl: true
+    // if no valid values in selected entry, redirect to root
+    if(!this.timeEntryService.selectedEntry.latitude || !this.timeEntryService.selectedEntry.longitude) {
+      this.navCtrl.navigateRoot('/');
     }
 
-    this.map = new google.maps.Map(document.getElementById("map"), mapOptions);
+    // init the map
+    this.map = Leaflet.map("map").setView(
+      [
+        this.timeEntryService.selectedEntry.latitude,
+        this.timeEntryService.selectedEntry.longitude,
+      ], 20
+    );
+    Leaflet.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      attribution: "edupala.com © Angular LeafLet",
+    }).addTo(this.map);
 
-    const marker = new google.maps.Marker({
-      map: this.map,
-      animation: google.maps.Animation.DROP,
-      position: this.map.getCenter()
-    });
+    const markPoint = Leaflet.marker([
+      this.timeEntryService.selectedEntry.latitude,
+      this.timeEntryService.selectedEntry.longitude,
+    ]);
+    markPoint.bindPopup("<p>Tashi Delek - Bangalore.</p>");
 
-    // workaround: reload map after 500ms otherwise the canvas remains empty
-    setTimeout(() => {
-      this.map.panBy(0, 0);
-      this.map.setZoom(this.map.getZoom());
-      google.maps.event.trigger(this.map, 'resize');
-    }, 500)
+    this.map.addLayer(markPoint);
 
+    setTimeout(function(){ this.map.invalidateSize()}, 1000);
+
+    /*
+    // https://edupala.com/how-to-add-leaflet-map-in-ionic/
+    antPath(
+      [
+        [
+          this.timeEntryService.selectedEntry.latitude,
+          this.timeEntryService.selectedEntry.longitude,
+        ],
+        [
+          this.timeEntryService.selectedEntry.latitude,
+          this.timeEntryService.selectedEntry.longitude,
+        ],
+      ],
+      { color: "#FF0000", weight: 5, opacity: 0.6 }
+    ).addTo(this.map);
+*/
   }
 }
