@@ -45,11 +45,9 @@ export class MapPage {
       this.timeEntryService.selectedEntry.latitude,
       this.timeEntryService.selectedEntry.longitude,
     ]);
-    markPoint.bindPopup("<p>Tashi Delek - Bangalore.</p>");
+    //markPoint.bindPopup("<p>Tashi Delek - Bangalore.</p>");
 
     this.map.addLayer(markPoint);
-
-    setTimeout(function(){ this.map.invalidateSize()}, 1000);
 
     /*
     // https://edupala.com/how-to-add-leaflet-map-in-ionic/
