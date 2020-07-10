@@ -28,7 +28,7 @@ export class EntryPage {
     const alert = await this.alertCtrl.create({
       header: 'Wirklich löschen?',
       message: 'Soll ich diesen Eintrag tatsächlich <strong>löschen?</strong>',
-      subHeader: 'Subtitle',
+      //subHeader: 'Subtitle',
       buttons: [
         {
           text: 'Abbrechen',

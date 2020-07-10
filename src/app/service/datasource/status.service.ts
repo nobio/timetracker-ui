@@ -3,6 +3,7 @@ import { BaseService } from "./base.service";
 import { HttpClient } from "@angular/common/http";
 import { catchError, retry } from "rxjs/operators";
 import { ServerInformation } from "src/app/model/server-information";
+import { AlertController } from '@ionic/angular';
 
 @Injectable({
   providedIn: "root",
@@ -10,8 +11,8 @@ import { ServerInformation } from "src/app/model/server-information";
 export class StatusService extends BaseService {
   public serverInfo = new ServerInformation();
 
-  constructor(public httpClient: HttpClient) {
-    super();
+  constructor(public httpClient: HttpClient, alertCtrl: AlertController) {
+    super(alertCtrl);
     this.serverInfo.baseUrl = this.baseUrl;
   }
 

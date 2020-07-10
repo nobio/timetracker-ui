@@ -4,6 +4,7 @@ import { Chart } from "chart.js";
 import { StatisticsService } from 'src/app/service/datasource/statistics.service';
 import { Statistics } from 'src/app/model/statistics';
 import { Direction } from 'src/app/model/enums';
+import { Util } from 'src/app/lib/Util';
 
 @Component({
   selector: 'app-come-go',
@@ -102,8 +103,8 @@ export class ComeGoPage {
         this.updateGraph(resp, this.lineChart);
       })
       .catch((error: string) => {
-        //Util.showAlert(error, this.alertCtrl);
-        console.log(error);
+        Util.alert(this.alertCtrl, error);
+        //console.log(error);
       });
 
     }

@@ -3,6 +3,7 @@ import { NavController, AlertController } from '@ionic/angular';
 import { StatisticsService } from 'src/app/service/datasource/statistics.service';
 import { BreakTimes } from 'src/app/model/break-time';
 import { Chart } from 'chart.js';
+import { Util } from 'src/app/lib/Util';
 
 @Component({
   selector: 'app-breaktime',
@@ -100,8 +101,8 @@ export class BreaktimePage {
         this.updateGraph(resp, this.lineChart);
       })
       .catch((error: string) => {
-        //Util.showAlert(error, this.alertCtrl);
-        console.error(error)
+        Util.alert(this.alertCtrl, error);
+        //console.error(error)
       });
 
     }

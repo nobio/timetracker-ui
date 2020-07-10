@@ -6,18 +6,16 @@ import { Statistics } from 'src/app/model/statistics';
 import { catchError, retry } from 'rxjs/operators';
 import { Util } from 'src/app/lib/Util';
 import { BreakTimes } from 'src/app/model/break-time';
+import { AlertController } from '@ionic/angular';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StatisticsService extends BaseService {
 
-  constructor(
-    public httpClient: HttpClient
-  ) {
-    super();
+  constructor(public httpClient: HttpClient, alertCtrl: AlertController) {
+    super(alertCtrl);
   }
-
 
   /**
  * Loads historic data for a given date and a given time unit

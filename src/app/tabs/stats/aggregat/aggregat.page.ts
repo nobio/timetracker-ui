@@ -5,7 +5,7 @@ import { isDate } from "util";
 import { Chart } from "chart.js";
 import { NavController, AlertController } from '@ionic/angular';
 import { StatisticsService } from 'src/app/service/datasource/statistics.service';
-import { Direction } from "../../../model/enums";
+import { Util } from 'src/app/lib/Util';
 
 @Component({
   selector: "app-aggregat",
@@ -76,8 +76,8 @@ export class AggregatPage {
         this.updateGraph(resp, this.lineChart);
       })
       .catch((error: string) => {
-        //Util.showAlert(error, this.alertCtrl);
-        console.log(error);
+        Util.alert(this.alertCtrl, error);
+        //console.log(error);
       });
   }
   /**

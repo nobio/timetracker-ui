@@ -132,7 +132,7 @@ export class StatsPage {
         this.updateGraph(resp, this.lineChart);
       })
       .catch((error: string) => {
-        this.showAlert(error);
+        Util.alert(this.alertCtrl, error);
       });
   }
 
@@ -165,20 +165,4 @@ export class StatsPage {
     });
   }
 
-  private async showAlert(errMsg: string) {
-    const alert = await this.alertCtrl.create({
-      header: 'Fehler!',
-      message: errMsg,
-      buttons: [
-        {
-          text: 'Ok',
-          handler: () => {
-          }
-        }
-      ]
-    });
-
-    await alert.present();
-
-  }
 }

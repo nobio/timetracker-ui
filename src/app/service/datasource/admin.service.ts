@@ -4,13 +4,14 @@ import { Toggle } from "src/app/model/toggle";
 import { HttpClient } from "@angular/common/http";
 import { BaseService } from "./base.service";
 import { catchError, retry } from "rxjs/operators";
+import { AlertController } from '@ionic/angular';
 
 @Injectable({
   providedIn: "root",
 })
 export class AdminService extends BaseService {
-  constructor(public httpClient: HttpClient) {
-    super();
+  constructor(public httpClient: HttpClient, alertCtrl: AlertController) {
+    super(alertCtrl);
   }
 
   /**
@@ -31,6 +32,7 @@ export class AdminService extends BaseService {
             resolve("Berechnung erfolgreich durchgeführt");
           },
           (err) => {
+            super.handleError(err);
             console.log("failed to recalculate " + err);
             reject("Fehler bei Berechnung: " + err);
           }
@@ -61,6 +63,7 @@ export class AdminService extends BaseService {
             );
           },
           (err) => {
+            super.handleError(err);
             console.log("failed to save file " + err);
             reject("Fehler bei der Sicherung der Daten: " + err);
           }
@@ -90,6 +93,7 @@ export class AdminService extends BaseService {
             );
           },
           (err) => {
+            super.handleError(err);
             console.log("failed to backup data to MongoDB " + err);
             reject("Fehler bei der Sicherung der Daten in MongoDB: " + err);
           }
@@ -163,6 +167,7 @@ export class AdminService extends BaseService {
             resolve(res["message"]);
           },
           (err) => {
+            super.handleError(err);
             console.log("failed to save toggle " + err);
             reject("Error while saving toggle " + err);
           }

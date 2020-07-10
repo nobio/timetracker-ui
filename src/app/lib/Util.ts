@@ -1,4 +1,5 @@
 import { TimeUnit } from '../model/enums';
+import { AlertController } from '@ionic/angular';
 
 export class Util {
   // =================================== Helper functions END ======================================
@@ -98,4 +99,32 @@ export class Util {
     }
     return dt.getTime();
   }
+
+  /**
+   * Helper function to display an alert
+   * @param alertCtrl 
+   * @param msg 
+   * @param title 
+   * @param subTitle 
+   */
+  static async alert(alertCtrl: AlertController, msg: string, title: string = 'Fehler', subTitle: string = '') {
+
+    const alert = alertCtrl.create({
+      header: title,
+      message: msg,
+      subHeader: subTitle,
+      buttons: [
+        {
+          text: 'Ok',
+          role: 'cancel',
+          handler: () => {
+          }
+        },
+      ],
+      animated: true,
+    });
+
+    (await alert).present()
+  }
+
 }

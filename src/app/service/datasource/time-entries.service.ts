@@ -8,6 +8,8 @@ import { BaseService } from "./base.service";
 import { HttpClient } from "@angular/common/http";
 import { FailDate } from "src/app/model/fail-date";
 import moment from 'moment';
+import { AlertController } from '@ionic/angular';
+import { Util } from 'src/app/lib/Util';
 
 @Injectable({
   providedIn: "root",
@@ -17,8 +19,9 @@ export class TimeEntriesService extends BaseService {
   public selectedEntry: Entry = new Entry();
   public entryStats: EntryStatistics = new EntryStatistics();
 
-  constructor(public httpClient: HttpClient) {
-    super();
+  constructor(public httpClient: HttpClient, alertCtrl: AlertController) {
+    super(alertCtrl);
+    console.log('AlertControler: ' + alertCtrl)
   }
 
   /**
@@ -32,7 +35,7 @@ export class TimeEntriesService extends BaseService {
 
     this.httpClient
       .get<Entry[]>(super.baseUrl + "/api/entries?dt=" + date)
-      .pipe(retry(2), catchError(super.handleError))
+      .pipe(retry(2)/*, catchError(super.handleError)*/)
       .subscribe((data: Entry[]) => {
         this.entriesByDate = [];
         data.forEach((element) => {
@@ -50,10 +53,16 @@ export class TimeEntriesService extends BaseService {
     this.httpClient
       .get<Entry>(super.baseUrl + "/api/entries/" + id)
       .pipe(retry(2), catchError(super.handleError))
-      .subscribe((data) => {
-        this.selectedEntry = new Entry();
-        this.selectedEntry.encodeEntry(data);
-      });
+      .subscribe(
+        (data) => {
+          this.selectedEntry = new Entry();
+          this.selectedEntry.encodeEntry(data);
+        },
+        (err) => {
+          super.handleError(err)
+          throw new Error(err);
+        }
+      );
   }
 
   createEntry(entry: Entry, dt: string) {
@@ -66,14 +75,13 @@ export class TimeEntriesService extends BaseService {
 
     this.httpClient
       .post(super.baseUrl + "/api/entries/", body, super.httpOptions)
-      .pipe(retry(2), catchError(super.handleError))
+      //.pipe(retry(2), catchError(super.handleError))
       .subscribe(
         (res) => {
           this.loadEntriesByDate(dt);
         },
         (err) => {
-          console.log(err);
-          console.log(err._body);
+          super.handleError(err)
           this.loadEntriesByDate(dt);
           throw new Error(err);
         }
@@ -119,7 +127,7 @@ export class TimeEntriesService extends BaseService {
   deleteSelectedEntry(): Observable<any> {
     console.log(
       `calling ${
-        super.baseUrl + "/api/entries/" + this.selectedEntry.id
+      super.baseUrl + "/api/entries/" + this.selectedEntry.id
       } to delete entry`
     );
     return this.httpClient
@@ -136,7 +144,7 @@ export class TimeEntriesService extends BaseService {
   saveSelectedEntry(): Observable<any> {
     console.log(
       `calling ${
-        super.baseUrl + "/api/entries/" + this.selectedEntry.id
+      super.baseUrl + "/api/entries/" + this.selectedEntry.id
       } to save entry`
     );
     return this.httpClient
@@ -172,6 +180,7 @@ export class TimeEntriesService extends BaseService {
             resolve(failDates);
           },
           (err) => {
+            super.handleError(err);
             console.log(err);
             console.log(err._body);
             this.selectedEntry = new Entry(); // clear selected entry

@@ -5,6 +5,7 @@ import { Plugins, GeolocationPosition } from "@capacitor/core";
 import { ToastController } from "@ionic/angular";
 import { ActivatedRoute } from "@angular/router";
 import moment from 'moment';
+import { Util } from 'src/app/lib/Util';
 
 const { Geolocation } = Plugins;
 
