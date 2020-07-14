@@ -41,8 +41,14 @@
         <!-- Geo Location -->
         <ion-item>
           <ion-label color="primary" position="stacked">Geo Location</ion-label>
-          <ion-input disabled="false">Long: {{ timeEntryService.selectedEntry.longitude | number:'2.1-3'}}, Lat:
-            {{ timeEntryService.selectedEntry.latitude | number:'2.1-3' }}</ion-input>
+          <ion-input disabled="false">
+            Long: {{ timeEntryService.selectedEntry.longitude | number:'2.1-3'}}, 
+            Lat:  {{ timeEntryService.selectedEntry.latitude | number:'2.1-3' }}
+            &nbsp;
+            <ion-button color="primary" (click)="setGeoLocation()">
+              <ion-icon name="earth"></ion-icon>
+            </ion-button>
+            </ion-input>
         </ion-item>
 
         <!-- Action buttons -->

@@ -142,11 +142,7 @@ export class TimeEntriesService extends BaseService {
    * saves the selected Entry to databse
    */
   saveSelectedEntry(): Observable<any> {
-    console.log(
-      `calling ${
-      super.baseUrl + "/api/entries/" + this.selectedEntry.id
-      } to save entry`
-    );
+    console.log(`calling ${super.baseUrl + "/api/entries/" + this.selectedEntry.id} to save entry`);
     return this.httpClient
       .put(
         super.baseUrl + "/api/entries/" + this.selectedEntry.id,

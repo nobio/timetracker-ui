@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AlertController, NavController } from '@ionic/angular';
 import { TimeEntriesService } from 'src/app/service/datasource/time-entries.service';
 import { ActivatedRoute } from '@angular/router';
+import { Util } from 'src/app/lib/Util';
 
 @Component({
   selector: 'app-entry',
@@ -54,4 +55,11 @@ export class EntryPage {
       .subscribe(e => this.navCtrl.navigateBack('/tabs/entries'));
   }
 
+  setGeoLocation(): void {
+    Util.lookUpGeoLocation()
+    .then(geoCoord => {
+      this.timeEntryService.selectedEntry.longitude = geoCoord.longitude;
+      this.timeEntryService.selectedEntry.latitude = geoCoord.latitude;
+    })
+  }
 }

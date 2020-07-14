@@ -1,13 +1,10 @@
 import { Component } from "@angular/core";
 import { TimeEntriesService } from "../../service/datasource/time-entries.service";
 import { Entry } from "../../model/entry";
-import { Plugins, GeolocationPosition } from "@capacitor/core";
 import { ToastController } from "@ionic/angular";
 import { ActivatedRoute } from "@angular/router";
 import moment from 'moment';
 import { Util } from 'src/app/lib/Util';
-
-const { Geolocation } = Plugins;
 
 @Component({
   selector: "app-entries",
@@ -44,26 +41,18 @@ export class EntriesPage {
 
   private async createEntry(direction: string) {
     const entry = {} as Entry;
-    let geoLocPosition: GeolocationPosition;
-    try {
-      geoLocPosition = await Geolocation.getCurrentPosition();
-    } catch (error) {
-      console.error(`no geolocation available: ${error.message}`);
-      geoLocPosition = undefined;
-    }
-
     entry.direction = direction;
     entry.entryDate = this.date;
-    if (geoLocPosition && geoLocPosition.coords) {
-      entry.latitude = geoLocPosition.coords.latitude;
-      entry.longitude = geoLocPosition.coords.longitude;
-    }
 
     try {
+      const geoCoord = await Util.lookUpGeoLocation();
+      entry.latitude = geoCoord.latitude;
+      entry.longitude = geoCoord.longitude;
       await this.timeEntryService.createEntry(entry, this.date);
-    } catch (err) {
-      this.presentMessage(err, 20000);
+    } catch (error) {
+      this.presentMessage(error, 20000);
     }
+
   }
 
   /* ===================== Time handling ===================== */

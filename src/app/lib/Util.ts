@@ -1,5 +1,10 @@
 import { TimeUnit } from '../model/enums';
 import { AlertController } from '@ionic/angular';
+import { GeolocationPosition, Plugins } from "@capacitor/core";
+import { Entry } from '../model/entry';
+import { GeoCoord } from '../model/geo-coord';
+
+const { Geolocation } = Plugins;
 
 export class Util {
   // =================================== Helper functions END ======================================
@@ -127,4 +132,23 @@ export class Util {
     (await alert).present()
   }
 
+  /**
+   * looksup the current geo location coordinates
+   */
+  static lookUpGeoLocation(): Promise<GeoCoord> {
+    const geoCoord = {} as GeoCoord
+
+    return new Promise((resolve, reject) => {
+      Geolocation.getCurrentPosition()
+        .then(geoLocPos => {
+          if (geoLocPos && geoLocPos.coords) {
+            geoCoord.latitude = geoLocPos.coords.latitude;
+            geoCoord.longitude = geoLocPos.coords.longitude;
+          }
+          resolve(geoCoord);
+        })
+        .catch(err => reject(err))
+
+    });
+  }
 }
