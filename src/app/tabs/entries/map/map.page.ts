@@ -35,7 +35,7 @@ export class MapPage {
       [
         this.timeEntryService.selectedEntry.latitude,
         this.timeEntryService.selectedEntry.longitude,
-      ], 20
+      ], 17
     );
     Leaflet.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
       attribution: "edupala.com © Angular LeafLet",
