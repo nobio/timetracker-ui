@@ -15,9 +15,13 @@ const routes: Routes = [
         path: 'entries/:date',
         loadChildren: () => import('./entries/entries.module').then(m => m.EntriesPageModule)
       },
-          {
+      {
         path: 'stats',
         loadChildren: () => import('./stats/stats.module').then(m => m.StatsPageModule)
+      },
+      {
+        path: 'map',
+        loadChildren: () => import('./map/map.module').then(m => m.MapPageModule)
       },
       {
         path: 'admin',
@@ -38,7 +42,7 @@ const routes: Routes = [
     path: '',
     redirectTo: '/tabs/entries',
     pathMatch: 'full'
-  }
+  },
 ];
 
 @NgModule({

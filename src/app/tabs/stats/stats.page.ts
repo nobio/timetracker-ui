@@ -6,12 +6,14 @@ import { Statistics } from '../../model/statistics';
 import { Chart } from 'chart.js';
 import { Util } from '../../lib/Util';
 
+const CHART_TYPES: Array<string> = ['line', 'bar', 'radar'];
 
 @Component({
   selector: 'app-stats',
   templateUrl: 'stats.page.html',
   styleUrls: ['stats.page.scss']
 })
+
 export class StatsPage {
 
   @ViewChild("lineCanvas") lineCanvas;
@@ -38,28 +40,28 @@ export class StatsPage {
  */
   public setBefore(): any {
     this.date = Util.setBefore(this.timeUnit, this.date);
-    this.loadGraphData(this.date);
+    this.loadGraphData();
   }
   /**
    * Sets the current date to today;
    * Please mind that for timeUnit = week we set the date to this week's monday
    */
   public setToday(): any {
-    this.date = Util.setToday(this.timeUnit, this.date);
-    this.loadGraphData(this.date);
+    this.date = Util.setToday(this.timeUnit);
+    this.loadGraphData();
   }
   /**
    * add one time unit to current date variable and repaint
    */
   public setAhead(): any {
     this.date = Util.setAhead(this.timeUnit, this.date);
-    this.loadGraphData(this.date);
+    this.loadGraphData();
   }
 
 
   set accumulate(accumulate: boolean) {
     this._accumulate = accumulate;
-    this.loadGraphData(this.date);
+    this.loadGraphData();
   }
   get accumulate(): boolean {
     return this._accumulate;
@@ -74,13 +76,28 @@ export class StatsPage {
     }
   }
 
+  toggleChartType() {
+    // line, bar, radar
+    const oldType = this.lineChart.config.type;
+    let idx = CHART_TYPES.indexOf(this.lineChart.config.type) + 1;
+    if (idx >= CHART_TYPES.length) idx = 0;
+    if(oldType === 'radar') this.initGraph();
+    this.lineChart.config.type = CHART_TYPES[idx];
+    this.lineChart.update({
+      duration: 600,
+      easing: "easeOutBounce"
+    });
+    if(oldType === 'radar') this.loadGraphData();
+
+  }
+
   /**
    * initializes Graph object; data and labels are missing!
    */
   private initGraph() {
-
+    console.log(CHART_TYPES[0])
     this.lineChart = new Chart(this.lineCanvas.nativeElement, {
-      type: "line",
+      type: CHART_TYPES[0],
       responsive: true,
       data: {
         datasets: [
@@ -90,7 +107,7 @@ export class StatsPage {
             lineTension: 0.4,
             //backgroundColor: "rgba(148, 159, 177, 0.2)",
             //borderColor: "rgba(148, 159, 177, 1)",
-            backgroundColor: 'rgb(38, 194, 129)', // array should have same number of elements as number of dataset
+            backgroundColor: 'rgb(38, 194, 129, 1)', // array should have same number of elements as number of dataset
             borderColor: 'rgb(38, 194, 129)',// array should have same number of elements as number of dataset
             //pointBackgroundColor: "rgba(148, 159, 177, 1)",
             pointBackgroundColor: "rgba(148, 10, 19, 1)",
@@ -108,24 +125,30 @@ export class StatsPage {
             pointRadius: 3,
             pointHitRadius: 30,
             pointStyle: "circle",
-            spanGaps: false
+            spanGaps: false,
+            cubicInterpolationMode: "monotone",
           },
           {
             label: "Durchschnitt",
             pointRadius: 0,
-            backgroundColor: 'rgba(255,250,205, 0.5)', // array should have same number of elements as number of dataset
+            backgroundColor: 'rgba(255,250,225, 1)', // array should have same number of elements as number of dataset
           }
         ]
-      }
+      },
+      //this.lineChart.options.legend.display = false;
+      options: {
+        legend: {
+          display: false
+        }
+      },
     });
   }
 
 
   /**
    * Loads statisctic data
-   * @param date Date in ISO format
    */
-  private loadGraphData(date: string) {
+  private loadGraphData() {
     this.statsSrv.loadStatisticDataByUnit(this.date, this.timeUnit, this.accumulate)
       .then((resp: Statistics) => {
         //console.log(resp);
@@ -140,7 +163,7 @@ export class StatsPage {
  * takes statistics data and updates the Graph accordingly
  * @param stats statistic data
  */
-  private updateGraph(stats: Statistics, lineChart: any) {
+  private updateGraph(stats: Statistics, lineChart: Chart) {
     let label: string[] = [];
     let data: number[] = [];
     let avg: number[] = [];

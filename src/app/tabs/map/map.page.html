@@ -1,16 +1,15 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Statistiken
+      Landkarten
     </ion-title>
   </ion-toolbar>
-  <online-status-component displaySize="small"></online-status-component>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Statistiken</ion-title>
+      <ion-title size="large">Landkarten</ion-title>
     </ion-toolbar>
   </ion-header>
 
@@ -31,40 +30,28 @@
           <ion-datetime size="large" displayFormat="DD.MM.YYYY" pickerFormat="DDD MMM YYYY" [(ngModel)]="date">
           </ion-datetime>
         </ion-button>
-        <ion-button color="warning" [routerLink]="['./aggregat']">
-          <ion-icon name="barcode"></ion-icon>
-        </ion-button>
-        <ion-button color="warning" [routerLink]="['./breaktime']">
-          <ion-icon name="pause"></ion-icon>
-        </ion-button>
-        <ion-button color="warning" [routerLink]="['./come-go']">
-          <ion-icon name="podium"></ion-icon>
-        </ion-button>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col>
         <ion-segment [(ngModel)]="timeUnit" color="primary">
-          <ion-segment-button (click)="setToday()" value="0">
+          <!--ion-segment-button (click)="setToday()" value="0">
             Jahr
-          </ion-segment-button>
+          </ion-segment-button-->
           <ion-segment-button (click)="setToday()" value="1">
             Monat
           </ion-segment-button>
           <ion-segment-button (click)="setToday()" value="2">
             Woche
           </ion-segment-button>
+          <ion-segment-button (click)="setToday()" value="3">
+            Tag
+          </ion-segment-button>
         </ion-segment>
-      </ion-col>
-    </ion-row>
-    <ion-row align-items-stretch>
-      <ion-col size="12" size-sm="8" offset-sm="2">
-        <ion-card>
-          <ion-card-content (click)="toggleChartType()">
-            <canvas height="300px" #lineCanvas></canvas>
-          </ion-card-content>
-        </ion-card>
+
       </ion-col>
     </ion-row>
   </ion-grid>
+        <!-- the MAP -->
+        <div #map id="map" style="height:100%;"></div>
 </ion-content>

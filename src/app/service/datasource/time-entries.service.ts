@@ -9,7 +9,6 @@ import { HttpClient } from "@angular/common/http";
 import { FailDate } from "src/app/model/fail-date";
 import moment from 'moment';
 import { AlertController } from '@ionic/angular';
-import { Util } from 'src/app/lib/Util';
 
 @Injectable({
   providedIn: "root",
@@ -21,7 +20,6 @@ export class TimeEntriesService extends BaseService {
 
   constructor(public httpClient: HttpClient, alertCtrl: AlertController) {
     super(alertCtrl);
-    console.log('AlertControler: ' + alertCtrl)
   }
 
   /**

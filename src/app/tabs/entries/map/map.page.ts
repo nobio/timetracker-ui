@@ -17,21 +17,24 @@ export class MapPage {
   constructor(
     private timeEntryService: TimeEntriesService,
     private navCtrl: NavController,
-    ) { }
+  ) { }
 
   ionViewDidEnter() {
+    if (!this.map) {
+      this.map = Leaflet.map("map");
+    }
     this.initMap();
   }
 
   initMap() {
 
     // if no valid values in selected entry, redirect to root
-    if(!this.timeEntryService.selectedEntry.latitude || !this.timeEntryService.selectedEntry.longitude) {
+    if (!this.timeEntryService.selectedEntry.latitude || !this.timeEntryService.selectedEntry.longitude) {
       this.navCtrl.navigateRoot('/');
     }
 
     // init the map
-    this.map = Leaflet.map("map").setView(
+    this.map.setView(
       [
         this.timeEntryService.selectedEntry.latitude,
         this.timeEntryService.selectedEntry.longitude,

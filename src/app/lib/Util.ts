@@ -24,8 +24,11 @@ export class Util {
       dt.setUTCDate(dt.getUTCDate() - 7);
     } else if (TimeUnit.month == timeUnit) {
       dt.setMonth(dt.getMonth() - 1);
+      dt.setDate(1);
     } else if (TimeUnit.year == timeUnit) {
       dt.setUTCFullYear(dt.getUTCFullYear() - 1);
+      dt.setDate(1);
+      dt.setMonth(0);
     }
 
     return dt.toISOString();
@@ -38,13 +41,22 @@ export class Util {
    * @param date
    * @returns new date
    */
-  static setToday(timeUnit: TimeUnit, date: string): string {
-    console.log("Current time unit is " + timeUnit);
-    if (timeUnit == TimeUnit.week) {
-      return this.getMonday(new Date()).toISOString();
-    } else {
-      return new Date().toISOString();
+  static setToday(timeUnit: TimeUnit): string {
+    let dt = new Date();
+
+    if (TimeUnit.day == timeUnit) {
+      //dt.setUTCDate(dt.getUTCDate() + 1);
+    } else if (TimeUnit.week == timeUnit) {
+      dt = this.getMonday(new Date());
+    } else if (TimeUnit.month == timeUnit) {
+      dt.setDate(1);
+    } else if (TimeUnit.year == timeUnit) {
+      dt.setDate(1);
+      dt.setMonth(0);
     }
+    console.log(dt)
+
+    return dt.toISOString();
   }
 
   /**
@@ -62,8 +74,11 @@ export class Util {
       dt.setUTCDate(dt.getUTCDate() + 7);
     } else if (TimeUnit.month == timeUnit) {
       dt.setUTCMonth(dt.getUTCMonth() + 1);
+      dt.setDate(1);
     } else if (TimeUnit.year == timeUnit) {
       dt.setUTCFullYear(dt.getUTCFullYear() + 1);
+      dt.setDate(1);
+      dt.setMonth(0);
     }
 
     return dt.toISOString();
@@ -113,7 +128,6 @@ export class Util {
    * @param subTitle 
    */
   static async alert(alertCtrl: AlertController, msg: string, title: string = 'Fehler', subTitle: string = '') {
-
     const alert = alertCtrl.create({
       header: title,
       message: msg,
