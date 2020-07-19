@@ -18,8 +18,44 @@ export class MapPage {
   date: string; // ISO String representation of the date
   timeUnit: TimeUnit = TimeUnit.day;
   private map: Leaflet.Map;
+  private antPathLayer: any;
+  private circle: Array<any> = new Array();
+  private defaultTrack: any;
+  private circleOptions = {
+    radius: 2,
+    fillColor: "#ff9000",
+    color: "#ff7800",
+    weight: 2,
+    opacity: 1
+  };
+  private antPathOptions: {
+    delay: 400,
+    dashArray: [
+      10,
+      20
+    ],
+    weight: 5,
+    color: "#0000FF",
+    pulseColor: "#FFFFFF",
+    paused: false,
+    reverse: false,
+    hardwareAccelerated: true
+  }
+  constructor(private geoTrackService: GeoTrackService) {
+    // ATTENTION: needed to set this object in the constructor
+    // because of the new Date().toISOString() call; it did not 
+    // work as long the class has not been instanitated
+    // Default is the center of Germany :-)
+    this.defaultTrack = {
+      latitude: 51.163376,
+      longitude: 10.447683,
+      accuracy: 1,
+      altitude: 205,
+      source: 'default',
+      date: new Date().toISOString(),
+    }
 
-  constructor(private geoTrackService: GeoTrackService) { }
+  }
 
   ionViewDidEnter() {
     // load today's data
@@ -29,7 +65,6 @@ export class MapPage {
     Leaflet.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
       attribution: "edupala.com © Angular LeafLet",
     }).addTo(this.map);
-    this.map.setZoom(17);
     this.setToday();
   }
   /**
@@ -59,16 +94,23 @@ export class MapPage {
     // load geo tracking data from database 
     let geoTrackData: Array<GeoTrack> = await this.geoTrackService.loadGeoTrackingDataByDate(this.date, this.timeUnit);
 
+    // remove the old polyline layer, otherwise we add one layer over another
+    if (this.antPathLayer) {
+      this.antPathLayer.remove();
+    }
+    // remove old circles
+    this.circle.forEach(layer => {
+      layer.remove();
+    });
+    // resetting circle Marker
+    this.circle = new Array();
+
+
+    // fill one entry with a defaul value; there will always be at least
+    // one entry it iterate later
     if (!geoTrackData || geoTrackData.length === 0) {
       geoTrackData = new Array();
-      geoTrackData.push({
-        latitude: 51.163376,
-        longitude: 10.447683,
-        accuracy: 1,
-        altitude: 205,
-        date: new Date().toISOString(),
-        source: 'default'
-      })
+      geoTrackData.push(this.defaultTrack);
     }
 
     // prepare path data
@@ -78,9 +120,17 @@ export class MapPage {
       latlng.push(gtd.latitude);
       latlng.push(gtd.longitude);
       path.push(latlng);
+
+      if (gtd.accuracy) {
+        this.circleOptions.radius = gtd.accuracy;
+      }
+      const circleLayer = Leaflet.circle(latlng, this.circleOptions).addTo(this.map);
+
+      this.circle.push(circleLayer);
     });
-    const polyline = Leaflet.polyline(path, { color: 'red' }).addTo(this.map);
-    this.map.fitBounds(polyline.getBounds());
+
+    this.antPathLayer = antPath(path, this.antPathOptions).addTo(this.map);
+    this.map.fitBounds(this.antPathLayer.getBounds());
   }
 
 }

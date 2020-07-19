@@ -5,7 +5,6 @@ import { TimeUnit } from 'src/app/model/enums';
 import { HttpClient } from '@angular/common/http';
 import { retry, catchError } from 'rxjs/operators';
 import moment from 'moment';
-import { Entry } from 'src/app/model/entry';
 import { GeoTrack } from 'src/app/model/geo-track';
 
 @Injectable({
