@@ -7,6 +7,7 @@ import "leaflet/dist/images/marker-shadow.png";
 import "leaflet/dist/images/marker-icon-2x.png";
 import { GeoTrackService } from 'src/app/service/datasource/geo-track.service';
 import { GeoTrack } from 'src/app/model/geo-track';
+import moment from 'moment';
 
 @Component({
   selector: 'app-map',
@@ -21,26 +22,10 @@ export class MapPage {
   private antPathLayer: any;
   private circle: Array<any> = new Array();
   private defaultTrack: any;
-  private circleOptions = {
-    radius: 2,
-    fillColor: "#ff9000",
-    color: "#ff7800",
-    weight: 2,
-    opacity: 1
-  };
-  private antPathOptions: {
-    delay: 400,
-    dashArray: [
-      10,
-      20
-    ],
-    weight: 5,
-    color: "#0000FF",
-    pulseColor: "#FFFFFF",
-    paused: false,
-    reverse: false,
-    hardwareAccelerated: true
-  }
+  private circleOptions = { radius: 2, fillColor: "#ff9000", color: "#ff7800", weight: 2, opacity: 1 };
+  private antPathOptions: { delay: 400, dashArray: [10, 20], weight: 5, color: "#0000FF", pulseColor: "#FFFFFF", paused: false, reverse: false, hardwareAccelerated: true }
+
+
   constructor(private geoTrackService: GeoTrackService) {
     // ATTENTION: needed to set this object in the constructor
     // because of the new Date().toISOString() call; it did not 
@@ -92,7 +77,11 @@ export class MapPage {
 
   private async reInitMap() {
     // load geo tracking data from database 
-    let geoTrackData: Array<GeoTrack> = await this.geoTrackService.loadGeoTrackingDataByDate(this.date, this.timeUnit);
+    const startend = this.getStartEndByDateTimeUnit();
+    let geoTrackData: Array<GeoTrack> = await this.geoTrackService.loadGeoTrackingDataByDate(
+      startend.dtStart,
+      startend.dtEnd
+    );
 
     // remove the old polyline layer, otherwise we add one layer over another
     if (this.antPathLayer) {
@@ -133,4 +122,26 @@ export class MapPage {
     this.map.fitBounds(this.antPathLayer.getBounds());
   }
 
+  /**
+   * calculates the start date (whicht is this.date) and the
+   * end date = this.date + 1xthis.timeUnit
+   */
+  private getStartEndByDateTimeUnit(): any {
+    let dtEnd: string;
+    const tUnit: string = TimeUnit[this.timeUnit];
+    const dtStart = moment(this.date).format('YYYY-MM-DD');
+
+    if (tUnit === 'year') {
+      dtEnd = moment(dtStart).add(1, 'year').format('YYYY-MM-DD');
+    } else if (tUnit === 'month') {
+      dtEnd = moment(dtStart).add(1, 'month').format('YYYY-MM-DD');
+    } else if (tUnit === 'week') {
+      dtEnd = moment(dtStart).add(1, 'week').format('YYYY-MM-DD');
+    } else if (tUnit === 'day') {
+      dtEnd = moment(dtStart).add(1, 'day').format('YYYY-MM-DD');
+    }
+
+    return { dtStart: dtStart, dtEnd: dtEnd }
+
+  }
 }

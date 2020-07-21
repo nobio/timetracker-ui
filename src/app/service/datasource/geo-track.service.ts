@@ -16,14 +16,13 @@ export class GeoTrackService extends BaseService {
     super(alertCtrl);
   }
 
-  loadGeoTrackingDataByDate(date: string, timeUnit: TimeUnit): Promise<Array<GeoTrack>> {
+  loadGeoTrackingDataByDate(dateStart: string, dateEnd: string): Promise<Array<GeoTrack>> {
 
     let geoTrackingData: GeoTrack[] = new Array();
-    const dt: string = moment(date).format('YYYY-MM-DD');
 
     return new Promise((resolve, reject) => {
       this.httpClient
-        .get(super.baseUrl + "/api/geotrack/" + dt)
+        .get(super.baseUrl + "/api/geotrack/" + "?dateStart=" + dateStart + "&dateEnd=" + dateEnd)
         .pipe(retry(2), catchError(super.handleError))
         .subscribe(
           // Attention: the data from database is not deliberately of type GeoTrack; 
