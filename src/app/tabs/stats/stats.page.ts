@@ -19,7 +19,7 @@ export class StatsPage {
   @ViewChild("lineCanvas") lineCanvas;
 
   lineChart: Chart;
-  date: string; // ISO String representation of the date
+  private _date: string; // ISO String representation of the date
   timeUnit: TimeUnit = TimeUnit.month;
   private _accumulate: boolean = false;
 
@@ -27,6 +27,16 @@ export class StatsPage {
     private statsSrv: StatisticsService,
     private alertCtrl: AlertController
   ) { }
+
+  // ==== getter/setter for date
+  set date(dt: string) {
+    this._date = dt;
+    this.loadGraphData();
+  }
+  get date(): string {
+    return this._date;
+  }
+  // ============================
 
   ionViewDidEnter() {
     // initialize Graph
@@ -81,13 +91,13 @@ export class StatsPage {
     const oldType = this.lineChart.config.type;
     let idx = CHART_TYPES.indexOf(this.lineChart.config.type) + 1;
     if (idx >= CHART_TYPES.length) idx = 0;
-    if(oldType === 'radar') this.initGraph();
+    if (oldType === 'radar') this.initGraph();
     this.lineChart.config.type = CHART_TYPES[idx];
     this.lineChart.update({
       duration: 600,
       easing: "easeOutBounce"
     });
-    if(oldType === 'radar') this.loadGraphData();
+    if (oldType === 'radar') this.loadGraphData();
 
   }
 

@@ -16,7 +16,7 @@ import moment from 'moment';
 })
 export class MapPage {
 
-  date: string; // ISO String representation of the date
+  private _date: string; // ISO String representation of the date
   timeUnit: TimeUnit = TimeUnit.day;
   private map: Leaflet.Map;
   private antPathLayer: any;
@@ -39,9 +39,18 @@ export class MapPage {
       source: 'default',
       date: new Date().toISOString(),
     }
-
   }
 
+  // ==== getter/setter for date
+  set date(dt: string) {
+    this._date = dt;
+    this.reInitMap();
+  }
+  get date(): string {
+    return this._date;
+  }
+  // ============================
+  
   ionViewDidEnter() {
     // load today's data
     if (!this.map) {
