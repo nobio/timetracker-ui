@@ -8,6 +8,7 @@ import "leaflet/dist/images/marker-icon-2x.png";
 import { GeoTrackService } from 'src/app/service/datasource/geo-track.service';
 import { GeoTrack } from 'src/app/model/geo-track';
 import moment from 'moment';
+import { TimeBox } from 'src/app/model/time-box';
 
 @Component({
   selector: 'app-map',
@@ -16,7 +17,7 @@ import moment from 'moment';
 })
 export class MapPage {
 
-  private _date: string; // ISO String representation of the date
+  private timeBox: TimeBox = new TimeBox();
   timeUnit: TimeUnit = TimeUnit.day;
   private map: Leaflet.Map;
   private antPathLayer: any;
@@ -43,14 +44,14 @@ export class MapPage {
 
   // ==== getter/setter for date
   set date(dt: string) {
-    this._date = dt;
+    this.timeBox.set(dt);
     this.reInitMap();
   }
   get date(): string {
-    return this._date;
+    return this.timeBox.getDateByTimeUnitISOString(this.timeUnit);
   }
   // ============================
-  
+
   ionViewDidEnter() {
     // load today's data
     if (!this.map) {
@@ -74,6 +75,10 @@ export class MapPage {
    */
   public setToday(): any {
     this.date = Util.setToday(this.timeUnit);
+    this.reInitMap();
+  }
+
+  public setDate(): any {
     this.reInitMap();
   }
   /**

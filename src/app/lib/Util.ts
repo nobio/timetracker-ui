@@ -1,8 +1,8 @@
 import { TimeUnit } from '../model/enums';
 import { AlertController } from '@ionic/angular';
-import { GeolocationPosition, Plugins } from "@capacitor/core";
-import { Entry } from '../model/entry';
+import { Plugins } from "@capacitor/core";
 import { GeoCoord } from '../model/geo-coord';
+import moment, { Moment } from 'moment';
 
 const { Geolocation } = Plugins;
 
@@ -90,10 +90,15 @@ export class Util {
    * @param dt 
    * @returns Date a Monday
    */
-  private static getMonday(dt: Date): Date {
+  static getMonday(dt: Date): Date {
     let day: number = dt.getDay();
     let diff: number = dt.getDate() - day + (day == 0 ? -6 : 1); // adjust when day is sunday
     return new Date(dt.setDate(diff));
+  }
+  static getMondayByMoment(dt: Moment): Moment {
+    let day: number = dt.day();
+    let diff: number = dt.day() - day + (day == 0 ? -6 : 1); // adjust when day is sunday
+    return moment(dt).day(diff);
   }
 
   /**
