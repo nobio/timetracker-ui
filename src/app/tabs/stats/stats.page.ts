@@ -5,6 +5,7 @@ import { StatisticsService } from '../../service/datasource/statistics.service';
 import { Statistics } from '../../model/statistics';
 import { Chart } from 'chart.js';
 import { Util } from '../../lib/Util';
+import { TimeBox } from 'src/app/model/time-box';
 
 const CHART_TYPES: Array<string> = ['line', 'bar', 'radar'];
 
@@ -19,7 +20,7 @@ export class StatsPage {
   @ViewChild("lineCanvas") lineCanvas;
 
   lineChart: Chart;
-  private _date: string; // ISO String representation of the date
+  private timeBox: TimeBox = new TimeBox();
   timeUnit: TimeUnit = TimeUnit.month;
   private _accumulate: boolean = false;
 
@@ -30,11 +31,11 @@ export class StatsPage {
 
   // ==== getter/setter for date
   set date(dt: string) {
-    this._date = dt;
+    this.timeBox.set(dt);
     this.loadGraphData();
   }
   get date(): string {
-    return this._date;
+    return this.timeBox.getDateByTimeUnitISOString(this.timeUnit);
   }
   // ============================
 
@@ -58,6 +59,12 @@ export class StatsPage {
    */
   public setToday(): any {
     this.date = Util.setToday(this.timeUnit);
+    this.loadGraphData();
+  }
+  /**
+   * Method to relaod data regarding it's time unit
+   */
+  public setDate(): any {
     this.loadGraphData();
   }
   /**

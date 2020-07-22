@@ -77,7 +77,9 @@ export class MapPage {
     this.date = Util.setToday(this.timeUnit);
     this.reInitMap();
   }
-
+  /**
+   * Method to relaod data regarding it's time unit
+   */
   public setDate(): any {
     this.reInitMap();
   }
