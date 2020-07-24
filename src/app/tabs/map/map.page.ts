@@ -21,7 +21,7 @@ export class MapPage {
   timeUnit: TimeUnit = TimeUnit.day;
   private map: Leaflet.Map;
   private antPathLayer: any;
-  private circle: Array<any> = new Array();
+  private circles: Array<any> = new Array();
   private defaultTrack: any;
   private circleOptions = { radius: 2, fillColor: "#ff9000", color: "#ff7800", weight: 2, opacity: 1 };
   private antPathOptions: { delay: 400, dashArray: [10, 20], weight: 5, color: "#0000FF", pulseColor: "#FFFFFF", paused: false, reverse: false, hardwareAccelerated: true }
@@ -104,11 +104,11 @@ export class MapPage {
       this.antPathLayer.remove();
     }
     // remove old circles
-    this.circle.forEach(layer => {
+    this.circles.forEach(layer => {
       layer.remove();
     });
     // resetting circle Marker
-    this.circle = new Array();
+    this.circles = new Array();
 
 
     // fill one entry with a defaul value; there will always be at least
@@ -131,7 +131,7 @@ export class MapPage {
       }
       const circleLayer = Leaflet.circle(latlng, this.circleOptions).addTo(this.map);
 
-      this.circle.push(circleLayer);
+      this.circles.push(circleLayer);
     });
 
     this.antPathLayer = antPath(path, this.antPathOptions).addTo(this.map);
