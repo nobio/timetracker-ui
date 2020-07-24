@@ -9,6 +9,7 @@
 *.sublime-project
 *.sublime-workspace
 .DS_Store
+.hosting.d3d3.cache
 Thumbs.db
 UserInterfaceState.xcuserstate
 $RECYCLE.BIN/
