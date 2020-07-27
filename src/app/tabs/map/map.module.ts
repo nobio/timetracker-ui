@@ -7,13 +7,15 @@ import { IonicModule } from '@ionic/angular';
 import { MapPageRoutingModule } from './map-routing.module';
 
 import { MapPage } from './map.page';
+import { OnlineStatusComponentModule } from 'src/app/online-status/online-status.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    MapPageRoutingModule
+    MapPageRoutingModule,
+    OnlineStatusComponentModule
   ],
   declarations: [MapPage]
 })

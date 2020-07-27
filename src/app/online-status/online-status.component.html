@@ -9,7 +9,7 @@
         <ng-template #offlineTemplate>
           <ion-icon color="danger" name="thumbs-down"></ion-icon>
         </ng-template>
-      <!-- Slack status -->
+        <!-- Slack status -->
         <div *ngIf="statusSrv.serverInfo.isSlackEnabled === true; else slackInactiveTemplate">
           <ion-icon color="success" name="logo-slack"></ion-icon>
         </div>
@@ -28,25 +28,25 @@
 
   <!-- online status -->
   <div *ngIf="statusSrv.serverInfo.isOnline === true; else offlineTemplate">
-    <ion-item color="success">
+    <ion-text color="success">
       Server ist online
-    </ion-item>
+    </ion-text>
   </div>
   <ng-template #offlineTemplate>
-    <ion-item color="danger">
+    <ion-text color="danger">
       Server ist offline
-    </ion-item>
+    </ion-text>
   </ng-template>
 
   <!-- Slack status -->
   <div *ngIf="statusSrv.serverInfo.isSlackEnabled === true; else notSlackEnabled">
-    <ion-item color="success">
+    <ion-text color="success">
       Slack ist aktiviert
-    </ion-item>
+    </ion-text>
   </div>
   <ng-template #notSlackEnabled>
-    <ion-item color="danger">
+    <ion-text color="danger">
       Slack ist deaktiviert
-    </ion-item>
+    </ion-text>
   </ng-template>
 </ng-template>
