@@ -27,8 +27,6 @@ export class TimeBox {
     * @param date date in ISO format to which all fields are set
     */
    public set(date: string): void {
-      console.log(date)
-
       this.date = moment(date);
       let dt = moment(date);
       // set day (without time)
@@ -41,8 +39,6 @@ export class TimeBox {
       // set year (month = 1, because we want 01.01.yyyy)
       dt.month(0);
       this.year = dt.format('YYYY-MM-DD');
-
-      console.log(this.toString())
    }
 
    getDateISOString(): string {

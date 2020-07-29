@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 import { BaseService } from './base.service';
-import { TimeUnit } from 'src/app/model/enums';
 import { HttpClient } from '@angular/common/http';
 import { retry, catchError } from 'rxjs/operators';
-import moment from 'moment';
 import { GeoTrack } from 'src/app/model/geo-track';
+import { GeoTrackingMetaData } from 'src/app/model/geo-tracking-meta-data';
 
 @Injectable({
   providedIn: 'root'
@@ -51,4 +50,37 @@ export class GeoTrackService extends BaseService {
         );
     });
   };
+
+  /**
+   * {
+   *   "size": 27,
+   *   "totalDistance": 5880,
+   *   "accuracy": {
+   *     "mean": 65.55555555555556,
+   *     "stdt": 31.955759312983297
+   *   }
+   * }
+   * @param dateStart 
+   * @param dateEnd 
+   */
+  loadGeoTrackingMetaDataByDate(dateStart: string, dateEnd: string): Promise<GeoTrackingMetaData> {
+    return new Promise((resolve, reject) => {
+      this.httpClient
+        .get(super.baseUrl + "/api/geotrack/metadata" + "?dateStart=" + dateStart + "&dateEnd=" + dateEnd)
+        .pipe(retry(2), catchError(super.handleError))
+        .subscribe(
+          // Attention: the data from database is not deliberately of type GeoTrack; 
+          // it's just a coincidence.... maybe needs to be changed
+          (metaData: GeoTrackingMetaData) => {
+            console.log(metaData);
+            resolve(metaData);
+          },
+          (err) => {
+            super.handleError(err);
+            console.log(err);
+            reject("Fehler beim Laden der Daten mit fehlerhaften Einträgen: " + err);
+          }
+        );
+    });
+  }
 }

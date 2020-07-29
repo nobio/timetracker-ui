@@ -9,8 +9,10 @@
 
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Landkarten</ion-title>
+    <ion-toolbar (click)="showMetaData()">
+      <ion-title size="large">
+        Landkarten
+      </ion-title>
     </ion-toolbar>
   </ion-header>
 
@@ -28,7 +30,7 @@
           <ion-icon name="arrow-forward"></ion-icon>
         </ion-button>
         <ion-button color="light">
-          <ion-datetime size="large" displayFormat="DD.MM.YYYY" pickerFormat="DDD MMM YYYY" [(ngModel)]="date">
+          <ion-datetime displayFormat="DD.MM.YYYY" pickerFormat="DDD MMM YYYY" [(ngModel)]="date">
           </ion-datetime>
         </ion-button>
       </ion-col>

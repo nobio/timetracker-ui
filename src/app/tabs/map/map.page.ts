@@ -9,6 +9,7 @@ import { GeoTrackService } from 'src/app/service/datasource/geo-track.service';
 import { GeoTrack } from 'src/app/model/geo-track';
 import moment from 'moment';
 import { TimeBox } from 'src/app/model/time-box';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-map',
@@ -23,11 +24,14 @@ export class MapPage {
   private antPathLayer: any;
   private circles: Array<any> = new Array();
   private defaultTrack: any;
-  private circleOptions = { radius: 2, fillColor: "#ff9000", color: "#ff7800", weight: 2, opacity: 1 };
+  private circleOptions = { radius: 2, fillColor: "#ff9000", color: "#ff7800", weight: 2, opacity: 0 };
   private antPathOptions: { delay: 400, dashArray: [10, 20], weight: 5, color: "#0000FF", pulseColor: "#FFFFFF", paused: false, reverse: false, hardwareAccelerated: true }
 
 
-  constructor(private geoTrackService: GeoTrackService) {
+  constructor(
+    private geoTrackService: GeoTrackService,
+    private toastController: ToastController,
+  ) {
     // ATTENTION: needed to set this object in the constructor
     // because of the new Date().toISOString() call; it did not 
     // work as long the class has not been instanitated
@@ -89,6 +93,27 @@ export class MapPage {
   public setAhead(): any {
     this.date = Util.setAhead(this.timeUnit, this.date);
     this.reInitMap();
+  }
+
+  public async showMetaData() {
+    const startend = this.getStartEndByDateTimeUnit();
+
+    const metaData = await this.geoTrackService.loadGeoTrackingMetaDataByDate(
+      startend.dtStart,
+      startend.dtEnd,
+    )
+
+    const msg =
+      'Gesamtstrecke ' + (metaData.totalDistance / 1000).toFixed(2) + 'km,' +
+      ' Abweichung: ' + (metaData.accuracy.stdt / 1000).toFixed(2) + 'km';
+
+    const toast = await this.toastController.create({
+      message: msg,
+      duration: 3000
+    });
+
+    toast.present();
+
   }
 
   private async reInitMap() {
