@@ -39,7 +39,6 @@ export class StatusService extends BaseService {
    * load the server version information (from the server, of course)
    */
   loadServerInformation() {
-    console.log("loading server version");
 
     this.httpClient
       .get(super.baseUrl + "/api/version", super.httpOptions)
@@ -56,17 +55,18 @@ export class StatusService extends BaseService {
           err = err._body;
         }
       );
+
     this.httpClient
       .get(super.baseUrl + "/api/toggles/status", super.httpOptions)
       .pipe(retry(2), catchError(super.handleError))
       .subscribe(
         (status) => {
-          console.log("loaded toggle status: ");
           this.serverInfo.isSlackEnabled = status['NOTIFICATION_SLACK'];
+          console.log("loaded toggle status: " + status);
         },
         (err) => {
-          console.log("failed to load toggle status " + err);
           this.serverInfo.isSlackEnabled = false;
+          console.log("failed to load toggle status " + err);
         }
       );
   }
