@@ -10,6 +10,7 @@
 *.sublime-workspace
 .DS_Store
 .hosting.d3d3.cache
+.firebase/hosting.d3d3.cache
 Thumbs.db
 UserInterfaceState.xcuserstate
 $RECYCLE.BIN/
@@ -25,6 +26,7 @@ npm-debug.log*
 /.versions
 /.vscode
 /.firebase
+/.firebaserc
 /coverage
 /dist
 /node_modules
