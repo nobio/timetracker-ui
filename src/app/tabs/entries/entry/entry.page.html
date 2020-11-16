@@ -29,13 +29,13 @@
         <ion-item>
           <ion-label color="primary" position="stacked">Datum <ion-icon name="pencil-outline"></ion-icon>
           </ion-label>
-          <ion-datetime displayFormat="DDD DD MMM YYYY HH:mm" pickerFormat="H mm"
+          <ion-datetime displayFormat="DDD, DD MMM YYYY, HH:mm" pickerFormat="HH mm" type="time"
             [(ngModel)]="timeEntryService.selectedEntry.localEntryDate"></ion-datetime>
         </ion-item>
         <!-- Date of last change -->
         <ion-item>
           <ion-label color="primary" position="stacked">Datum der letzten Änderung</ion-label>
-          <ion-input disabled="false">{{ timeEntryService.selectedEntry.lastChanged | date: 'EEE dd MMM yyyy H:mm'}}
+          <ion-input disabled="false">{{ timeEntryService.selectedEntry.lastChanged | date: 'EEE, dd MMM yyyy, HH:mm'}}
           </ion-input>
         </ion-item>
         <!-- Geo Location -->

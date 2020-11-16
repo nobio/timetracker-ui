@@ -42,4 +42,14 @@ Installation:
 
 > Deployment: `firebase deploy`
 
-ionic integrations enable capacitor
+# Working with the project
+## Starten des Projekts (dev):
+> `ionic serve`
+
+## Build
+> `ionic build --prod`
+
+## Deployment:
+> `firebase deploy`
+
+(ionic integrations enable capacitor)
