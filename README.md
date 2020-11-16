@@ -28,7 +28,7 @@ listet alle verfügbaren Versionen auf
 installiert die latest (stable) Version von nodejs: `v12.19.0   (Latest LTS: Erbium)`
 
 ## ionic
-TODO
+> `npm install -g @ionic/cli`
 
 ## Typescript
 Installation:
