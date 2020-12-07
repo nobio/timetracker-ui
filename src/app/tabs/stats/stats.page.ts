@@ -142,7 +142,7 @@ export class StatsPage {
             pointRadius: 3,
             pointHitRadius: 30,
             pointStyle: "circle",
-            spanGaps: false,
+            spanGaps: true,
             cubicInterpolationMode: "monotone",
           },
           {
