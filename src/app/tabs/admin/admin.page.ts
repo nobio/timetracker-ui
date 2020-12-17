@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Toggles } from '../../model/toggles';
 import { ToastController } from '@ionic/angular';
 import { AdminService } from '../../service/datasource/admin.service';
+import { PropertyReader } from 'src/app/service/datasource/property-reader.service';
 
 @Component({
   selector: 'app-admin',
@@ -14,7 +15,8 @@ export class AdminPage {
 
   constructor(
     private adminSrv: AdminService,
-    private toastCtrl: ToastController
+    private toastCtrl: ToastController,
+    private props: PropertyReader,
   ) { 
   }
 
@@ -24,6 +26,15 @@ export class AdminPage {
       .catch(err => this.presentMessage(err, 2000));
   }
 
+  set fill(fill: boolean) {
+    this.props.set('de.nobio.timetracker.FILL', `${fill}`);
+  }
+  get fill(): boolean {
+    const propFill = this.props.get('de.nobio.timetracker.FILL');
+
+    if(!propFill) return false;
+    return (propFill === 'true');
+  }
   /**
    * initiate the recalcuation of statistics
    */

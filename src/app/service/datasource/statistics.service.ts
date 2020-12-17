@@ -18,13 +18,13 @@ export class StatisticsService extends BaseService {
   }
 
   /**
- * Loads historic data for a given date and a given time unit
- * 
- * /stats/1451602800000?timeUnit=year
- * /stats/1507461589327?timeUnit=3
- * 
- * @param date as ISO string representation of the given data
- * @param unit time unit: year, month, week, day
+   * Loads historic data for a given date and a given time unit
+   * 
+   * /stats/1451602800000?timeUnit=year
+   * /stats/1507461589327?timeUnit=3
+   * 
+   * @param date as ISO string representation of the given data
+   * @param unit time unit: year, month, week, day
  */
   loadStatisticDataByUnit(date: string, unit: TimeUnit, accumulate: boolean, fill: boolean): Promise<Statistics> {
     let dateInMilliSeconds = Util.convertToDateInMillis(date, unit);

@@ -6,6 +6,7 @@ import { Statistics } from '../../model/statistics';
 import { Chart } from 'chart.js';
 import { Util } from '../../lib/Util';
 import { TimeBox } from 'src/app/model/time-box';
+import { PropertyReader } from 'src/app/service/datasource/property-reader.service';
 
 const CHART_TYPES: Array<string> = ['line', 'bar', 'radar'];
 
@@ -23,11 +24,11 @@ export class StatsPage {
   private timeBox: TimeBox = new TimeBox();
   timeUnit: TimeUnit = TimeUnit.month;
   private _accumulate: boolean = false;
-  private _fill: boolean = true;
 
   constructor(
     private statsSrv: StatisticsService,
-    private alertCtrl: AlertController
+    private alertCtrl: AlertController,
+    private props: PropertyReader,
   ) { }
 
   // ==== getter/setter for date
@@ -86,12 +87,15 @@ export class StatsPage {
   }
 
   set fill(fill: boolean) {
-    this._fill = fill;
+    this.props.set('de.nobio.timetracker.FILL', `${fill}`);
     this.lineChart.data.datasets[0].fill = this.fill;
     this.loadGraphData();
   }
   get fill(): boolean {
-    return this._fill;
+    const propFill = this.props.get('de.nobio.timetracker.FILL');
+
+    if(!propFill) return false;
+    return (propFill === 'true');
   }
 
   swipe(event: any) {
