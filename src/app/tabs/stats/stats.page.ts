@@ -23,6 +23,7 @@ export class StatsPage {
   private timeBox: TimeBox = new TimeBox();
   timeUnit: TimeUnit = TimeUnit.month;
   private _accumulate: boolean = false;
+  private _fill: boolean = true;
 
   constructor(
     private statsSrv: StatisticsService,
@@ -84,6 +85,15 @@ export class StatsPage {
     return this._accumulate;
   }
 
+  set fill(fill: boolean) {
+    this._fill = fill;
+    this.lineChart.data.datasets[0].fill = this.fill;
+    this.loadGraphData();
+  }
+  get fill(): boolean {
+    return this._fill;
+  }
+
   swipe(event: any) {
     console.log("I have been swiped to " + event.direction);
     if (event.direction === SwipeDirection.LEFT) {
@@ -105,7 +115,6 @@ export class StatsPage {
       easing: "easeOutBounce"
     });
     if (oldType === 'radar') this.loadGraphData();
-
   }
 
   /**
@@ -120,7 +129,7 @@ export class StatsPage {
         datasets: [
           {
             label: "Anwesenheit",
-            fill: false,
+            fill: true,
             lineTension: 0.4,
             //backgroundColor: "rgba(148, 159, 177, 0.2)",
             //borderColor: "rgba(148, 159, 177, 1)",
@@ -142,7 +151,7 @@ export class StatsPage {
             pointRadius: 3,
             pointHitRadius: 30,
             pointStyle: "circle",
-            spanGaps: true,
+            spanGaps: false,
             cubicInterpolationMode: "monotone",
           },
           {
@@ -166,7 +175,7 @@ export class StatsPage {
    * Loads statisctic data
    */
   private loadGraphData() {
-    this.statsSrv.loadStatisticDataByUnit(this.date, this.timeUnit, this.accumulate)
+    this.statsSrv.loadStatisticDataByUnit(this.date, this.timeUnit, this.accumulate, this.fill)
       .then((resp: Statistics) => {
         //console.log(resp);
         this.updateGraph(resp, this.lineChart);

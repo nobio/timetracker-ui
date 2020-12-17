@@ -10,9 +10,12 @@
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Statistiken</ion-title>
+      <ion-title size="large" width="100%">
+        Statistiken 
+        <ion-toggle [(ngModel)]="fill" range-right checked="true"></ion-toggle>
+      </ion-title>      
     </ion-toolbar>
-  </ion-header>
+</ion-header>
 
   <ion-grid>
     <ion-row>
@@ -56,7 +59,7 @@
           </ion-segment-button>
         </ion-segment>
       </ion-col>
-    </ion-row>
+  </ion-row>
     <ion-row align-items-stretch>
       <ion-col size="12" size-sm="8" offset-sm="2">
         <ion-card>

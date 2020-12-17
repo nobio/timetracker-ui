@@ -154,7 +154,7 @@ export class TimeEntriesService extends BaseService {
    * loads a list of dates with some data errors in them
    */
   loadDatesWithFailedEntries(): Promise<any> {
-    console.log("loading error entries...");
+    console.log("loading entries with failures...");
     let failDates: FailDate[] = new Array();
 
     return new Promise((resolve, reject) => {

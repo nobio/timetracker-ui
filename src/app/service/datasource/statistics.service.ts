@@ -26,13 +26,13 @@ export class StatisticsService extends BaseService {
  * @param date as ISO string representation of the given data
  * @param unit time unit: year, month, week, day
  */
-  loadStatisticDataByUnit(date: string, unit: TimeUnit, accumulate: boolean): Promise<Statistics> {
+  loadStatisticDataByUnit(date: string, unit: TimeUnit, accumulate: boolean, fill: boolean): Promise<Statistics> {
     let dateInMilliSeconds = Util.convertToDateInMillis(date, unit);
     const timeUnit: string = TimeUnit[unit];
     //console.log("loading data for " + date + "(" + dateInMilliSeconds + ") and time unit " + unit) + "(" + timeUnit + ")";
 
     return new Promise<Statistics>((resolve, reject) => {
-      this.httpClient.get(super.baseUrl + "/api/stats/" + dateInMilliSeconds + "/" + timeUnit + "?accumulate=" + accumulate, super.httpOptions)
+      this.httpClient.get(`${super.baseUrl}/api/stats/${dateInMilliSeconds}/${timeUnit}?accumulate=${accumulate}&fill=${fill}`, super.httpOptions)
         .pipe(retry(2), catchError(super.handleError))
         .subscribe(
           res => {
