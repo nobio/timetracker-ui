@@ -17,7 +17,7 @@ export class AdminPage {
     private adminSrv: AdminService,
     private toastCtrl: ToastController,
     private props: PropertyReader,
-  ) { 
+  ) {
   }
 
   ionViewWillEnter() {
@@ -30,11 +30,7 @@ export class AdminPage {
     this.props.set('de.nobio.timetracker.FILL', `${fill}`);
   }
   get fill(): boolean {
-    const propFill = this.props.get('de.nobio.timetracker.FILL');
-
-    if(!propFill) return false;
-    return (propFill === 'true');
-  }
+    return this.props.get('de.nobio.timetracker.FILL') == 'true';  }
   /**
    * initiate the recalcuation of statistics
    */

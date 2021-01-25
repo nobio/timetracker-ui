@@ -86,16 +86,8 @@ export class StatsPage {
     return this._accumulate;
   }
 
-  set fill(fill: boolean) {
-    this.props.set('de.nobio.timetracker.FILL', `${fill}`);
-    this.lineChart.data.datasets[0].fill = this.fill;
-    this.loadGraphData();
-  }
   get fill(): boolean {
-    const propFill = this.props.get('de.nobio.timetracker.FILL');
-
-    if(!propFill) return false;
-    return (propFill === 'true');
+    return this.props.get('de.nobio.timetracker.FILL')  === 'true';
   }
 
   swipe(event: any) {

@@ -9,7 +9,6 @@ import { Util } from 'src/app/lib/Util';
 })
 export class BaseService {
 
-
   constructor(private alertCtrl: AlertController) { }
 
   public get baseUrl(): string {
@@ -29,6 +28,7 @@ export class BaseService {
 
   // Handle API errors
   public handleError(error: HttpErrorResponse) {
+    console.log('Alert Controler: ' + this.alertCtrl);
     if (error.error instanceof ErrorEvent) {
       // A client-side or network error occurred. Handle it accordingly.
       console.error('An error occurred:', error.error.message);

@@ -54,7 +54,7 @@
             <ion-label>Daten untersucht</ion-label><ion-toggle [(ngModel)]="toggles.evaluateData.toggle" (ionChange)="saveToggle('EVALUATE_DATA')"></ion-toggle>
           </ion-item>
           <ion-item>
-            <ion-label>Datenladen ohne Lücken</ion-label><ion-toggle [(ngModel)]="fill"></ion-toggle>
+            <ion-label>Datenladen ohne Lücken</ion-label><ion-toggle [(ngModel)]="fill" (ionChange)="fill"></ion-toggle>
           </ion-item>
         </ion-list>
       </ion-col>
