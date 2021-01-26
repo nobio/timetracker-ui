@@ -125,7 +125,7 @@ export class StatsPage {
         datasets: [
           {
             label: "Anwesenheit",
-            fill: true,
+            fill: false,
             lineTension: 0.4,
             //backgroundColor: "rgba(148, 159, 177, 0.2)",
             //borderColor: "rgba(148, 159, 177, 1)",
