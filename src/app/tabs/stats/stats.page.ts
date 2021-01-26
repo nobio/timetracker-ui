@@ -87,7 +87,7 @@ export class StatsPage {
   }
 
   get fill(): boolean {
-    return this.props.get('de.nobio.timetracker.FILL')  === 'true';
+    return this.props.get('de.nobio.timetracker.FILL') === 'true';
   }
 
   swipe(event: any) {
@@ -153,15 +153,15 @@ export class StatsPage {
           {
             label: "Durchschnitt",
             pointRadius: 0,
-            backgroundColor: 'rgba(255,250,225, 1)', // array should have same number of elements as number of dataset
+            backgroundColor: 'rgba(255,250,225, 0.2)', // array should have same number of elements as number of dataset
           }
         ]
       },
       //this.lineChart.options.legend.display = false;
       options: {
         legend: {
-          display: false
-        }
+          display: false,
+        },
       },
     });
   }
