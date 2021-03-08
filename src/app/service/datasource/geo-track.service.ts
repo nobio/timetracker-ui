@@ -21,7 +21,7 @@ export class GeoTrackService extends BaseService {
 
     return new Promise((resolve, reject) => {
       this.httpClient
-        .get(super.baseUrl + "/api/geotrack/" + "?dateStart=" + dateStart + "&dateEnd=" + dateEnd)
+        .get(super.baseUrl + "/api/geotrack/" + "?dateStart=" + dateStart + "&dateEnd=" + dateEnd, this.httpOptions)
         .pipe(retry(2), catchError(super.handleError))
         .subscribe(
           // Attention: the data from database is not deliberately of type GeoTrack; 
@@ -66,7 +66,7 @@ export class GeoTrackService extends BaseService {
   loadGeoTrackingMetaDataByDate(dateStart: string, dateEnd: string): Promise<GeoTrackingMetaData> {
     return new Promise((resolve, reject) => {
       this.httpClient
-        .get(super.baseUrl + "/api/geotrack/metadata" + "?dateStart=" + dateStart + "&dateEnd=" + dateEnd)
+        .get(super.baseUrl + "/api/geotrack/metadata" + "?dateStart=" + dateStart + "&dateEnd=" + dateEnd, this.httpOptions)
         .pipe(retry(2), catchError(super.handleError))
         .subscribe(
           // Attention: the data from database is not deliberately of type GeoTrack; 
