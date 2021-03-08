@@ -32,7 +32,7 @@ export class StatisticsService extends BaseService {
     //console.log("loading data for " + date + "(" + dateInMilliSeconds + ") and time unit " + unit) + "(" + timeUnit + ")";
 
     return new Promise<Statistics>((resolve, reject) => {
-      this.httpClient.get(`${super.baseUrl}/api/stats/${dateInMilliSeconds}/${timeUnit}?accumulate=${accumulate}&fill=${fill}`, super.httpOptions)
+      this.httpClient.get(`${super.baseUrl}/api/stats/${dateInMilliSeconds}/${timeUnit}?accumulate=${accumulate}&fill=${fill}`, this.httpOptions)
         .pipe(retry(2), catchError(super.handleError))
         .subscribe(
           res => {
@@ -61,7 +61,7 @@ export class StatisticsService extends BaseService {
   loadStatisticBreakTime(realData: boolean, interval: number): Promise<BreakTimes> {
     return new Promise<BreakTimes>((resolve, reject) => {
 
-      this.httpClient.get(super.baseUrl + "/api/statistics/breaktime/" + interval + "?real=" + realData, super.httpOptions)
+      this.httpClient.get(super.baseUrl + "/api/statistics/breaktime/" + interval + "?real=" + realData, this.httpOptions)
         .pipe(retry(2), catchError(super.handleError))
         .subscribe(
           (breaktimeData: []) => {
@@ -99,7 +99,7 @@ export class StatisticsService extends BaseService {
     console.log("loading data for time unit " + unit) + "(" + timeUnit + ")";
 
     return new Promise<Statistics>((resolve, reject) => {
-      this.httpClient.get(super.baseUrl + "/api/statistics/aggregate?timeUnit=" + timeUnit, super.httpOptions)
+      this.httpClient.get(super.baseUrl + "/api/statistics/aggregate?timeUnit=" + timeUnit, this.httpOptions)
         .pipe(retry(2), catchError(super.handleError))
         .subscribe(
           res => {
@@ -135,7 +135,7 @@ export class StatisticsService extends BaseService {
         url += "?direction=" + direction
       }
 
-      this.httpClient.get(url, super.httpOptions)
+      this.httpClient.get(url, this.httpOptions)
         .pipe(retry(2), catchError(super.handleError))
         .subscribe(
           (histogramData: []) => {

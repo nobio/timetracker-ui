@@ -21,7 +21,7 @@ export class PropertyReader extends BaseService {
   private loadAll(): void {
     console.log(`${super.baseUrl}/api/properties`);
     this.httpClient
-      .get(`${super.baseUrl}/api/properties`)
+      .get(`${super.baseUrl}/api/properties`, this.httpOptions)
       .pipe(retry(2), catchError(super.handleError))
       .subscribe(
         (data: any) => {
@@ -49,7 +49,7 @@ export class PropertyReader extends BaseService {
     this.properties.set(key, value);
     // store in DB (async)
     this.httpClient
-      .put(`${super.baseUrl}/api/properties/${key}?value=${value}`, null, super.httpOptions)
+      .put(`${super.baseUrl}/api/properties/${key}?value=${value}`, null, this.httpOptions)
       .pipe(retry(1), catchError(super.handleError))
       .subscribe(
         (data: any) => { },

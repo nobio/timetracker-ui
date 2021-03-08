@@ -24,7 +24,7 @@ export class AdminService extends BaseService {
 
     return new Promise((resolve, reject) => {
       this.httpClient
-        .put(super.baseUrl + "/api/stats", super.httpOptions)
+        .put(super.baseUrl + "/api/stats", this.httpOptions)
         .pipe(retry(2), catchError(super.handleError))
         .subscribe(
           (res) => {
@@ -49,7 +49,7 @@ export class AdminService extends BaseService {
   dumpTimeEntries(): Promise<any> {
     return new Promise((resolve, reject) => {
       this.httpClient
-        .post(super.baseUrl + "/api/entries/dump", super.httpOptions)
+        .post(super.baseUrl + "/api/entries/dump", this.httpOptions)
         .pipe(retry(2), catchError(super.handleError))
         .subscribe(
           (res) => {
@@ -82,7 +82,7 @@ export class AdminService extends BaseService {
 
     return new Promise((resolve, reject) => {
       this.httpClient
-        .post(super.baseUrl + "/api/entries/backup", super.httpOptions)
+        .post(super.baseUrl + "/api/entries/backup", this.httpOptions)
         .pipe(retry(2), catchError(super.handleError))
         .subscribe(
           (res) => {
@@ -110,7 +110,7 @@ export class AdminService extends BaseService {
   loadToggles(): Promise<Toggles> {
     return new Promise((resolve, reject) => {
       this.httpClient
-        .get(super.baseUrl + "/api/toggles/")
+        .get(super.baseUrl + "/api/toggles/", this.httpOptions)
         .pipe(retry(2), catchError(super.handleError))
         .subscribe(
           (toggles: typeof Toggles[]) => {
@@ -137,7 +137,7 @@ export class AdminService extends BaseService {
         .put(
           super.baseUrl + "/api/toggles/" + toggle.id,
           toggle,
-          super.httpOptions
+          this.httpOptions
         )
         .pipe(retry(2), catchError(super.handleError))
         .subscribe(
@@ -158,7 +158,7 @@ export class AdminService extends BaseService {
 
     return new Promise((resolve, reject) => {
       this.httpClient
-        .post(super.baseUrl + "/api/entries/error/evaluate", super.httpOptions)
+        .post(super.baseUrl + "/api/entries/error/evaluate", this.httpOptions)
         .pipe(retry(2), catchError(super.handleError))
         .subscribe(
           (res) => {

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpHeaders, HttpErrorResponse, HttpClient } from '@angular/common/http';
+import { HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { throwError } from 'rxjs';
 import { AlertController } from '@ionic/angular';
 import { Util } from 'src/app/lib/Util';
@@ -12,27 +12,29 @@ export class BaseService {
   constructor(private alertCtrl: AlertController) { }
 
   public get baseUrl(): string {
-    return "https://nobio.myhome-server.de:30043";
-    //return "http://nobio.myhome-server.de:30030";
+    //return "https://nobio.myhome-server.de:30043";
+    return "http://nobio.myhome-server.de:30030";
     //return  "http://localhost:30000";
   }
 
 
   // Http Options
-  httpOptions = {
+  public httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
-      'Accept': 'application/json'
+      'Accept': 'application/json',
+      'rejectUnauthorized': 'false',
+      'insecure': 'true',
+      'requestCert': 'false',
     })
   }
 
   // Handle API errors
   public handleError(error: HttpErrorResponse) {
-    console.log('Alert Controler: ' + this.alertCtrl);
     if (error.error instanceof ErrorEvent) {
       // A client-side or network error occurred. Handle it accordingly.
       console.error('An error occurred:', error.error.message);
-      Util.alert(this.alertCtrl, error.error.message, 'Datenbankfehler')
+      Util.alert(this.alertCtrl, error.error.message, 'Datenbankfehler', error.error.message)
     } else {
       // The backend returned an unsuccessful response code.
       // The response body may contain clues as to what went wrong,

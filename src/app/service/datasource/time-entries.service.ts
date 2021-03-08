@@ -32,7 +32,7 @@ export class TimeEntriesService extends BaseService {
     const date: number = new Date(dt).getTime();
 
     this.httpClient
-      .get<Entry[]>(super.baseUrl + "/api/entries?dt=" + date)
+      .get<Entry[]>(super.baseUrl + "/api/entries?dt=" + date, this.httpOptions)
       .pipe(retry(2)/*, catchError(super.handleError)*/)
       .subscribe((data: Entry[]) => {
         this.entriesByDate = [];
@@ -49,7 +49,7 @@ export class TimeEntriesService extends BaseService {
     if (!id) return;
 
     this.httpClient
-      .get<Entry>(super.baseUrl + "/api/entries/" + id)
+      .get<Entry>(super.baseUrl + "/api/entries/" + id, this.httpOptions)
       .pipe(retry(2), catchError(super.handleError))
       .subscribe(
         (data) => {
@@ -72,7 +72,7 @@ export class TimeEntriesService extends BaseService {
     };
 
     this.httpClient
-      .post(super.baseUrl + "/api/entries/", body, super.httpOptions)
+      .post(super.baseUrl + "/api/entries/", body, this.httpOptions)
       //.pipe(retry(2), catchError(super.handleError))
       .subscribe(
         (res) => {
@@ -104,7 +104,7 @@ export class TimeEntriesService extends BaseService {
     const date: number = new Date(dt).getTime();
 
     this.httpClient
-      .get(super.baseUrl + "/api/entries?busy=" + date)
+      .get(super.baseUrl + "/api/entries?busy=" + date, this.httpOptions)
       .pipe(retry(2), catchError(super.handleError))
       .subscribe((data) => {
         console.log(data);
@@ -131,7 +131,7 @@ export class TimeEntriesService extends BaseService {
     return this.httpClient
       .delete(
         super.baseUrl + "/api/entries/" + this.selectedEntry.id,
-        super.httpOptions
+        this.httpOptions
       )
       .pipe(retry(2), catchError(super.handleError));
   }
@@ -159,7 +159,7 @@ export class TimeEntriesService extends BaseService {
 
     return new Promise((resolve, reject) => {
       this.httpClient
-        .get(super.baseUrl + "/api/entries/error/dates")
+        .get(super.baseUrl + "/api/entries/error/dates", this.httpOptions)
         .pipe(retry(2), catchError(super.handleError))
         .subscribe(
           (data: []) => {
