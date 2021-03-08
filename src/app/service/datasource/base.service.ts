@@ -12,8 +12,8 @@ export class BaseService {
   constructor(private alertCtrl: AlertController) { }
 
   public get baseUrl(): string {
-    //return "https://nobio.myhome-server.de:30043";
-    return "http://nobio.myhome-server.de:30030";
+    return "https://nobio.myhome-server.de:30043";
+    //return "http://nobio.myhome-server.de:30030";
     //return  "http://localhost:30000";
   }
 
