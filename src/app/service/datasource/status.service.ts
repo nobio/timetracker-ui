@@ -4,6 +4,7 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { catchError, retry } from "rxjs/operators";
 import { ServerInformation } from "src/app/model/server-information";
 import { AlertController } from '@ionic/angular';
+import { LogService } from "../log.service";
 
 @Injectable({
   providedIn: "root",
@@ -11,8 +12,8 @@ import { AlertController } from '@ionic/angular';
 export class StatusService extends BaseService {
   public serverInfo = new ServerInformation();
 
-  constructor(public httpClient: HttpClient, alertCtrl: AlertController) {
-    super(alertCtrl);
+  constructor(public httpClient: HttpClient, alertCtrl: AlertController, logger: LogService) {
+    super(alertCtrl, logger);
     this.serverInfo.baseUrl = this.baseUrl;
   }
 
@@ -29,19 +30,16 @@ export class StatusService extends BaseService {
       })
     }
   
-    console.log(`Header: ${JSON.stringify(super.httpOptions)}`);
-    console.log(`Header: ${JSON.stringify(this.httpOptions)}`);
-    console.log(`Header: ${JSON.stringify(httpOptions)}`);
     this.httpClient
       .get(super.baseUrl + "/api/ping", httpOptions)
       .pipe(retry(2), catchError(super.handleError))
       .subscribe(
         (res) => {
-          console.log(res);
+          this.logger.log(res);
           this.serverInfo.isOnline = true;
         },
         (err) => {
-          console.log("failed to check online status " + err);
+          this.logger.log("failed to check online status " + err);
           this.serverInfo.isOnline = false;
         }
       );
@@ -59,11 +57,11 @@ export class StatusService extends BaseService {
         (data) => {
           this.serverInfo.serverBuildVersion = data['version'];
           this.serverInfo.serverBuildTime = data['last_build'];
-          console.log(this.serverInfo);
+          this.logger.log(this.serverInfo);
         },
         (err) => {
-          console.log(err);
-          console.log(err._body);
+          this.logger.log(err);
+          this.logger.log(err._body);
           err = err._body;
         }
       );
@@ -74,11 +72,11 @@ export class StatusService extends BaseService {
       .subscribe(
         (status) => {
           this.serverInfo.isSlackEnabled = status['NOTIFICATION_SLACK'];
-          console.log("loaded toggle status: " + status);
+          this.logger.log("loaded toggle status: " + status);
         },
         (err) => {
           this.serverInfo.isSlackEnabled = false;
-          console.log("failed to load toggle status " + err);
+          this.logger.log("failed to load toggle status " + err);
         }
       );
   }

@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 import { catchError, retry } from 'rxjs/operators';
+import { LogService } from '../log.service';
 import { BaseService } from './base.service';
 
 @Injectable({
@@ -13,26 +14,26 @@ export class PropertyReader extends BaseService {
 
   /** temporary hard coded protperties */
 
-  constructor(public httpClient: HttpClient, alertCtrl: AlertController) {
-    super(alertCtrl);
+  constructor(public httpClient: HttpClient, alertCtrl: AlertController, logger: LogService) {
+    super(alertCtrl, logger);
     this.loadAll();
   }
 
   private loadAll(): void {
-    console.log(`${super.baseUrl}/api/properties`);
+    this.logger.log(`${super.baseUrl}/api/properties`);
     this.httpClient
       .get(`${super.baseUrl}/api/properties`, this.httpOptions)
       .pipe(retry(2), catchError(super.handleError))
       .subscribe(
         (data: any) => {
-          console.log(data);
+          this.logger.log(data);
           data.forEach(el => {
             this.properties.set(el.key, el.value);
           });
         },
         (err) => {
           super.handleError(err);
-          console.log(`Fehler beim Laden der Properties: ${err}`);
+          this.logger.log(`Fehler beim Laden der Properties: ${err}`);
         }
       );
   }
@@ -43,7 +44,7 @@ export class PropertyReader extends BaseService {
     }
   }
   public set(key: string, value: string): void {
-    console.log(`Property to set: '${key}' to '${value}'`)
+    this.logger.log(`Property to set: '${key}' to '${value}'`)
 
     // store locally
     this.properties.set(key, value);
@@ -55,7 +56,7 @@ export class PropertyReader extends BaseService {
         (data: any) => { },
         (err) => {
           super.handleError(err);
-          console.log(`Fehler beim Laden der Properties: ${err}`);
+          this.logger.log(`Fehler beim Laden der Properties: ${err}`);
         }
       );
   }

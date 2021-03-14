@@ -7,14 +7,15 @@ import { catchError, retry } from 'rxjs/operators';
 import { Util } from 'src/app/lib/Util';
 import { BreakTimes } from 'src/app/model/break-time';
 import { AlertController } from '@ionic/angular';
+import { LogService } from '../log.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StatisticsService extends BaseService {
 
-  constructor(public httpClient: HttpClient, alertCtrl: AlertController) {
-    super(alertCtrl);
+  constructor(public httpClient: HttpClient, alertCtrl: AlertController, logger: LogService) {
+    super(alertCtrl, logger);
   }
 
   /**
@@ -29,14 +30,14 @@ export class StatisticsService extends BaseService {
   loadStatisticDataByUnit(date: string, unit: TimeUnit, accumulate: boolean, fill: boolean): Promise<Statistics> {
     let dateInMilliSeconds = Util.convertToDateInMillis(date, unit);
     const timeUnit: string = TimeUnit[unit];
-    //console.log("loading data for " + date + "(" + dateInMilliSeconds + ") and time unit " + unit) + "(" + timeUnit + ")";
+    //this.logger.log("loading data for " + date + "(" + dateInMilliSeconds + ") and time unit " + unit) + "(" + timeUnit + ")";
 
     return new Promise<Statistics>((resolve, reject) => {
       this.httpClient.get(`${super.baseUrl}/api/stats/${dateInMilliSeconds}/${timeUnit}?accumulate=${accumulate}&fill=${fill}`, this.httpOptions)
         .pipe(retry(2), catchError(super.handleError))
         .subscribe(
           res => {
-            // console.log("statistics data successfully loaded");
+            // this.logger.log("statistics data successfully loaded");
 
             let stats = {} as Statistics;
             stats.actualWorkingTime = res['actual_working_time'];
@@ -48,7 +49,7 @@ export class StatisticsService extends BaseService {
             resolve(stats);
           },
           err => {
-            console.log("failed to load historc data " + err);
+            this.logger.log("failed to load historc data " + err);
             reject("Fehler beim Laden der historischen Daten: " + err);
           }
         );
@@ -80,7 +81,7 @@ export class StatisticsService extends BaseService {
             resolve(stats);
           },
           err => {
-            console.log("failed to load break time data " + err);
+            this.logger.log("failed to load break time data " + err);
             reject("Fehler beim Laden der Pausendaten: " + err);
           }
         );
@@ -96,15 +97,15 @@ export class StatisticsService extends BaseService {
  */
   loadStatisticAggregatedDataByUnit(unit: TimeUnit): Promise<Statistics> {
     const timeUnit: string = TimeUnit[unit];
-    console.log("loading data for time unit " + unit) + "(" + timeUnit + ")";
+    this.logger.log("loading data for time unit " + unit) + "(" + timeUnit + ")";
 
     return new Promise<Statistics>((resolve, reject) => {
       this.httpClient.get(super.baseUrl + "/api/statistics/aggregate?timeUnit=" + timeUnit, this.httpOptions)
         .pipe(retry(2), catchError(super.handleError))
         .subscribe(
           res => {
-            console.log("aggregated data successfully loaded: " + JSON.stringify(res));
-            console.log(res['chart_data']['main'][0]['data'])
+            this.logger.log("aggregated data successfully loaded: " + JSON.stringify(res));
+            this.logger.log(res['chart_data']['main'][0]['data'])
             let stats = {} as Statistics;
             stats.actualWorkingTime = res['actual_working_time'];
             stats.averageWorkingTime = res['average_working_time'];
@@ -114,7 +115,7 @@ export class StatisticsService extends BaseService {
             resolve(stats);
           },
           err => {
-            console.log("failed to load historc data " + err);
+            this.logger.log("failed to load historc data " + err);
             reject("Fehler beim Laden der historischen Daten: " + err);
           }
         );
@@ -154,7 +155,7 @@ export class StatisticsService extends BaseService {
             resolve(stats);
           },
           err => {
-            console.log("failed to load historic data " + err);
+            this.logger.log("failed to load historic data " + err);
             reject("Fehler beim Laden der historischen Daten: " + err);
           }
         );

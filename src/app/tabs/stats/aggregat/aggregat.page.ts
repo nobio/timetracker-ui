@@ -6,6 +6,7 @@ import { Chart } from "chart.js";
 import { NavController, AlertController } from '@ionic/angular';
 import { StatisticsService } from 'src/app/service/datasource/statistics.service';
 import { Util } from 'src/app/lib/Util';
+import { LogService } from "src/app/service/log.service";
 
 @Component({
   selector: "app-aggregat",
@@ -23,6 +24,7 @@ export class AggregatPage {
     public navCtrl: NavController,
     private alertCtrl: AlertController,
     private statsSrv: StatisticsService,
+    private logger: LogService
   ) { }
 
   ionViewDidEnter() {
@@ -72,12 +74,12 @@ export class AggregatPage {
   private loadGraphData() {
     this.statsSrv.loadStatisticAggregatedDataByUnit(this.timeUnit)
       .then((resp: Statistics) => {
-        console.log(resp);
+        this.logger.log(resp);
         this.updateGraph(resp, this.lineChart);
       })
       .catch((error: string) => {
         Util.alert(this.alertCtrl, error);
-        //console.log(error);
+        //this.logger.log(error);
       });
   }
   /**
@@ -142,7 +144,7 @@ export class AggregatPage {
   }
 
   setTimeUnit() {
-    //console.log(this.timeUnit);
+    //this.logger.log(this.timeUnit);
     this.loadGraphData();
   }
 

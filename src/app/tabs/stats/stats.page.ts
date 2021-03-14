@@ -7,6 +7,7 @@ import { Chart } from 'chart.js';
 import { Util } from '../../lib/Util';
 import { TimeBox } from 'src/app/model/time-box';
 import { PropertyReader } from 'src/app/service/datasource/property-reader.service';
+import { LogService } from 'src/app/service/log.service';
 
 const CHART_TYPES: Array<string> = ['line', 'bar', 'radar'];
 
@@ -29,6 +30,7 @@ export class StatsPage {
     private statsSrv: StatisticsService,
     private alertCtrl: AlertController,
     private props: PropertyReader,
+    private logger: LogService
   ) { }
 
   // ==== getter/setter for date
@@ -91,7 +93,7 @@ export class StatsPage {
   }
 
   swipe(event: any) {
-    console.log("I have been swiped to " + event.direction);
+    this.logger.log("I have been swiped to " + event.direction);
     if (event.direction === SwipeDirection.LEFT) {
       this.setAhead();
     } else if (event.direction === SwipeDirection.RIGHT) {
@@ -117,7 +119,7 @@ export class StatsPage {
    * initializes Graph object; data and labels are missing!
    */
   private initGraph() {
-    console.log(CHART_TYPES[0])
+    this.logger.log(CHART_TYPES[0])
     this.lineChart = new Chart(this.lineCanvas.nativeElement, {
       type: CHART_TYPES[0],
       responsive: true,
@@ -173,7 +175,7 @@ export class StatsPage {
   private loadGraphData() {
     this.statsSrv.loadStatisticDataByUnit(this.date, this.timeUnit, this.accumulate, this.fill)
       .then((resp: Statistics) => {
-        //console.log(resp);
+        //this.logger.log(resp);
         this.updateGraph(resp, this.lineChart);
       })
       .catch((error: string) => {

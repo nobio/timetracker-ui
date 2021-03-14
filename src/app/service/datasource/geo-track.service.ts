@@ -5,14 +5,15 @@ import { HttpClient } from '@angular/common/http';
 import { retry, catchError } from 'rxjs/operators';
 import { GeoTrack } from 'src/app/model/geo-track';
 import { GeoTrackingMetaData } from 'src/app/model/geo-tracking-meta-data';
+import { LogService } from '../log.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GeoTrackService extends BaseService {
 
-  constructor(public httpClient: HttpClient, alertCtrl: AlertController) {
-    super(alertCtrl);
+  constructor(public httpClient: HttpClient, alertCtrl: AlertController, logger: LogService) {
+    super(alertCtrl, logger);
   }
 
   loadGeoTrackingDataByDate(dateStart: string, dateEnd: string): Promise<Array<GeoTrack>> {
@@ -44,7 +45,7 @@ export class GeoTrackService extends BaseService {
           },
           (err) => {
             super.handleError(err);
-            console.log(err);
+            this.logger.log(err);
             reject("Fehler beim Laden der Daten mit fehlerhaften Einträgen: " + err);
           }
         );
@@ -72,12 +73,12 @@ export class GeoTrackService extends BaseService {
           // Attention: the data from database is not deliberately of type GeoTrack; 
           // it's just a coincidence.... maybe needs to be changed
           (metaData: GeoTrackingMetaData) => {
-            console.log(metaData);
+            this.logger.log(metaData);
             resolve(metaData);
           },
           (err) => {
             super.handleError(err);
-            console.log(err);
+            this.logger.log(err);
             reject("Fehler beim Laden der Daten mit fehlerhaften Einträgen: " + err);
           }
         );

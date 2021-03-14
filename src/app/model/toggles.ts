@@ -1,3 +1,4 @@
+import { LogService } from "../service/log.service";
 import { Toggle } from "./toggle";
 
 export class Toggles {
@@ -41,7 +42,6 @@ export class Toggles {
     }
 
     setToggle(toggle) {
-        console.log('setting toggle ' + JSON.stringify(toggle))
         let t: Toggle = new Toggle();
         t.setData(toggle._id, toggle.name, toggle.toggle, toggle.notification);
 

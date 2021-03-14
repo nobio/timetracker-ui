@@ -99,12 +99,12 @@ export class ComeGoPage {
 
     this.statsSrv.loadStatisticHistogramDataByInterval(this.interval, this.direction)
       .then((resp: Statistics) => {
-        //console.log(resp);
+        //this.logger.log(resp);
         this.updateGraph(resp, this.lineChart);
       })
       .catch((error: string) => {
         Util.alert(this.alertCtrl, error);
-        //console.log(error);
+        //this.logger.log(error);
       });
 
     }

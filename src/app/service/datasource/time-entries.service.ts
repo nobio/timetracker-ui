@@ -9,6 +9,7 @@ import { HttpClient } from "@angular/common/http";
 import { FailDate } from "src/app/model/fail-date";
 import moment from 'moment';
 import { AlertController } from '@ionic/angular';
+import { LogService } from "../log.service";
 
 @Injectable({
   providedIn: "root",
@@ -18,8 +19,8 @@ export class TimeEntriesService extends BaseService {
   public selectedEntry: Entry = new Entry();
   public entryStats: EntryStatistics = new EntryStatistics();
 
-  constructor(public httpClient: HttpClient, alertCtrl: AlertController) {
-    super(alertCtrl);
+  constructor(public httpClient: HttpClient, alertCtrl: AlertController, logger: LogService) {
+    super(alertCtrl, logger);
   }
 
   /**
@@ -27,8 +28,8 @@ export class TimeEntriesService extends BaseService {
    * @param dt the given date in ISO-String format
    */
   loadEntriesByDate(dt: string): void {
-    console.log("loading entries for " + dt);
-    console.log(super.baseUrl);
+    this.logger.log("loading entries for " + dt);
+    this.logger.log(super.baseUrl);
     const date: number = new Date(dt).getTime();
 
     this.httpClient
@@ -45,7 +46,7 @@ export class TimeEntriesService extends BaseService {
   }
 
   loadEntry(id: string): void {
-    console.log(`loading entry ${id}`);
+    this.logger.log(`loading entry ${id}`);
     if (!id) return;
 
     this.httpClient
@@ -107,7 +108,7 @@ export class TimeEntriesService extends BaseService {
       .get(super.baseUrl + "/api/entries?busy=" + date, this.httpOptions)
       .pipe(retry(2), catchError(super.handleError))
       .subscribe((data) => {
-        console.log(data);
+        this.logger.log(data);
         this.entryStats.totalWorkload = this.millisecToReadbleTime(
           data["duration"]
         );
@@ -123,7 +124,7 @@ export class TimeEntriesService extends BaseService {
    * @param id unique id of time entry
    */
   deleteSelectedEntry(): Observable<any> {
-    console.log(
+    this.logger.log(
       `calling ${
       super.baseUrl + "/api/entries/" + this.selectedEntry.id
       } to delete entry`
@@ -140,7 +141,7 @@ export class TimeEntriesService extends BaseService {
    * saves the selected Entry to databse
    */
   saveSelectedEntry(): Observable<any> {
-    console.log(`calling ${super.baseUrl + "/api/entries/" + this.selectedEntry.id} to save entry`);
+    this.logger.log(`calling ${super.baseUrl + "/api/entries/" + this.selectedEntry.id} to save entry`);
     return this.httpClient
       .put(
         super.baseUrl + "/api/entries/" + this.selectedEntry.id,
@@ -154,7 +155,7 @@ export class TimeEntriesService extends BaseService {
    * loads a list of dates with some data errors in them
    */
   loadDatesWithFailedEntries(): Promise<any> {
-    console.log("loading entries with failures...");
+    this.logger.log("loading entries with failures...");
     let failDates: FailDate[] = new Array();
 
     return new Promise((resolve, reject) => {
@@ -163,7 +164,7 @@ export class TimeEntriesService extends BaseService {
         .pipe(retry(2), catchError(super.handleError))
         .subscribe(
           (data: []) => {
-            //console.log(data)
+            //this.logger.log(data)
             data.forEach((element) => {
               failDates.push({
                 type: element["error-type"],
@@ -175,8 +176,8 @@ export class TimeEntriesService extends BaseService {
           },
           (err) => {
             super.handleError(err);
-            console.log(err);
-            console.log(err._body);
+            this.logger.log(err);
+            this.logger.log(err._body);
             this.selectedEntry = new Entry(); // clear selected entry
             reject(
               "Fehler beim Laden der Daten mit fehlerhaften Einträgen: " + err
@@ -187,7 +188,7 @@ export class TimeEntriesService extends BaseService {
   }
 
   millisecToReadbleTime(millisec: number): string {
-    //console.log(millisec + ' ms');
+    //this.logger.log(millisec + ' ms');
     if (!millisec) {
       return "";
     }

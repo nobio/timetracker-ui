@@ -3,6 +3,7 @@ import { Toggles } from '../../model/toggles';
 import { ToastController } from '@ionic/angular';
 import { AdminService } from '../../service/datasource/admin.service';
 import { PropertyReader } from 'src/app/service/datasource/property-reader.service';
+import { LogService } from 'src/app/service/log.service';
 
 @Component({
   selector: 'app-admin',
@@ -17,6 +18,7 @@ export class AdminPage {
     private adminSrv: AdminService,
     private toastCtrl: ToastController,
     private props: PropertyReader,
+    private logger: LogService
   ) {
   }
 
@@ -97,7 +99,7 @@ export class AdminPage {
    * save a toggle
    */
   saveToggle(toggleName: string) {
-    console.log('saving toggle ' + toggleName);
+    this.logger.log('saving toggle ' + toggleName);
 
     const t = this.toggles.getToggle(toggleName);
     this.adminSrv.saveToggle(t)

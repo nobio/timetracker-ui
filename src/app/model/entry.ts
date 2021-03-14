@@ -14,7 +14,7 @@ export class Entry {
 
     /** getter for a localized time */
     public get localEntryDate(): string {
-        // console.log('get localDate from orig date: ' + this.entryDate);
+        // this.logger.log('get localDate from orig date: ' + this.entryDate);
         if (this.entryDate) {
             return moment(this.entryDate).format('YYYY-MM-DDTHH:mm:ss.SSSZ');
         } else {
@@ -22,7 +22,7 @@ export class Entry {
         }
     }
     public set localEntryDate(dt: string) {
-        // console.log('set localDate: ' + dt);
+        // this.logger.log('set localDate: ' + dt);
         this.entryDate = moment(dt).format('YYYY-MM-DDTHH:mm:ss.SSSZ');
     }
 
@@ -58,8 +58,6 @@ export class Entry {
             this.ion_color = 'secondary'
             this.direction_translated = 'gehen';
         }
-
-        console.log(this);
 
         return this;
     }

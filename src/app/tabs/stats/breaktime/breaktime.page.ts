@@ -33,13 +33,13 @@ export class BreaktimePage {
 
   set realData(realData: boolean) {
     if(realData != this._realData) {
-      //console.log('set realData: ' + realData);
+      //this.logger.log('set realData: ' + realData);
       this._realData = realData;
       this.loadGraphData();
     }
   }
   get realData(): boolean {
-    //console.log('get realData: ' + this._realData);
+    //this.logger.log('get realData: ' + this._realData);
     return this._realData;
   }
 
@@ -97,12 +97,12 @@ export class BreaktimePage {
 
     this.statsSrv.loadStatisticBreakTime(this._realData, this._interval)
       .then((resp: BreakTimes) => {
-        //console.log(resp);
+        //this.logger.log(resp);
         this.updateGraph(resp, this.lineChart);
       })
       .catch((error: string) => {
         Util.alert(this.alertCtrl, error);
-        //console.error(error)
+        //this.logger.error(error)
       });
 
     }

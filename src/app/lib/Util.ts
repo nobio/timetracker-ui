@@ -3,10 +3,12 @@ import { AlertController } from '@ionic/angular';
 import { Plugins } from "@capacitor/core";
 import { GeoCoord } from '../model/geo-coord';
 import moment, { Moment } from 'moment';
+import { LogService } from '../service/log.service';
 
 const { Geolocation } = Plugins;
 
 export class Util {
+
   // =================================== Helper functions END ======================================
 
   /**
@@ -54,7 +56,6 @@ export class Util {
       dt.setDate(1);
       dt.setMonth(0);
     }
-    console.log(dt)
 
     return dt.toISOString();
   }
@@ -167,7 +168,6 @@ export class Util {
           resolve(geoCoord);
         })
         .catch(err => reject(err))
-
     });
   }
 }
