@@ -6,6 +6,14 @@ const routes: Routes = [
   {
     path: '',
     component: AboutPage,
+  },
+  {
+    path: 'logs',
+    loadChildren: () => import('./logs/logs.module').then( m => m.LogsPageModule)
+  },
+  {
+    path: 'logs/logs-details/:id',
+    loadChildren: () => import('./logs-details/logs-details.module').then( m => m.LogsDetailsPageModule)
   }
 ];
 

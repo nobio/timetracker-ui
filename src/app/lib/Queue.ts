@@ -6,7 +6,7 @@ import { Injectable } from '@angular/core';
 export class Queue<T> {
 
     private storage: T[] = [];
-    private capacity: number = 10;
+    private capacity: number = 50;
 
     constructor() { }
 

@@ -119,7 +119,6 @@ export class StatsPage {
    * initializes Graph object; data and labels are missing!
    */
   private initGraph() {
-    this.logger.log(CHART_TYPES[0])
     this.lineChart = new Chart(this.lineCanvas.nativeElement, {
       type: CHART_TYPES[0],
       responsive: true,

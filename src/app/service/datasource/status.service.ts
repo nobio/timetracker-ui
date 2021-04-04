@@ -35,11 +35,11 @@ export class StatusService extends BaseService {
       .pipe(retry(2), catchError(super.handleError))
       .subscribe(
         (res) => {
-          this.logger.log(res);
+          this.logger.log(res, false, 'ping');
           this.serverInfo.isOnline = true;
         },
         (err) => {
-          this.logger.log("failed to check online status " + err);
+          this.logger.log("failed to check online status " + err, true, 'Ping');
           this.serverInfo.isOnline = false;
         }
       );
@@ -72,7 +72,7 @@ export class StatusService extends BaseService {
       .subscribe(
         (status) => {
           this.serverInfo.isSlackEnabled = status['NOTIFICATION_SLACK'];
-          this.logger.log("loaded toggle status: " + status);
+          this.logger.log("loaded toggle status: " + JSON.stringify(status));
         },
         (err) => {
           this.serverInfo.isSlackEnabled = false;

@@ -1,34 +1,53 @@
 import { Injectable } from '@angular/core';
 import { Queue } from 'src/app/lib/Queue';
+import { LogEntity } from '../model/log-entity';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class LogService {
-  private queue: Queue<string>;
-  
-  private constructor(queue: Queue<string>) { 
+  private queue: Queue<LogEntity>;
+
+  private constructor(queue: Queue<LogEntity>) {
     this.queue = queue;
   }
 
-  public log(msg: any): void {
+  public log(msg: any, shouldQueue: boolean = true, topic: string = 'Log'): void {
     const message = this.convertToString(msg);
     console.log(this.convertToString(msg));
-    this.queue.enqueue(message);
+
+    if (shouldQueue) {
+      const logEntry: LogEntity = {
+        id: Math.random().toString(36).substr(2, 9),
+        timestamp: new Date,
+        severity: "log",
+        topic,
+        text: message,
+      };
+      this.queue.enqueue(logEntry);
+    }
   }
 
-  public error(msg: any): void {
+  public error(msg: any, topic: string = 'Error'): void {
     const message = this.convertToString(msg);
     console.trace();
     console.error(this.convertToString(msg));
-    this.queue.enqueue(message);
+
+    const logEntry: LogEntity = {
+      id: Math.random().toString(36).substr(2, 9),
+      timestamp: new Date,
+      severity: "error",
+      topic,
+      text: message,
+    };
+    this.queue.enqueue(logEntry);
   }
 
   private convertToString(msg: any): string {
-    if(typeof(msg) === 'string') return msg;
-    if(typeof(msg) === 'number') return `${msg}`;
-    if(typeof(msg) === 'object') return JSON.stringify(msg);
+    if (typeof (msg) === 'string') return msg;
+    if (typeof (msg) === 'number') return `${msg}`;
+    if (typeof (msg) === 'object') return JSON.stringify(msg);
     return msg.toString();
   }
 }

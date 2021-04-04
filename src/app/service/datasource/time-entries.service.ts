@@ -127,7 +127,7 @@ export class TimeEntriesService extends BaseService {
     this.logger.log(
       `calling ${
       super.baseUrl + "/api/entries/" + this.selectedEntry.id
-      } to delete entry`
+      } to delete entry`, true, 'Eintrag Löschen'
     );
     return this.httpClient
       .delete(
@@ -141,7 +141,7 @@ export class TimeEntriesService extends BaseService {
    * saves the selected Entry to databse
    */
   saveSelectedEntry(): Observable<any> {
-    this.logger.log(`calling ${super.baseUrl + "/api/entries/" + this.selectedEntry.id} to save entry`);
+    this.logger.log(`calling ${super.baseUrl + "/api/entries/" + this.selectedEntry.id} to save entry`, true, 'Eintrag Speichern');
     return this.httpClient
       .put(
         super.baseUrl + "/api/entries/" + this.selectedEntry.id,
@@ -155,7 +155,6 @@ export class TimeEntriesService extends BaseService {
    * loads a list of dates with some data errors in them
    */
   loadDatesWithFailedEntries(): Promise<any> {
-    this.logger.log("loading entries with failures...");
     let failDates: FailDate[] = new Array();
 
     return new Promise((resolve, reject) => {
@@ -176,8 +175,8 @@ export class TimeEntriesService extends BaseService {
           },
           (err) => {
             super.handleError(err);
-            this.logger.log(err);
-            this.logger.log(err._body);
+            this.logger.error(err, 'Tage mit Fehlerhafen Einträgen');
+            this.logger.error(err._body, 'Tage mit Fehlerhafen Einträgen');
             this.selectedEntry = new Entry(); // clear selected entry
             reject(
               "Fehler beim Laden der Daten mit fehlerhaften Einträgen: " + err
