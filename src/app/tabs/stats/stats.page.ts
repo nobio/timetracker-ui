@@ -9,7 +9,7 @@ import { TimeBox } from 'src/app/model/time-box';
 import { PropertyReader } from 'src/app/service/datasource/property-reader.service';
 import { LogService } from 'src/app/service/log.service';
 
-const CHART_TYPES: Array<string> = ['line', 'bar', 'radar'];
+const CHART_TYPES: Array<string> = ['line'/*, 'bar', 'radar'*/];
 
 @Component({
   selector: 'app-stats',
