@@ -1,27 +1,28 @@
+import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import { AlertController } from '@ionic/angular';
+import moment from 'moment';
 import { Observable } from "rxjs";
-
 import { catchError, retry } from "rxjs/operators";
 import { Entry } from "src/app/model/entry";
 import { EntryStatistics } from "src/app/model/entry-statistics";
-import { BaseService } from "./base.service";
-import { HttpClient } from "@angular/common/http";
 import { FailDate } from "src/app/model/fail-date";
-import moment from 'moment';
-import { AlertController } from '@ionic/angular';
 import { LogService } from "../log.service";
+import { DatabaseService } from "./database.service";
+
 
 @Injectable({
   providedIn: "root",
 })
-export class TimeEntriesService extends BaseService {
+export class TimeEntriesService extends DatabaseService {
   public entriesByDate: Entry[] = [];
   public selectedEntry: Entry = new Entry();
   public entryStats: EntryStatistics = new EntryStatistics();
 
-  constructor(public httpClient: HttpClient, alertCtrl: AlertController, logger: LogService) {
-    super(alertCtrl, logger);
+  constructor(protected httpClient: HttpClient, protected alertCtrl: AlertController, protected logger: LogService) {
+    super(httpClient, alertCtrl, logger);
   }
+
 
   /**
    * load entries for a given date
@@ -29,12 +30,10 @@ export class TimeEntriesService extends BaseService {
    */
   loadEntriesByDate(dt: string): void {
     this.logger.log("loading entries for " + dt);
-    this.logger.log(super.baseUrl);
     const date: number = new Date(dt).getTime();
 
-    this.httpClient
-      .get<Entry[]>(super.baseUrl + "/api/entries?dt=" + date, this.httpOptions)
-      .pipe(retry(2)/*, catchError(super.handleError)*/)
+    this.GET(`/api/entries?dt=${date}`)
+      .pipe(retry(2))
       .subscribe((data: Entry[]) => {
         this.entriesByDate = [];
         data.forEach((element) => {
@@ -50,7 +49,7 @@ export class TimeEntriesService extends BaseService {
     if (!id) return;
 
     this.httpClient
-      .get<Entry>(super.baseUrl + "/api/entries/" + id, this.httpOptions)
+      .get(`/api/entries/${id}`)
       .pipe(retry(2), catchError(super.handleError))
       .subscribe(
         (data) => {
@@ -65,6 +64,7 @@ export class TimeEntriesService extends BaseService {
   }
 
   createEntry(entry: Entry, dt: string) {
+
     const body = {
       direction: entry.direction,
       datetime: entry.entryDate,
@@ -72,8 +72,7 @@ export class TimeEntriesService extends BaseService {
       latitude: entry.latitude,
     };
 
-    this.httpClient
-      .post(super.baseUrl + "/api/entries/", body, this.httpOptions)
+    this.POST('/api/entries/', body)
       //.pipe(retry(2), catchError(super.handleError))
       .subscribe(
         (res) => {
@@ -104,8 +103,7 @@ export class TimeEntriesService extends BaseService {
 
     const date: number = new Date(dt).getTime();
 
-    this.httpClient
-      .get(super.baseUrl + "/api/entries?busy=" + date, this.httpOptions)
+    this.GET(`/api/entries?busy=${date}`)
       .pipe(retry(2), catchError(super.handleError))
       .subscribe((data) => {
         this.logger.log(data);
@@ -124,16 +122,7 @@ export class TimeEntriesService extends BaseService {
    * @param id unique id of time entry
    */
   deleteSelectedEntry(): Observable<any> {
-    this.logger.log(
-      `calling ${
-      super.baseUrl + "/api/entries/" + this.selectedEntry.id
-      } to delete entry`, true, 'Eintrag Löschen'
-    );
-    return this.httpClient
-      .delete(
-        super.baseUrl + "/api/entries/" + this.selectedEntry.id,
-        this.httpOptions
-      )
+    return this.DELETE(`/api/entries/${this.selectedEntry.id}`)
       .pipe(retry(2), catchError(super.handleError));
   }
 
@@ -141,13 +130,8 @@ export class TimeEntriesService extends BaseService {
    * saves the selected Entry to databse
    */
   saveSelectedEntry(): Observable<any> {
-    this.logger.log(`calling ${super.baseUrl + "/api/entries/" + this.selectedEntry.id} to save entry`, true, 'Eintrag Speichern');
-    return this.httpClient
-      .put(
-        super.baseUrl + "/api/entries/" + this.selectedEntry.id,
-        JSON.stringify(this.selectedEntry.decodeEntry()),
-        this.httpOptions
-      )
+    return this.PUT(
+      `/api/entries/${this.selectedEntry.id}`, this.selectedEntry.decodeEntry())
       .pipe(retry(2), catchError(super.handleError));
   }
 
@@ -158,8 +142,7 @@ export class TimeEntriesService extends BaseService {
     let failDates: FailDate[] = new Array();
 
     return new Promise((resolve, reject) => {
-      this.httpClient
-        .get(super.baseUrl + "/api/entries/error/dates", this.httpOptions)
+      this.GET('/api/entries/error/dates')
         .pipe(retry(2), catchError(super.handleError))
         .subscribe(
           (data: []) => {

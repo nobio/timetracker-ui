@@ -1,18 +1,18 @@
-import { Injectable } from "@angular/core";
-import { Toggles } from "src/app/model/toggles";
-import { Toggle } from "src/app/model/toggle";
 import { HttpClient } from "@angular/common/http";
-import { BaseService } from "./base.service";
-import { catchError, retry } from "rxjs/operators";
+import { Injectable } from "@angular/core";
 import { AlertController } from '@ionic/angular';
+import { catchError, retry } from "rxjs/operators";
+import { Toggle } from "src/app/model/toggle";
+import { Toggles } from "src/app/model/toggles";
 import { LogService } from "../log.service";
+import { DatabaseService } from "./database.service";
 
 @Injectable({
   providedIn: "root",
 })
-export class AdminService extends BaseService {
-  constructor(public httpClient: HttpClient, alertCtrl: AlertController, logger: LogService) {
-    super(alertCtrl, logger);
+export class AdminService extends DatabaseService {
+  constructor(protected httpClient: HttpClient, protected alertCtrl: AlertController, protected logger: LogService) {
+    super(httpClient, alertCtrl, logger);
   }
 
   /**
@@ -24,8 +24,7 @@ export class AdminService extends BaseService {
     this.logger.log("calculate busy time");
 
     return new Promise((resolve, reject) => {
-      this.httpClient
-        .put(super.baseUrl + "/api/stats", this.httpOptions)
+      this.PUT('/api/stats')
         .pipe(retry(2), catchError(super.handleError))
         .subscribe(
           (res) => {
@@ -49,18 +48,14 @@ export class AdminService extends BaseService {
    */
   dumpTimeEntries(): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.httpClient
-        .post(super.baseUrl + "/api/entries/dump", this.httpOptions)
+      this.POST('/api/entries/dump')
         .pipe(retry(2), catchError(super.handleError))
         .subscribe(
           (res) => {
             this.logger.log(res);
             this.logger.log("successfully dumped data");
             resolve(
-              res["size"] +
-                " Datensätze erfolgreich als Datei gesichert (" +
-                res["filename"] +
-                ")"
+              `res["size"] Datensätze erfolgreich als Datei gesichert (${res["filename"]})`
             );
           },
           (err) => {
@@ -82,15 +77,14 @@ export class AdminService extends BaseService {
     this.logger.log("backup data");
 
     return new Promise((resolve, reject) => {
-      this.httpClient
-        .post(super.baseUrl + "/api/entries/backup", this.httpOptions)
+      this.POST('/api/entries/backup')
         .pipe(retry(2), catchError(super.handleError))
         .subscribe(
           (res) => {
             this.logger.log(JSON.stringify(res));
             this.logger.log("successfully backed up data to MongoDB");
             resolve(
-              res["size"] + " Datensätze erfolgreich als MongoDB gesichert"
+              `${res["size"]} Datensätze erfolgreich als MongoDB gesichert`
             );
           },
           (err) => {
@@ -110,8 +104,7 @@ export class AdminService extends BaseService {
    */
   loadToggles(): Promise<Toggles> {
     return new Promise((resolve, reject) => {
-      this.httpClient
-        .get(super.baseUrl + "/api/toggles/", this.httpOptions)
+      this.GET('/api/toggles/')
         .pipe(retry(2), catchError(super.handleError))
         .subscribe(
           (toggles: typeof Toggles[]) => {
@@ -134,12 +127,7 @@ export class AdminService extends BaseService {
 
   saveToggle(toggle: Toggle): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.httpClient
-        .put(
-          super.baseUrl + "/api/toggles/" + toggle.id,
-          toggle,
-          this.httpOptions
-        )
+      this.PUT(`/api/toggles/${toggle.id}`, toggle)
         .pipe(retry(2), catchError(super.handleError))
         .subscribe(
           (res) => {
@@ -158,8 +146,7 @@ export class AdminService extends BaseService {
     this.logger.log("evaluate data");
 
     return new Promise((resolve, reject) => {
-      this.httpClient
-        .post(super.baseUrl + "/api/entries/error/evaluate", this.httpOptions)
+      this.POST('/api/entries/error/evaluate')
         .pipe(retry(2), catchError(super.handleError))
         .subscribe(
           (res) => {

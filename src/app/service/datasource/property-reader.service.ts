@@ -3,26 +3,24 @@ import { Injectable } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 import { catchError, retry } from 'rxjs/operators';
 import { LogService } from '../log.service';
-import { BaseService } from './base.service';
+import { DatabaseService } from './database.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class PropertyReader extends BaseService {
+export class PropertyReader extends DatabaseService {
 
   private properties: Map<string, string> = new Map<string, string>();
 
   /** temporary hard coded protperties */
 
-  constructor(public httpClient: HttpClient, alertCtrl: AlertController, logger: LogService) {
-    super(alertCtrl, logger);
+  constructor(protected httpClient: HttpClient, protected alertCtrl: AlertController, protected logger: LogService) {
+    super(httpClient, alertCtrl, logger);
     this.loadAll();
   }
 
   private loadAll(): void {
-    this.logger.log(`${super.baseUrl}/api/properties`);
-    this.httpClient
-      .get(`${super.baseUrl}/api/properties`, this.httpOptions)
+    this.GET('/api/properties')
       .pipe(retry(2), catchError(super.handleError))
       .subscribe(
         (data: any) => {
@@ -49,8 +47,7 @@ export class PropertyReader extends BaseService {
     // store locally
     this.properties.set(key, value);
     // store in DB (async)
-    this.httpClient
-      .put(`${super.baseUrl}/api/properties/${key}?value=${value}`, null, this.httpOptions)
+    this.PUT(`/api/properties/${key}?value=${value}`, null)
       .pipe(retry(1), catchError(super.handleError))
       .subscribe(
         (data: any) => { },

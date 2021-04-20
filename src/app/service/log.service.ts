@@ -32,6 +32,7 @@ export class LogService {
   public error(msg: any, topic: string = 'Error'): void {
     const message = this.convertToString(msg);
     console.trace();
+    console.log('fuck me')
     console.error(this.convertToString(msg));
 
     const logEntry: LogEntity = {

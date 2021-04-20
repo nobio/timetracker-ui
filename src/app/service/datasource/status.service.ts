@@ -1,37 +1,27 @@
+import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { BaseService } from "./base.service";
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { AlertController } from '@ionic/angular';
 import { catchError, retry } from "rxjs/operators";
 import { ServerInformation } from "src/app/model/server-information";
-import { AlertController } from '@ionic/angular';
 import { LogService } from "../log.service";
+import { DatabaseService } from "./database.service";
 
 @Injectable({
   providedIn: "root",
 })
-export class StatusService extends BaseService {
+export class StatusService extends DatabaseService {
   public serverInfo = new ServerInformation();
 
-  constructor(public httpClient: HttpClient, alertCtrl: AlertController, logger: LogService) {
-    super(alertCtrl, logger);
-    this.serverInfo.baseUrl = this.baseUrl;
+  constructor(protected httpClient: HttpClient, protected alertCtrl: AlertController, protected logger: LogService) {
+    super(httpClient, alertCtrl, logger);
   }
 
   /**
    * asks for online status and stores in in local variable "onlineStatus"
    */
   ping(): void {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'rejectUnauthorized': 'false',
-        'insecure': 'true',
-      })
-    }
   
-    this.httpClient
-      .get(super.baseUrl + "/api/ping", httpOptions)
+    this.GET('/api/ping')
       .pipe(retry(2), catchError(super.handleError))
       .subscribe(
         (res) => {
@@ -50,8 +40,7 @@ export class StatusService extends BaseService {
    */
   loadServerInformation() {
 
-    this.httpClient
-      .get(super.baseUrl + "/api/version", this.httpOptions)
+    this.GET('/api/version')
       .pipe(retry(2), catchError(super.handleError))
       .subscribe(
         (data) => {
@@ -66,8 +55,7 @@ export class StatusService extends BaseService {
         }
       );
 
-    this.httpClient
-      .get(super.baseUrl + "/api/toggles/status", this.httpOptions)
+    this.GET('/api/toggles/status')
       .pipe(retry(2), catchError(super.handleError))
       .subscribe(
         (status) => {

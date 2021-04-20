@@ -1,19 +1,19 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AlertController } from '@ionic/angular';
-import { BaseService } from './base.service';
-import { HttpClient } from '@angular/common/http';
-import { retry, catchError } from 'rxjs/operators';
+import { catchError, retry } from 'rxjs/operators';
 import { GeoTrack } from 'src/app/model/geo-track';
 import { GeoTrackingMetaData } from 'src/app/model/geo-tracking-meta-data';
 import { LogService } from '../log.service';
+import { DatabaseService } from './database.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class GeoTrackService extends BaseService {
+export class GeoTrackService extends DatabaseService {
 
-  constructor(public httpClient: HttpClient, alertCtrl: AlertController, logger: LogService) {
-    super(alertCtrl, logger);
+  constructor(protected httpClient: HttpClient, protected alertCtrl: AlertController, protected logger: LogService) {
+    super(httpClient, alertCtrl, logger);
   }
 
   loadGeoTrackingDataByDate(dateStart: string, dateEnd: string): Promise<Array<GeoTrack>> {
@@ -21,34 +21,34 @@ export class GeoTrackService extends BaseService {
     let geoTrackingData: GeoTrack[] = new Array();
 
     return new Promise((resolve, reject) => {
-      this.httpClient
-        .get(super.baseUrl + "/api/geotrack/" + "?dateStart=" + dateStart + "&dateEnd=" + dateEnd, this.httpOptions)
-        .pipe(retry(2), catchError(super.handleError))
-        .subscribe(
-          // Attention: the data from database is not deliberately of type GeoTrack; 
-          // it's just a coincidence.... maybe needs to be changed
-          (data: Array<GeoTrack>) => {
 
-            data.forEach((el) => {
-              geoTrackingData.push({
-                longitude: el.longitude,
-                latitude: el.latitude,
-                accuracy: el.accuracy,
-                altitude: el.altitude,
-                date: el.date,
-                source: el.source,
-              });
+      this.GET(`/api/geotrack/?dateStart=${dateStart}&dateEnd=${dateEnd}`)
+      .pipe(retry(2), catchError(super.handleError))
+      .subscribe(
+        // Attention: the data from database is not deliberately of type GeoTrack; 
+        // it's just a coincidence.... maybe needs to be changed
+        (data: Array<GeoTrack>) => {
+
+          data.forEach((el) => {
+            geoTrackingData.push({
+              longitude: el.longitude,
+              latitude: el.latitude,
+              accuracy: el.accuracy,
+              altitude: el.altitude,
+              date: el.date,
+              source: el.source,
             });
+          });
 
-            resolve(geoTrackingData);
+          resolve(geoTrackingData);
 
-          },
-          (err) => {
-            super.handleError(err);
-            this.logger.log(err);
-            reject("Fehler beim Laden der Daten mit fehlerhaften Einträgen: " + err);
-          }
-        );
+        },
+        (err) => {
+          super.handleError(err);
+          this.logger.error(err);
+          reject("Fehler beim Laden der Daten mit fehlerhaften Einträgen: " + err);
+        }
+      );
     });
   };
 
@@ -66,8 +66,7 @@ export class GeoTrackService extends BaseService {
    */
   loadGeoTrackingMetaDataByDate(dateStart: string, dateEnd: string): Promise<GeoTrackingMetaData> {
     return new Promise((resolve, reject) => {
-      this.httpClient
-        .get(super.baseUrl + "/api/geotrack/metadata" + "?dateStart=" + dateStart + "&dateEnd=" + dateEnd, this.httpOptions)
+      this.GET(`/api/geotrack/metadata?dateStart=${dateStart}&dateEnd=${dateEnd}`)
         .pipe(retry(2), catchError(super.handleError))
         .subscribe(
           // Attention: the data from database is not deliberately of type GeoTrack; 
@@ -78,7 +77,7 @@ export class GeoTrackService extends BaseService {
           },
           (err) => {
             super.handleError(err);
-            this.logger.log(err);
+            this.logger.error(err);
             reject("Fehler beim Laden der Daten mit fehlerhaften Einträgen: " + err);
           }
         );

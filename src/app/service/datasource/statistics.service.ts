@@ -1,21 +1,21 @@
-import { Injectable } from '@angular/core';
-import { BaseService } from './base.service';
 import { HttpClient } from '@angular/common/http';
-import { TimeUnit, Direction } from 'src/app/model/enums';
-import { Statistics } from 'src/app/model/statistics';
+import { Injectable } from '@angular/core';
+import { AlertController } from '@ionic/angular';
 import { catchError, retry } from 'rxjs/operators';
 import { Util } from 'src/app/lib/Util';
 import { BreakTimes } from 'src/app/model/break-time';
-import { AlertController } from '@ionic/angular';
+import { Direction, TimeUnit } from 'src/app/model/enums';
+import { Statistics } from 'src/app/model/statistics';
 import { LogService } from '../log.service';
+import { DatabaseService } from './database.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class StatisticsService extends BaseService {
+export class StatisticsService extends DatabaseService {
 
-  constructor(public httpClient: HttpClient, alertCtrl: AlertController, logger: LogService) {
-    super(alertCtrl, logger);
+  constructor(protected httpClient: HttpClient, protected alertCtrl: AlertController, protected logger: LogService) {
+    super(httpClient, alertCtrl, logger);
   }
 
   /**
@@ -26,14 +26,14 @@ export class StatisticsService extends BaseService {
    * 
    * @param date as ISO string representation of the given data
    * @param unit time unit: year, month, week, day
- */
+   */
   loadStatisticDataByUnit(date: string, unit: TimeUnit, accumulate: boolean, fill: boolean): Promise<Statistics> {
     let dateInMilliSeconds = Util.convertToDateInMillis(date, unit);
     const timeUnit: string = TimeUnit[unit];
     //this.logger.log("loading data for " + date + "(" + dateInMilliSeconds + ") and time unit " + unit) + "(" + timeUnit + ")";
 
     return new Promise<Statistics>((resolve, reject) => {
-      this.httpClient.get(`${super.baseUrl}/api/stats/${dateInMilliSeconds}/${timeUnit}?accumulate=${accumulate}&fill=${fill}`, this.httpOptions)
+      this.GET(`/api/stats/${dateInMilliSeconds}/${timeUnit}?accumulate=${accumulate}&fill=${fill}`)
         .pipe(retry(2), catchError(super.handleError))
         .subscribe(
           res => {
@@ -62,7 +62,7 @@ export class StatisticsService extends BaseService {
   loadStatisticBreakTime(realData: boolean, interval: number): Promise<BreakTimes> {
     return new Promise<BreakTimes>((resolve, reject) => {
 
-      this.httpClient.get(super.baseUrl + "/api/statistics/breaktime/" + interval + "?real=" + realData, this.httpOptions)
+      this.GET(`/api/statistics/breaktime/${interval}?real=${realData}`)
         .pipe(retry(2), catchError(super.handleError))
         .subscribe(
           (breaktimeData: []) => {
@@ -100,7 +100,7 @@ export class StatisticsService extends BaseService {
     this.logger.log("loading data for time unit " + unit) + "(" + timeUnit + ")";
 
     return new Promise<Statistics>((resolve, reject) => {
-      this.httpClient.get(super.baseUrl + "/api/statistics/aggregate?timeUnit=" + timeUnit, this.httpOptions)
+      this.GET(`/api/statistics/aggregate?timeUnit=${timeUnit}`)
         .pipe(retry(2), catchError(super.handleError))
         .subscribe(
           res => {
@@ -131,12 +131,12 @@ export class StatisticsService extends BaseService {
 
     return new Promise<Statistics>((resolve, reject) => {
 
-      let url: string = super.baseUrl + "/api/statistics/histogram/" + interval;
+      let url: string = `/api/statistics/histogram/${interval}`;
       if (direction) {
-        url += "?direction=" + direction
+        url += `?direction=${direction}`;
       }
 
-      this.httpClient.get(url, this.httpOptions)
+      this.GET(url)
         .pipe(retry(2), catchError(super.handleError))
         .subscribe(
           (histogramData: []) => {
