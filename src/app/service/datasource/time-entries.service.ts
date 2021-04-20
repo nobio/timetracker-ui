@@ -48,8 +48,7 @@ export class TimeEntriesService extends DatabaseService {
     this.logger.log(`loading entry ${id}`);
     if (!id) return;
 
-    this.httpClient
-      .get(`/api/entries/${id}`)
+    this.GET(`/api/entries/${id}`)
       .pipe(retry(2), catchError(super.handleError))
       .subscribe(
         (data) => {
