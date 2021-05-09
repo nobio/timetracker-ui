@@ -4,6 +4,7 @@ import { AlertController } from '@ionic/angular';
 import { catchError, retry } from "rxjs/operators";
 import { Toggle } from "src/app/model/toggle";
 import { Toggles } from "src/app/model/toggles";
+import { User } from "src/app/model/user";
 import { LogService } from "../log.service";
 import { DatabaseService } from "./database.service";
 
@@ -158,6 +159,88 @@ export class AdminService extends DatabaseService {
             super.handleError(err);
             this.logger.log("failed to save toggle " + err);
             reject("Error while saving toggle " + err);
+          }
+        );
+    });
+  }
+
+  loadAllUser(): Promise<Array<User>> {
+    this.logger.log('loading Users');
+
+    const resp: Array<User> = new Array<User>();
+    return new Promise((resolve, reject) => {
+
+      this.GET('/api/users')
+        .pipe(retry(2), catchError(super.handleError))
+        .subscribe(
+          (users) => {
+            users.forEach(user => {
+              //console.log(user)
+              resp.push(new User(user.id, user.name, user.mailAddress, user.password))
+            });
+            resolve(resp);
+          },
+          (err) => {
+            super.handleError(err);
+            reject("Error loading users " + err);
+          }
+        );
+    });
+  }
+
+  loadUser(id: string): Promise<User> {
+    return new Promise((resolve, reject) => {
+      this.GET(`/api/users/${id}`)
+        .pipe(retry(2), catchError(super.handleError))
+        .subscribe(
+          (user) => resolve(new User(user.id, user.name, user.mailAddress, user.password)),
+          (err) => {
+            super.handleError(err);
+            reject("Error loading user " + id + " " + err);
+          }
+        );
+    });
+  }
+
+  updateUser(user: User): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.PUT(`/api/users/${user.id}`, {
+        name: user.name,
+        mailAddress: user.mailAddress
+      })
+        .subscribe(
+          (user) => resolve(),
+          (err) => {
+            super.handleError(err);
+            reject("Error updating user " + user.name + " " + err);
+          }
+        );
+    });
+  }
+
+  setPassword(user: User): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.PUT(`/api/users/${user.id}/password`, {
+        password: user.password
+      })
+        .subscribe(
+          (user) => resolve(),
+          (err) => {
+            super.handleError(err);
+            reject("Error updating user " + user.name + " " + err);
+          }
+        );
+    });
+  }
+
+  deleteUser(user: User): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.DELETE(`/api/users/${user.id}`)
+        .subscribe(
+          (x) => resolve(),
+          (err) => {
+            super.handleError(err);
+            reject("Error deleting user " + user.name + " " + err);
           }
         );
     });

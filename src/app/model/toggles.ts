@@ -1,4 +1,3 @@
-import { LogService } from "../service/log.service";
 import { Toggle } from "./toggle";
 
 export class Toggles {

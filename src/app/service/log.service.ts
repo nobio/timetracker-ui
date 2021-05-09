@@ -29,7 +29,9 @@ export class LogService {
     }
   }
 
-  public error(msg: any, topic: string = 'Error'): void {
+  public error(msg: any | null, topic: string = 'Error'): void {
+    if(!msg) return;
+    
     const message = this.convertToString(msg);
     console.trace();
     console.error(this.convertToString(msg));

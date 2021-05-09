@@ -6,7 +6,15 @@ const routes: Routes = [
   {
     path: '',
     component: AdminPage,
-  }
+  },
+  {
+    path: 'user',
+    loadChildren: () => import('./users/users.module').then( m => m.UsersPageModule)
+  },
+  {
+    path: 'user/:id',
+    loadChildren: () => import('./user/user.module').then( m => m.UserPageModule)
+  },
 ];
 
 @NgModule({
