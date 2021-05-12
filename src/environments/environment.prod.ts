@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  baseUrl: 'http://nobio.myhome-server.de:30030',
+  baseUrl: 'https://nobio.myhome-server.de:30043',
 };
