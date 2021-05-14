@@ -3,9 +3,9 @@ import { Injectable } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 import { catchError, retry } from 'rxjs/operators';
 import { Util } from 'src/app/lib/Util';
-import { BreakTimes } from 'src/app/model/break-time';
-import { Direction, TimeUnit } from 'src/app/model/enums';
-import { Statistics } from 'src/app/model/statistics';
+import { BreakTimes } from 'src/app/models/break-time';
+import { Direction, TimeUnit } from 'src/app/models/enums';
+import { Statistics } from 'src/app/models/statistics';
 import { LogService } from '../log.service';
 import { DatabaseService } from './database.service';
 

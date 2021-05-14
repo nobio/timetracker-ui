@@ -2,8 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 import { catchError, retry } from 'rxjs/operators';
-import { GeoTrack } from 'src/app/model/geo-track';
-import { GeoTrackingMetaData } from 'src/app/model/geo-tracking-meta-data';
+import { GeoTrack } from 'src/app/models/geo-track';
+import { GeoTrackingMetaData } from 'src/app/models/geo-tracking-meta-data';
 import { LogService } from '../log.service';
 import { DatabaseService } from './database.service';
 

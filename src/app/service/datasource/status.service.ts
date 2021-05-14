@@ -2,7 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { AlertController } from '@ionic/angular';
 import { catchError, retry } from "rxjs/operators";
-import { ServerInformation } from "src/app/model/server-information";
+import { ServerInformation } from "src/app/models/server-information";
 import { LogService } from "../log.service";
 import { DatabaseService } from "./database.service";
 

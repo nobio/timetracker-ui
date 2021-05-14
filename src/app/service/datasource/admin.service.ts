@@ -2,9 +2,9 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { AlertController } from '@ionic/angular';
 import { catchError, retry } from "rxjs/operators";
-import { Toggle } from "src/app/model/toggle";
-import { Toggles } from "src/app/model/toggles";
-import { User } from "src/app/model/user";
+import { Toggle } from "src/app/models/toggle";
+import { Toggles } from "src/app/models/toggles";
+import { User } from "src/app/models/user";
 import { LogService } from "../log.service";
 import { DatabaseService } from "./database.service";
 

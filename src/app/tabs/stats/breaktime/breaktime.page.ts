@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NavController, AlertController } from '@ionic/angular';
 import { StatisticsService } from 'src/app/service/datasource/statistics.service';
-import { BreakTimes } from 'src/app/model/break-time';
+import { BreakTimes } from 'src/app/models/break-time';
 import { Chart } from 'chart.js';
 import { Util } from 'src/app/lib/Util';
 

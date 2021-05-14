@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { TimeUnit } from '../../model/enums';
+import { TimeUnit } from '../../models/enums';
 import { Util } from 'src/app/lib/Util';
 import * as Leaflet from "leaflet";
 import { antPath } from "leaflet-ant-path";
 import "leaflet/dist/images/marker-shadow.png";
 import "leaflet/dist/images/marker-icon-2x.png";
 import { GeoTrackService } from 'src/app/service/datasource/geo-track.service';
-import { GeoTrack } from 'src/app/model/geo-track';
+import { GeoTrack } from 'src/app/models/geo-track';
 import moment from 'moment';
-import { TimeBox } from 'src/app/model/time-box';
+import { TimeBox } from 'src/app/models/time-box';
 import { ToastController } from '@ionic/angular';
 
 @Component({

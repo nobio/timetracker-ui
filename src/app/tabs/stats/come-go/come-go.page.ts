@@ -2,8 +2,8 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { NavController, AlertController, ActionSheetController } from '@ionic/angular';
 import { Chart } from "chart.js";
 import { StatisticsService } from 'src/app/service/datasource/statistics.service';
-import { Statistics } from 'src/app/model/statistics';
-import { Direction } from 'src/app/model/enums';
+import { Statistics } from 'src/app/models/statistics';
+import { Direction } from 'src/app/models/enums';
 import { Util } from 'src/app/lib/Util';
 
 @Component({

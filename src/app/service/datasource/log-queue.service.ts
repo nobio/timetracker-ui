@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Queue } from 'src/app/lib/Queue';
-import { LogEntity } from 'src/app/model/log-entity';
+import { LogEntity } from 'src/app/models/log-entity';
 
 @Injectable({
   providedIn: 'root'

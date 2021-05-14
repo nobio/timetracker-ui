@@ -4,9 +4,9 @@ import { AlertController } from '@ionic/angular';
 import moment from 'moment';
 import { Observable } from "rxjs";
 import { catchError, retry } from "rxjs/operators";
-import { Entry } from "src/app/model/entry";
-import { EntryStatistics } from "src/app/model/entry-statistics";
-import { FailDate } from "src/app/model/fail-date";
+import { Entry } from "src/app/models/entry";
+import { EntryStatistics } from "src/app/models/entry-statistics";
+import { FailDate } from "src/app/models/fail-date";
 import { LogService } from "../log.service";
 import { DatabaseService } from "./database.service";
 

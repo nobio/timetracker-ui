@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
-import { TimeUnit } from "src/app/model/enums";
-import { Statistics } from "src/app/model/statistics";
+import { TimeUnit } from "src/app/models/enums";
+import { Statistics } from "src/app/models/statistics";
 import { isDate } from "util";
 import { Chart } from "chart.js";
 import { NavController, AlertController } from '@ionic/angular';

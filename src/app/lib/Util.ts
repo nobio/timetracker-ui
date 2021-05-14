@@ -1,7 +1,7 @@
-import { TimeUnit } from '../model/enums';
+import { TimeUnit } from '../models/enums';
 import { AlertController } from '@ionic/angular';
 import { Plugins } from "@capacitor/core";
-import { GeoCoord } from '../model/geo-coord';
+import { GeoCoord } from '../models/geo-coord';
 import moment, { Moment } from 'moment';
 import { LogService } from '../service/log.service';
 

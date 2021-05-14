@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Toggles } from '../../model/toggles';
+import { Toggles } from '../../models/toggles';
 import { ToastController } from '@ionic/angular';
 import { AdminService } from '../../service/datasource/admin.service';
 import { PropertyReader } from 'src/app/service/datasource/property-reader.service';

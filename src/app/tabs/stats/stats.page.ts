@@ -1,11 +1,11 @@
 import { Component, ViewChild } from '@angular/core';
 import { AlertController } from '@ionic/angular';
-import { TimeUnit, SwipeDirection } from '../../model/enums';
+import { TimeUnit, SwipeDirection } from '../../models/enums';
 import { StatisticsService } from '../../service/datasource/statistics.service';
-import { Statistics } from '../../model/statistics';
+import { Statistics } from '../../models/statistics';
 import { Chart } from 'chart.js';
 import { Util } from '../../lib/Util';
-import { TimeBox } from 'src/app/model/time-box';
+import { TimeBox } from 'src/app/models/time-box';
 import { PropertyReader } from 'src/app/service/datasource/property-reader.service';
 import { LogService } from 'src/app/service/log.service';
 

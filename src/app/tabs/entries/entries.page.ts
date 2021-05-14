@@ -1,6 +1,6 @@
 import { Component } from "@angular/core";
 import { TimeEntriesService } from "../../service/datasource/time-entries.service";
-import { Entry } from "../../model/entry";
+import { Entry } from "../../models/entry";
 import { ToastController } from "@ionic/angular";
 import { ActivatedRoute } from "@angular/router";
 import moment from 'moment';

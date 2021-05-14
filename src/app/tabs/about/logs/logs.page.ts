@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { LogEntity } from 'src/app/model/log-entity';
+import { LogEntity } from 'src/app/models/log-entity';
 import { LogQueueService } from 'src/app/service/datasource/log-queue.service';
 
 @Component({

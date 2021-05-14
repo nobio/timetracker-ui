@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Queue } from 'src/app/lib/Queue';
-import { LogEntity } from '../model/log-entity';
+import { LogEntity } from '../models/log-entity';
 
 
 @Injectable({
