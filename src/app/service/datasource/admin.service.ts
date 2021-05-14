@@ -34,7 +34,7 @@ export class AdminService extends DatabaseService {
           },
           (err) => {
             super.handleError(err);
-            this.logger.log("failed to recalculate " + err);
+            this.logger.error("failed to recalculate " + err);
             reject("Fehler bei Berechnung: " + err);
           }
         );
@@ -61,7 +61,7 @@ export class AdminService extends DatabaseService {
           },
           (err) => {
             super.handleError(err);
-            this.logger.log("failed to save file " + err);
+            this.logger.error("failed to save file " + err);
             reject("Fehler bei der Sicherung der Daten: " + err);
           }
         );
@@ -90,7 +90,7 @@ export class AdminService extends DatabaseService {
           },
           (err) => {
             super.handleError(err);
-            this.logger.log("failed to backup data to MongoDB " + err);
+            this.logger.error("failed to backup data to MongoDB " + err);
             reject("Fehler bei der Sicherung der Daten in MongoDB: " + err);
           }
         );
@@ -119,7 +119,7 @@ export class AdminService extends DatabaseService {
             resolve(to);
           },
           (err) => {
-            this.logger.log("failed to load toggles " + err);
+            this.logger.error("failed to load toggles " + err);
             reject("Toggles konnten nicht geladen werden: " + err);
           }
         );
@@ -128,15 +128,15 @@ export class AdminService extends DatabaseService {
 
   saveToggle(toggle: Toggle): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.PUT(`/api/toggles/${toggle.id}`, toggle)
+      this.PUT(`/api/toggles/${toggle.id}`, toggle, {}, false)
         .pipe(retry(2), catchError(super.handleError))
         .subscribe(
           (res) => {
-            this.logger.log("successfully saved a toggle");
+            //this.logger.log("successfully saved a toggle");
             resolve("Toggle " + toggle.name + " has successfully been saved");
           },
           (err) => {
-            this.logger.log("failed to save toggle " + err);
+            this.logger.error("failed to save toggle " + err);
             reject("Error while saving toggle " + err);
           }
         );
@@ -157,7 +157,7 @@ export class AdminService extends DatabaseService {
           },
           (err) => {
             super.handleError(err);
-            this.logger.log("failed to save toggle " + err);
+            this.logger.error("failed to save toggle " + err);
             reject("Error while saving toggle " + err);
           }
         );
@@ -182,6 +182,7 @@ export class AdminService extends DatabaseService {
           },
           (err) => {
             super.handleError(err);
+            this.logger.error("failed to load all users " + err);
             reject("Error loading users " + err);
           }
         );
@@ -196,6 +197,7 @@ export class AdminService extends DatabaseService {
           (user) => resolve(new User(user.id, user.name, user.mailAddress, user.password)),
           (err) => {
             super.handleError(err);
+            this.logger.error(`failed to load user ${id}: ${err}`);
             reject("Error loading user " + id + " " + err);
           }
         );
@@ -212,6 +214,7 @@ export class AdminService extends DatabaseService {
           (user) => resolve(),
           (err) => {
             super.handleError(err);
+            this.logger.error(`failed to update user ${user}: ${err}`);
             reject("Error updating user " + user.name + " " + err);
           }
         );
@@ -227,6 +230,7 @@ export class AdminService extends DatabaseService {
           (user) => resolve(),
           (err) => {
             super.handleError(err);
+            this.logger.error(`failed to set password of user ${user}: ${err}`);
             reject("Error updating user " + user.name + " " + err);
           }
         );
@@ -240,6 +244,7 @@ export class AdminService extends DatabaseService {
           (x) => resolve(),
           (err) => {
             super.handleError(err);
+            this.logger.error(`failed to delete user ${user}: ${err}`);
             reject("Error deleting user " + user.name + " " + err);
           }
         );

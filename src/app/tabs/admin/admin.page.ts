@@ -99,7 +99,7 @@ export class AdminPage {
    * save a toggle
    */
   saveToggle(toggleName: string) {
-    this.logger.log('saving toggle ' + toggleName);
+    // this.logger.log('saving toggle ' + toggleName);
 
     const t = this.toggles.getToggle(toggleName);
     this.adminSrv.saveToggle(t)

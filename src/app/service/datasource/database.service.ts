@@ -30,24 +30,24 @@ export class DatabaseService {
     })
   }
 
-  protected GET(path: string, options: object = {}): Observable<any> {
+  protected GET(path: string, options: object = {}, doLogging: boolean = true): Observable<any> {
     const url = DatabaseService.BASEURL + path;
     this.logger.log(`GET ${url}`);
     return this.httpClient.get(url, this.httpOptions);
   }
-  protected PUT(path: string, body: object = null, options: object = {}): Observable<any> {
+  protected PUT(path: string, body: object = null, options: object = {}, doLogging: boolean = true): Observable<any> {
     const url = DatabaseService.BASEURL + path;
     this.logger.log(`PUT ${url} body: ${JSON.stringify(body, null, 2)}`);
     this.logger.log(body);
     return this.httpClient.put(url, body, this.httpOptions);
   }
-  protected POST(path: string, body: object = null, options: object = {}): Observable<any> {
+  protected POST(path: string, body: object = null, options: object = {}, doLogging: boolean = true): Observable<any> {
     const url = DatabaseService.BASEURL + path;
     this.logger.log(`POST ${url} body: ${JSON.stringify(body, null, 2)}`);
     this.logger.log(body);
     return this.httpClient.post(url, body, this.httpOptions);
   }
-  protected DELETE(path: string, options: object = {}): Observable<any> {
+  protected DELETE(path: string, options: object = {}, doLogging: boolean = true): Observable<any> {
     const url = DatabaseService.BASEURL + path;
     this.logger.log(`DELETE ${url}`);
     return this.httpClient.delete(url, this.httpOptions);
