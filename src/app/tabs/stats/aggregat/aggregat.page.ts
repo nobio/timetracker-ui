@@ -4,9 +4,9 @@ import { Statistics } from "src/app/models/statistics";
 import { isDate } from "util";
 import { Chart } from "chart.js";
 import { NavController, AlertController } from '@ionic/angular';
-import { StatisticsService } from 'src/app/service/datasource/statistics.service';
+import { StatisticsService } from 'src/app/services/datasource/statistics.service';
 import { Util } from 'src/app/lib/Util';
-import { LogService } from "src/app/service/log.service";
+import { LogService } from "src/app/services/log.service";
 
 @Component({
   selector: "app-aggregat",

@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { Toggles } from '../../models/toggles';
 import { ToastController } from '@ionic/angular';
-import { AdminService } from '../../service/datasource/admin.service';
-import { PropertyReader } from 'src/app/service/datasource/property-reader.service';
-import { LogService } from 'src/app/service/log.service';
+import { AdminService } from '../../services/datasource/admin.service';
+import { PropertyReader } from 'src/app/services/datasource/property-reader.service';
+import { LogService } from 'src/app/services/log.service';
 
 @Component({
   selector: 'app-admin',

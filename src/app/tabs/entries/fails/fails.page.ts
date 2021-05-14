@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
-import { TimeEntriesService } from "src/app/service/datasource/time-entries.service";
+import { TimeEntriesService } from "src/app/services/datasource/time-entries.service";
 import { FailDate } from 'src/app/models/fail-date';
-import { LogService } from "src/app/service/log.service";
+import { LogService } from "src/app/services/log.service";
 
 @Component({
   selector: "app-fails",

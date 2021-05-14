@@ -3,7 +3,7 @@ import { AlertController } from '@ionic/angular';
 import { Plugins } from "@capacitor/core";
 import { GeoCoord } from '../models/geo-coord';
 import moment, { Moment } from 'moment';
-import { LogService } from '../service/log.service';
+import { LogService } from '../services/log.service';
 
 const { Geolocation } = Plugins;
 

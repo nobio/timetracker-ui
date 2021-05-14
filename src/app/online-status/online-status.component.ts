@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { StatusService } from '../service/datasource/status.service';
+import { StatusService } from '../services/datasource/status.service';
 
 @Component({
   selector: 'online-status-component',

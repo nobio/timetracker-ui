@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { LogEntity } from 'src/app/models/log-entity';
-import { LogQueueService } from 'src/app/service/datasource/log-queue.service';
+import { LogQueueService } from 'src/app/services/datasource/log-queue.service';
 
 @Component({
   selector: 'app-logs-details',

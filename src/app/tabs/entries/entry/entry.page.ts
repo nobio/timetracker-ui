@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { AlertController, NavController } from '@ionic/angular';
-import { TimeEntriesService } from 'src/app/service/datasource/time-entries.service';
+import { TimeEntriesService } from 'src/app/services/datasource/time-entries.service';
 import { ActivatedRoute } from '@angular/router';
 import { Util } from 'src/app/lib/Util';
 

@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AlertController, NavController } from '@ionic/angular';
 import { User } from 'src/app/models/user';
-import { AdminService } from 'src/app/service/datasource/admin.service';
-import { LogService } from 'src/app/service/log.service';
+import { AdminService } from 'src/app/services/datasource/admin.service';
+import { LogService } from 'src/app/services/log.service';
 
 @Component({
   selector: 'app-user',

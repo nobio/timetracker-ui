@@ -1,13 +1,13 @@
 import { Component, ViewChild } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 import { TimeUnit, SwipeDirection } from '../../models/enums';
-import { StatisticsService } from '../../service/datasource/statistics.service';
+import { StatisticsService } from '../../services/datasource/statistics.service';
 import { Statistics } from '../../models/statistics';
 import { Chart } from 'chart.js';
 import { Util } from '../../lib/Util';
 import { TimeBox } from 'src/app/models/time-box';
-import { PropertyReader } from 'src/app/service/datasource/property-reader.service';
-import { LogService } from 'src/app/service/log.service';
+import { PropertyReader } from 'src/app/services/datasource/property-reader.service';
+import { LogService } from 'src/app/services/log.service';
 
 const CHART_TYPES: Array<string> = ['line'/*, 'bar', 'radar'*/];
 

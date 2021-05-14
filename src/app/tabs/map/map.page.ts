@@ -5,7 +5,7 @@ import * as Leaflet from "leaflet";
 import { antPath } from "leaflet-ant-path";
 import "leaflet/dist/images/marker-shadow.png";
 import "leaflet/dist/images/marker-icon-2x.png";
-import { GeoTrackService } from 'src/app/service/datasource/geo-track.service';
+import { GeoTrackService } from 'src/app/services/datasource/geo-track.service';
 import { GeoTrack } from 'src/app/models/geo-track';
 import moment from 'moment';
 import { TimeBox } from 'src/app/models/time-box';

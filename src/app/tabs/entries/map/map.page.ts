@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-import { TimeEntriesService } from "src/app/service/datasource/time-entries.service";
+import { TimeEntriesService } from "src/app/services/datasource/time-entries.service";
 import * as Leaflet from "leaflet";
 //import { antPath } from "leaflet-ant-path";
 import "leaflet/dist/images/marker-shadow.png";
