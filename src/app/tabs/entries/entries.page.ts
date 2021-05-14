@@ -4,7 +4,7 @@ import { Entry } from "../../models/entry";
 import { ToastController } from "@ionic/angular";
 import { ActivatedRoute } from "@angular/router";
 import moment from 'moment';
-import { Util } from 'src/app/lib/Util';
+import { Util } from 'src/app/libs/Util';
 
 @Component({
   selector: "app-entries",

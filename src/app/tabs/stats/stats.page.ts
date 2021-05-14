@@ -4,7 +4,7 @@ import { TimeUnit, SwipeDirection } from '../../models/enums';
 import { StatisticsService } from '../../services/datasource/statistics.service';
 import { Statistics } from '../../models/statistics';
 import { Chart } from 'chart.js';
-import { Util } from '../../lib/Util';
+import { Util } from '../../libs/Util';
 import { TimeBox } from 'src/app/models/time-box';
 import { PropertyReader } from 'src/app/services/datasource/property-reader.service';
 import { LogService } from 'src/app/services/log.service';

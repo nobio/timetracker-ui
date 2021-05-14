@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { EntriesPage as AboutPage } from './entries.page';
 
 import { EntriesPageRoutingModule } from './entries-routing.module';
-import { OnlineStatusComponentModule } from '../../online-status/online-status.module';
+import { OnlineStatusComponentModule } from '../../components/online-status/online-status.module';
 
 @NgModule({
   imports: [

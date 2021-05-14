@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TimeUnit } from '../../models/enums';
-import { Util } from 'src/app/lib/Util';
+import { Util } from 'src/app/libs/Util';
 import * as Leaflet from "leaflet";
 import { antPath } from "leaflet-ant-path";
 import "leaflet/dist/images/marker-shadow.png";

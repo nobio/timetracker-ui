@@ -3,7 +3,7 @@ import { NavController, AlertController } from '@ionic/angular';
 import { StatisticsService } from 'src/app/services/datasource/statistics.service';
 import { BreakTimes } from 'src/app/models/break-time';
 import { Chart } from 'chart.js';
-import { Util } from 'src/app/lib/Util';
+import { Util } from 'src/app/libs/Util';
 
 @Component({
   selector: 'app-breaktime',

@@ -4,7 +4,7 @@ import { Chart } from "chart.js";
 import { StatisticsService } from 'src/app/services/datasource/statistics.service';
 import { Statistics } from 'src/app/models/statistics';
 import { Direction } from 'src/app/models/enums';
-import { Util } from 'src/app/lib/Util';
+import { Util } from 'src/app/libs/Util';
 
 @Component({
   selector: 'app-come-go',

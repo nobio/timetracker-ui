@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 import { catchError, retry } from 'rxjs/operators';
-import { Util } from 'src/app/lib/Util';
+import { Util } from 'src/app/libs/Util';
 import { BreakTimes } from 'src/app/models/break-time';
 import { Direction, TimeUnit } from 'src/app/models/enums';
 import { Statistics } from 'src/app/models/statistics';

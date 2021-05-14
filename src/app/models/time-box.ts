@@ -1,5 +1,5 @@
 import moment, { Moment } from 'moment';
-import { Util } from '../lib/Util';
+import { Util } from '../libs/Util';
 import { TimeUnit } from './enums';
 
 export class TimeBox {

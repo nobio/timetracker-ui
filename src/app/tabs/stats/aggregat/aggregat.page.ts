@@ -5,7 +5,7 @@ import { isDate } from "util";
 import { Chart } from "chart.js";
 import { NavController, AlertController } from '@ionic/angular';
 import { StatisticsService } from 'src/app/services/datasource/statistics.service';
-import { Util } from 'src/app/lib/Util';
+import { Util } from 'src/app/libs/Util';
 import { LogService } from "src/app/services/log.service";
 
 @Component({

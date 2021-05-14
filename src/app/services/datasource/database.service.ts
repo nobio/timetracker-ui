@@ -2,7 +2,7 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { Injectable } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 import { Observable, throwError } from 'rxjs';
-import { Util } from 'src/app/lib/Util';
+import { Util } from 'src/app/libs/Util';
 import { environment } from 'src/environments/environment';
 import { LogService } from '../log.service';
 
