@@ -48,7 +48,7 @@ export class UserPage {
           text: 'Löschen',
           handler: () => {
             this.adminService.deleteUser(this.user)
-            .then(e => this.navCtrl.navigateBack('/tabs/admin/user'))
+            .then(e => this.navCtrl.navigateBack('/members/admin/user'))
             .catch(err => this.logger.error(err))
           }
         }
@@ -65,7 +65,7 @@ export class UserPage {
       this.adminService.setPassword(this.user) 
     }
     this.adminService.updateUser(this.user)
-      .then(e => this.navCtrl.navigateBack('/tabs/admin/user'))
+      .then(e => this.navCtrl.navigateBack('/members/admin/user'))
       .catch(err => this.logger.error(err))
   }
 

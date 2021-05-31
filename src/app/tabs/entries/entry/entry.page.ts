@@ -41,7 +41,7 @@ export class EntryPage {
           text: 'Löschen',
           handler: () => {
             this.timeEntryService.deleteSelectedEntry()
-              .subscribe(e => this.navCtrl.navigateBack('/tabs/entries'));
+              .subscribe(e => this.navCtrl.navigateBack('/members/entries'));
           }
         }
       ]
@@ -52,7 +52,7 @@ export class EntryPage {
 
   save(): void {
     this.timeEntryService.saveSelectedEntry()
-      .subscribe(e => this.navCtrl.navigateBack('/tabs/entries'));
+      .subscribe(e => this.navCtrl.navigateBack('/members/entries'));
   }
 
   setGeoLocation(): void {

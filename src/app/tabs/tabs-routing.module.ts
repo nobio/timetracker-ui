@@ -4,7 +4,12 @@ import { TabsPage } from './tabs.page';
 
 const routes: Routes = [
   {
-    path: 'tabs',
+    path: '',
+    redirectTo: '/members/entries',
+    pathMatch: 'full'
+  },
+  {
+    path: '',
     component: TabsPage,
     children: [
       {
@@ -31,17 +36,7 @@ const routes: Routes = [
         path: 'about',
         loadChildren: () => import('./about/about.module').then(m => m.AboutPageModule)
       },
-      {
-        path: '',
-        redirectTo: '/tabs/entries',
-        pathMatch: 'full'
-      }
     ]
-  },
-  {
-    path: '',
-    redirectTo: '/tabs/entries',
-    pathMatch: 'full'
   },
 ];
 
