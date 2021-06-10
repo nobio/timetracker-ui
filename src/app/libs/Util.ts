@@ -149,7 +149,7 @@ export class Util {
       animated: true,
     });
 
-    (await alert).present()
+    (await alert).present();
   }
 
   /**
