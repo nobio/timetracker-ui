@@ -176,7 +176,7 @@ export class AdminService extends DatabaseService {
           (users) => {
             users.forEach(user => {
               //console.log(user)
-              resp.push(new User(user.id, user.name, user.mailAddress, user.password))
+              resp.push(new User(user.id, user.name, user.username, user.mailAddress, user.password))
             });
             resolve(resp);
           },
@@ -194,7 +194,7 @@ export class AdminService extends DatabaseService {
       this.GET(`/api/users/${id}`)
         .pipe(retry(2), catchError(super.handleError))
         .subscribe(
-          (user) => resolve(new User(user.id, user.name, user.mailAddress, user.password)),
+          (user) => resolve(new User(user.id, user.name, user.username, user.mailAddress, user.password)),
           (err) => {
             super.handleError(err);
             this.logger.error(`failed to load user ${id}: ${err}`);

@@ -18,7 +18,12 @@
       <!-- Name -->
       <ion-item>
         <ion-label position="stacked" color="primary">Name <ion-icon name="pencil-outline"></ion-icon></ion-label>
-        <ion-input type="username" disabled="true" [(ngModel)]="user.name"></ion-input>
+        <ion-input disabled="false" [(ngModel)]="user.name"></ion-input>
+      </ion-item>
+      <!-- Username -->
+      <ion-item>
+        <ion-label position="stacked" color="primary">Username <ion-icon name="pencil-outline"></ion-icon></ion-label>
+        <ion-input type="username" disabled="true" [(ngModel)]="user.username"></ion-input>
       </ion-item>
       <!-- Mail Address -->
       <ion-item>
