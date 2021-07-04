@@ -1,7 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { JwtHelperService } from '@auth0/angular-jwt';
 import { AlertController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 import { BehaviorSubject, from, Observable, of } from 'rxjs';
@@ -9,7 +8,6 @@ import { catchError, switchMap, take, tap } from 'rxjs/operators';
 import { LogService } from '../log.service';
 import { DatabaseService } from './database.service';
 
-const helper = new JwtHelperService();
 const ACCESS_TOKEN_KEY = 'access-token';
 const REFRESH_TOKEN_KEY = 'refresh-token'
 
@@ -29,7 +27,7 @@ export class AuthService extends DatabaseService {
     protected logger: LogService
   ) {
     super(httpClient, alertCtrl, logger);
-
+    console.log('Constructor of AuthService');
     storage.create()
     this.loadToken()
   }
@@ -92,7 +90,7 @@ export class AuthService extends DatabaseService {
       }),
       tap(_ => {
         this.isAuthenticated.next(false);
-        this.router.navigateByUrl('/', { replaceUrl: true });
+        this.router.navigateByUrl('/timetracker', { replaceUrl: true });
       })
     ).subscribe();
   }
