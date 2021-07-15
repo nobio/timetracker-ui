@@ -90,7 +90,7 @@ export class AuthService extends DatabaseService {
       }),
       tap(_ => {
         this.isAuthenticated.next(false);
-        this.router.navigateByUrl('/timetracker', { replaceUrl: true });
+        this.router.navigateByUrl('/', { replaceUrl: true });
       })
     ).subscribe();
   }
