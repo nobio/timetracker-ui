@@ -4,6 +4,7 @@ import { ToastController } from '@ionic/angular';
 import { AdminService } from '../../services/datasource/admin.service';
 import { PropertyReader } from 'src/app/services/datasource/property-reader.service';
 import { LogService } from 'src/app/services/log.service';
+import { AuthService } from 'src/app/services/datasource/auth.service';
 
 @Component({
   selector: 'app-admin',
@@ -18,7 +19,8 @@ export class AdminPage {
     private adminSrv: AdminService,
     private toastCtrl: ToastController,
     private props: PropertyReader,
-    private logger: LogService
+    private logger: LogService,
+    private authSrv: AuthService
   ) {
   }
 
@@ -105,6 +107,13 @@ export class AdminPage {
     this.adminSrv.saveToggle(t)
       //.then(toggle => this.presentMessage(toggle, 1000))
       .catch(err => this.presentMessage(err, 2000));
+  }
+
+  /**
+   * logs out this session
+   */
+  logout() {
+    this.authSrv.logout();
   }
 
   /**
