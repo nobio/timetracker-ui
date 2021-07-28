@@ -22,7 +22,7 @@ export class StatusService extends DatabaseService {
   ping(): void {
   
     this.GET('/api/ping', {}, false)
-      .pipe(retry(2), catchError(super.handleError))
+      .pipe(retry(2))
       .subscribe(
         (res) => {
           this.logger.log(res, false, 'ping');

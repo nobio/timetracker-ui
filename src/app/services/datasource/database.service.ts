@@ -1,4 +1,4 @@
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpResponseBase } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 import { Observable, throwError } from 'rxjs';
@@ -16,7 +16,7 @@ export class DatabaseService {
   static readonly BASEURL: string = environment.baseUrl;
 
   constructor(protected httpClient: HttpClient, protected alertCtrl: AlertController, protected logger: LogService) {
-    console.log('conneting database to ' + DatabaseService.BASEURL);
+    console.log('conneting to api ' + DatabaseService.BASEURL);
   }
 
   // Http Options
@@ -38,13 +38,11 @@ export class DatabaseService {
   protected PUT(path: string, body: object = null, options: object = {}, doLogging: boolean = true): Observable<any> {
     const url = DatabaseService.BASEURL + path;
     this.logger.log(`PUT ${url} body: ${JSON.stringify(body, null, 2)}`);
-    this.logger.log(body);
     return this.httpClient.put(url, body, this.httpOptions);
   }
   protected POST(path: string, body: object = null, options: object = {}, doLogging: boolean = true): Observable<any> {
     const url = DatabaseService.BASEURL + path;
     this.logger.log(`POST ${url} body: ${JSON.stringify(body, null, 2)}`);
-    this.logger.log(body);
     return this.httpClient.post(url, body, this.httpOptions);
   }
   protected DELETE(path: string, options: object = {}, doLogging: boolean = true): Observable<any> {
@@ -56,22 +54,18 @@ export class DatabaseService {
 
   // Handle API errors
   protected handleError(error: HttpErrorResponse) {
+    if (!this.alertCtrl) this.alertCtrl = new AlertController();
 
-    if (error.error instanceof ErrorEvent) {
-      // A client-side or network error occurred. Handle it accordingly.
-      this.logger.error(error.error.message);
-      Util.alert(this.alertCtrl, error.error.message, 'Datenbankfehler', error.error.message)
-    } else {
-      // The backend returned an unsuccessful response code.
-      // The response body may contain clues as to what went wrong,
-      Util.alert(this.alertCtrl, error.error, 'Achtung!', 'Datenbankfehler')
+    Util.alert(this.alertCtrl, error.error.message + '!');
+
+    if (this.logger) {
       this.logger.error(`Backend returned code ${error.status}, body was: ${error.error}`);
-      this.logger.error(error)
+      this.logger.error(error);
     }
+
     // return an observable with a user-facing error message
     return throwError('Error: ' + JSON.stringify(error));
   };
 
 
 }
-
