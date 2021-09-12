@@ -56,7 +56,7 @@ export class DatabaseService {
   protected handleError(error: HttpErrorResponse) {
     if (!this.alertCtrl) this.alertCtrl = new AlertController();
 
-    Util.alert(this.alertCtrl, error.error.message + '!');
+    Util.alert(this.alertCtrl, error.message + '!');
 
     if (this.logger) {
       this.logger.error(`Backend returned code ${error.status}, body was: ${error.error}`);

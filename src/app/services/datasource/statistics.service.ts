@@ -61,11 +61,11 @@ export class StatisticsService extends DatabaseService {
    */
   loadStatisticBreakTime(realData: boolean, interval: number): Promise<BreakTimes> {
     return new Promise<BreakTimes>((resolve, reject) => {
-
-      this.GET(`/api/statistics/breaktime/${interval}?real=${realData}`)
+      this.GET(`/api/statistics/breaktime/${interval}?real=${realData}`)
         .pipe(retry(2), catchError(super.handleError))
         .subscribe(
           (breaktimeData: []) => {
+            console.log(`BREAK:TIME:DATA: ${breaktimeData}`)
             let data: any = [];
             for (let n = 0; n < breaktimeData.length; n++) {
               data.push(
@@ -81,7 +81,8 @@ export class StatisticsService extends DatabaseService {
             resolve(stats);
           },
           err => {
-            this.logger.log("failed to load break time data " + err);
+            this.logger.error(`failed to load break time data ${err}`);
+            console.error(`failed to load break time data ${err}`);
             reject("Fehler beim Laden der Pausendaten: " + err);
           }
         );

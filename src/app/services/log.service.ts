@@ -33,7 +33,7 @@ export class LogService {
     if(!msg) return;
     
     const message = this.convertToString(msg);
-    console.trace();
+    //console.trace();
     console.error(this.convertToString(msg));
 
     const logEntry: LogEntity = {
