@@ -10,7 +10,7 @@ import { LogService } from '../log.service';
   providedIn: 'root'
 })
 export class DatabaseService {
-  //static readonly BASEURL: string = 'https://nobio.myhome-server.de:30043';
+  //static readonly BASEURL: string = 'https://nobio.myhome-server.de';
   //static readonly BASEURL: string = 'http://nobio.myhome-server.de:30030';
   //static readonly BASEURL: string = 'http://localhost:30000';
   static readonly BASEURL: string = environment.baseUrl;

@@ -65,7 +65,6 @@ export class StatisticsService extends DatabaseService {
         .pipe(retry(2), catchError(super.handleError))
         .subscribe(
           (breaktimeData: []) => {
-            console.log(`BREAK:TIME:DATA: ${breaktimeData}`)
             let data: any = [];
             for (let n = 0; n < breaktimeData.length; n++) {
               data.push(
@@ -112,7 +111,7 @@ export class StatisticsService extends DatabaseService {
             stats.averageWorkingTime = res['average_working_time'];
             stats.plannedWorkingTime = res['planned_working_time'];
             stats.data = res['chart_data']['main'][0]['data'];
-
+            stats.compData = res['chart_data']['comp'][0]['data'];
             resolve(stats);
           },
           err => {

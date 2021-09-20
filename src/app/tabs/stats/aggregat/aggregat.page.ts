@@ -39,18 +39,29 @@ export class AggregatPage {
    */
   private initGraph() {
     this.lineChart = new Chart(this.lineCanvas.nativeElement, {
-      type: "bar",
+      type: "line",
       responsive: true,
       data: {
         datasets: [
           {
             label: "Anwesenheit",
-            fill: false,
-            backgroundColor: "rgba(255,159,64, 0.5)",
-            borderColor: "rgba(255,159,64, 0.9)",
-            hoverBackgroundColor: "rgba(255,159,64, 0.9)",
-            hoverBorderColor: "rgba(255,159,64, 0.9)",
+            fill: true,
+            backgroundColor: 'rgba(255,159,64, 0.5)',
+            borderColor: 'rgba(255,159,64, 0.9)',
+            borderWidth: 1,
+            hoverBackgroundColor: 'rgba(255,159,64, 0.9)',
+            hoverBorderColor: 'rgba(255,159,64, 0.9)',
             hoverBorderWidth: 4,
+            pointRadius: 0,
+          },
+          {
+            label: 'Durchschnitt',
+            pointRadius: 0,
+            borderColor: 'rgba(0,0,0, 0.9)',
+            borderWidth: 1,
+            //backgroundColor: 'rgba(255,250,225, 0.2)', // array should have same number of elements as number of dataset
+            fill: false,
+
           },
         ],
       },
@@ -74,7 +85,7 @@ export class AggregatPage {
   private loadGraphData() {
     this.statsSrv.loadStatisticAggregatedDataByUnit(this.timeUnit)
       .then((resp: Statistics) => {
-        this.logger.log(resp);
+        //this.logger.log(resp);
         this.updateGraph(resp, this.lineChart);
       })
       .catch((error: string) => {
@@ -89,6 +100,8 @@ export class AggregatPage {
   private updateGraph(stats: Statistics, lineChart: any) {
     let label: string[] = [];
     let data: number[] = [];
+    let movingAvg: number[] = [];
+
     let yMax: number = 0;
     let yMin: number = 1000;
 
@@ -101,6 +114,7 @@ export class AggregatPage {
         label.push(stats.data[n].x);
       }
       data.push(stats.data[n].y);
+      movingAvg.push(stats.compData[n].y);
 
       yMax = stats.data[n].y > yMax ? stats.data[n].y : yMax;
       yMin = stats.data[n].y < yMin ? stats.data[n].y : yMin;
@@ -112,28 +126,27 @@ export class AggregatPage {
 
     lineChart.data.labels = label;
     lineChart.data.datasets[0].data = data;
+    lineChart.data.datasets[1].data = movingAvg;
 
-    if (this.timeUnit == TimeUnit.weekday) {
-      const rndBackColor: string = this.getRandomRGBa();
-      const rndBorderColor: string = "rgba(0,0,0,0.7)";
+    //console.log(lineChart.data.datasets[0].data);
+    //console.log(lineChart.data.datasets[1].data);
 
-      lineChart.data.datasets[0].backgroundColor = rndBackColor;
-      lineChart.data.datasets[0].hoverBackgroundColor = rndBackColor;
-
-      lineChart.data.datasets[0].borderColor = rndBorderColor;
-      lineChart.data.datasets[0].hoverBorderColor = rndBorderColor;
+    if (this.timeUnit == TimeUnit.weekday || this.timeUnit == TimeUnit.year) {
+      lineChart.type = 'bar';
+    } else {
+      lineChart.type = 'line';
     }
 
     //lineChart.options.scales.yAxes[0].ticks.max = max;
     lineChart.options.scales.yAxes[0].ticks.min = yMin;
-    lineChart.data.datasets[0].label =
-      lineChart.options.scales.yAxes[0].ticks.min;
+    lineChart.data.datasets[0].label = lineChart.options.scales.yAxes[0].ticks.min;
     lineChart.update({
       duration: 600,
       easing: "easeOutBounce",
     });
   }
 
+  /*
   private getRandomRGBa(): string {
     const r = Math.floor(Math.random() * 256); // Random number between [0..255]
     const g = Math.floor(Math.random() * 256); // Random number between [0..255]
@@ -142,6 +155,7 @@ export class AggregatPage {
 
     return "rgba(" + r + "," + g + "," + b + "," + t + ")";
   }
+  */
 
   setTimeUnit() {
     //this.logger.log(this.timeUnit);
