@@ -33,3 +33,9 @@ export enum Direction {
   enter = "enter",
   none = ''
 }
+
+export enum LineStyle {
+  ANT = "ant",
+  VELOCITY = "velocity",
+  ALTITUDE = "altitude",
+}

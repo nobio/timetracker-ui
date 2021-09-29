@@ -30,17 +30,30 @@
           <ion-icon name="arrow-forward"></ion-icon>
         </ion-button>
         <ion-button color="light">
-          <ion-datetime displayFormat="DD.MM.YYYY" pickerFormat="DDD MMM YYYY" [(ngModel)]="date">
+          <ion-datetime displayFormat="DD.MM" pickerFormat="DDD MMM YYYY" [(ngModel)]="date">
           </ion-datetime>
         </ion-button>
+        <ion-fab horizontal="end" edge>
+          <ion-fab-button>
+            <ion-icon name="add"></ion-icon>
+          </ion-fab-button>
+          <ion-fab-list>
+            <ion-fab-button color="light" (click)="setStyle('ant')">
+              <ion-icon name="trending-up"></ion-icon>
+            </ion-fab-button>
+            <ion-fab-button color="light" (click)="setStyle('velocity')">
+              <ion-icon name="speedometer"></ion-icon>
+            </ion-fab-button>
+            <ion-fab-button color="light" (click)="setStyle('altitude')">
+              <ion-icon name="open"></ion-icon>
+            </ion-fab-button>
+          </ion-fab-list>
+        </ion-fab>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col>
         <ion-segment [(ngModel)]="timeUnit" color="primary">
-          <!--ion-segment-button (click)="setToday()" value="0">
-            Jahr
-          </ion-segment-button-->
           <ion-segment-button (click)="setDate()" value="0">
             Jahr
           </ion-segment-button>
@@ -54,7 +67,6 @@
             Tag
           </ion-segment-button>
         </ion-segment>
-
       </ion-col>
     </ion-row>
   </ion-grid>

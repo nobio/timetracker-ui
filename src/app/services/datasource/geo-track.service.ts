@@ -27,7 +27,7 @@ export class GeoTrackService extends DatabaseService {
       .subscribe(
         // Attention: the data from database is not deliberately of type GeoTrack; 
         // it's just a coincidence.... maybe needs to be changed
-        (data: Array<GeoTrack>) => {
+        (data: GeoTrack[]) => {
 
           data.forEach((el) => {
             geoTrackingData.push({
@@ -35,6 +35,7 @@ export class GeoTrackService extends DatabaseService {
               latitude: el.latitude,
               accuracy: el.accuracy,
               altitude: el.altitude,
+              velocity: el.velocity,
               date: el.date,
               source: el.source,
             });

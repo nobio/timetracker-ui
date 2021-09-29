@@ -3,6 +3,7 @@ export interface GeoTrack {
    latitude: number,
    accuracy: number,
    altitude: number,
+   velocity: number,
    date: string,
    source: string
 }
