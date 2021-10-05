@@ -26,37 +26,6 @@ export class MapPage {
   private circles: Array<any> = new Array();
   private defaultTrack: any;
   private circleOptions = { radius: 2, fillColor: "#ff9000", color: "#ff7800", weight: 2, opacity: 0 };
-  private antPathOptions: { delay: 400, dashArray: [10, 20], weight: 5, color: "#0000FF", pulseColor: "#FFFFFF", paused: false, reverse: false, hardwareAccelerated: true }
-  /*
-weight - Same as usual. 5 per default.
-outlineWidth - The width of the outline along the stroke in pixels. Can be 0. 1 per default.
-outlineColor - The color of the outline. 'black' per default.
-palette - The config for the palette gradient in the form of { <stop>: '<color>' }. { 0.0: 'green', 0.5: 'yellow', 1.0: 'red' } per default. Stop values should be between 0 and 1.
-min - The smallest z value expected in the data array. This maps to the 0 stop value. Any z values smaller than this will be considered as min when choosing the color to use.
-max - The largest z value expected in the data array. This maps to the 1 stop value. Any z values greater than this will be considered as max when choosing the color to use.
-  */
-  //private velocityPathOptions: { weight: 5, outlineWidth: 0.1, /* outlineColor: "#000000", */ palette: { 0.0: '#008800', 0.5: '#ffff00', 1.0: '#ff00ff' }, min: 10.0, max: 40.0 }
-  private velocityPathOptions: {
-    min: 0,
-    max: 100,
-    palette: {
-      0.0: '#008800',
-      0.1: '#ffff00',
-      0.2: '#1ab691',
-      0.3: '#65ff12',
-      0.4: '#ffffff',
-      0.5: '#000000',
-      0.6: '#987654',
-      0.7: '#0923c1',
-      0.8: '#a643bc',
-      0.9: '#87f100',
-      1.0: '#ff0000'
-    },
-    weight: 5,
-    outlineColor: '#000000',
-    outlineWidth: 1
-  }
-  private altitudePathOptions: { weight: 5, outlineWidth: 0.1, /* outlineColor: "#000000", */ palette: { 0.0: 'green', 0.2: 'yellow', 0.7: 'orange', 1.0: 'red' }, min: 0.0, max: 600.0 }
   private lineStyle: string = LineStyle.ANT;
   private reloadDataNeeded = false;
 
@@ -75,7 +44,9 @@ max - The largest z value expected in the data array. This maps to the 1 stop va
       altitude: 205,
       source: 'default',
       date: new Date().toISOString(),
-    }
+    };
+
+
   }
 
   // ==== getter/setter for date
@@ -92,7 +63,7 @@ max - The largest z value expected in the data array. This maps to the 1 stop va
   ionViewDidEnter() {
     // load today's data
     if (!this.map) {
-      this.map = Leaflet.map("map");
+      this.map = Leaflet.map('map');
     }
     Leaflet.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
       attribution: "edupala.com © Angular LeafLet",
@@ -164,18 +135,6 @@ max - The largest z value expected in the data array. This maps to the 1 stop va
     // load geo tracking data from database 
     await this.loadTrackingData();
 
-    // remove the old polyline layer, otherwise we add one layer over another
-    if (this.pathLayer) {
-      this.pathLayer.remove();
-    }
-    // remove old circles
-    this.circles.forEach(layer => {
-      layer.remove();
-    });
-    // resetting circle Marker
-    this.circles = new Array();
-
-
     // prepare path data
     let path: Array<Array<number>> = new Array();
     this.geoTrackData.forEach(gtd => {
@@ -196,12 +155,27 @@ max - The largest z value expected in the data array. This maps to the 1 stop va
       this.circles.push(circleLayer);
     });
 
-    if (this.lineStyle == LineStyle.ANT) this.pathLayer = antPath(path, this.antPathOptions).addTo(this.map);
-    if (this.lineStyle == LineStyle.VELOCITY) this.pathLayer = hotline(path, this.antPathOptions).addTo(this.map);
-    if (this.lineStyle == LineStyle.ALTITUDE) this.pathLayer = hotline(path, this.altitudePathOptions).addTo(this.map);
+    // remove the old polyline layer, otherwise we add one layer over another
+    if (this.pathLayer) {
+      this.pathLayer.remove();
+    }
+    // remove old circles
+    this.circles.forEach(layer => {
+      layer.remove();
+    });
+    // resetting circle Marker
+    this.circles = new Array();
 
+
+    if (this.lineStyle == LineStyle.ANT) this.pathLayer = antPath(path, this.getAntPathOptions(this.geoTrackData)).addTo(this.map);
+    if (this.lineStyle == LineStyle.VELOCITY) this.pathLayer = hotline(path, this.getVelocityPathOptions(this.geoTrackData)).addTo(this.map);
+    if (this.lineStyle == LineStyle.ALTITUDE) this.pathLayer = hotline(path, this.getAltitudePathOptions(this.geoTrackData)).addTo(this.map);
+
+    console.log("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+    console.log(this.pathLayer.options)
     console.log(path);
-    console.log(this.pathLayer)
+    console.log("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+
     this.map.fitBounds(this.pathLayer.getBounds());
   }
 
@@ -244,5 +218,33 @@ max - The largest z value expected in the data array. This maps to the 1 stop va
 
     return { dtStart: dtStart, dtEnd: dtEnd }
 
+  }
+
+  private getAntPathOptions(data: any): any {
+    return { delay: 400, dashArray: [10, 20], weight: 5, color: "#0000FF", pulseColor: "#FFFFFF", paused: false, reverse: false, hardwareAccelerated: true };
+  }
+
+  private getVelocityPathOptions(data: any): any {
+    const vel: number[] = data.map(d => d.velocity);
+    const max = Math.max(...vel);
+    const min = Math.min(...vel);
+
+    return { min: min, max: max, weight: 5, outlineColor: '#000000', outlineWidth: 1 }
+  }
+
+  private getAltitudePathOptions(data: GeoTrack[]): any {
+    const alt: number[] = data.map(d => d.altitude);
+    const max = Math.max(...alt);
+    const min = Math.min(...alt);
+
+    return {
+      weight: 5, outlineWidth: 0.1, /* outlineColor: "#000000", */ palette: {
+        0.0: 'green',
+        0.2: 'yellow',
+        0.7: 'orange',
+        1.0: 'red'
+      }, min: min, max: max
+
+    }
   }
 }
