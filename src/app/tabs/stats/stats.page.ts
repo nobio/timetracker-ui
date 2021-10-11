@@ -101,19 +101,6 @@ export class StatsPage {
     }
   }
 
-  toggleChartType() {
-    // line, bar, radar
-    const oldType = this.lineChart.config.type;
-    let idx = CHART_TYPES.indexOf(this.lineChart.config.type) + 1;
-    if (idx >= CHART_TYPES.length) idx = 0;
-    if (oldType === 'radar') this.initGraph();
-    this.lineChart.config.type = CHART_TYPES[idx];
-    this.lineChart.update({
-      duration: 600,
-      easing: "easeOutBounce"
-    });
-    if (oldType === 'radar') this.loadGraphData();
-  }
 
   /**
    * initializes Graph object; data and labels are missing!
