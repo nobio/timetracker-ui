@@ -5,6 +5,7 @@ import { ToastController } from "@ionic/angular";
 import { ActivatedRoute } from "@angular/router";
 import moment from 'moment';
 import { Util } from 'src/app/libs/Util';
+import { THIS_EXPR } from "@angular/compiler/src/output/output_ast";
 
 @Component({
   selector: "app-entries",
@@ -14,20 +15,21 @@ import { Util } from 'src/app/libs/Util';
 export class EntriesPage {
   private _date: string = new Date().toISOString();
   hasNoFailedDates: boolean = false;
+  enterTime: string = null;
+  goTime: string = null;
 
   constructor(
     public timeEntryService: TimeEntriesService,
     private toastCtrl: ToastController,
     private route: ActivatedRoute,
-  ) {}
+  ) { }
 
   ionViewWillEnter() {
     if (this.route.snapshot.params.date) this.date = moment(this.route.snapshot.params.date).toISOString();
     if (!this.date) this.date = new Date().toISOString();
     this.timeEntryService.loadEntriesByDate(this.date);
     this.timeEntryService.loadWorkingTime(this.date);
-    this.timeEntryService.loadDatesWithFailedEntries()
-      .then( (res:[]) => this.hasNoFailedDates = res.length === 0)
+    this.timeEntryService.loadDatesWithFailedEntries().then((res: []) => this.hasNoFailedDates = res.length === 0)
   }
 
   /** enters a new entry 'enter' to the database */
@@ -38,16 +40,42 @@ export class EntriesPage {
   public leave() {
     this.createEntry("go");
   }
+  public async addEnterGo() {
+    let date: string;
+    console.log(this.enterTime, this.goTime, this.date, `${moment(this.date).format('YYYY-MM-DD')} ${this.enterTime}` );
 
-  private async createEntry(direction: string) {
+    if(this.enterTime) {
+      if(moment(this.enterTime, "HH:mm", true).isValid()) {
+        date = moment(`${moment(this.date).format('YYYY-MM-DD')} ${this.enterTime}`).toISOString();
+        await this.createEntry("enter", date);
+      }
+    }
+    console.log(date);
+
+    if(this.goTime) {
+      if(moment(this.goTime, "HH:mm", true).isValid()) {
+        date = moment(`${moment(this.date).format('YYYY-MM-DD')} ${this.goTime}`).toISOString();
+        await this.createEntry("go", date);
+      }
+    }
+    console.log(date);
+  }
+  resetEnterGo() {
+    this.enterTime = null;
+    this.goTime = null;
+  }
+
+  private async createEntry(direction: string, date?: string) {
     const entry = {} as Entry;
     entry.direction = direction;
-    entry.entryDate = this.date;
+    entry.entryDate = (date) ? date : this.date;
 
     try {
       const geoCoord = await Util.lookUpGeoLocation();
-      entry.latitude = geoCoord.latitude;
-      entry.longitude = geoCoord.longitude;
+      if (geoCoord) {
+        entry.latitude = geoCoord.latitude;
+        entry.longitude = geoCoord.longitude;
+      }
       await this.timeEntryService.createEntry(entry, this.date);
     } catch (error) {
       this.presentMessage(error, 20000);

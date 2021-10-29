@@ -167,7 +167,8 @@ export class Util {
           }
           resolve(geoCoord);
         })
-        .catch(err => reject(err))
+        //.catch(err => reject(err))
+        .catch(err => resolve(null));
     });
   }
 }

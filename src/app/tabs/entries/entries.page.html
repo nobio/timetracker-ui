@@ -42,10 +42,38 @@
           <ion-icon name="hammer"></ion-icon>
         </ion-button>
         <ion-button color="light">
-          <ion-datetime size="large" displayFormat="HH:mm" pickerFormat="DDD MMM YYYY H mm" [(ngModel)]="date"></ion-datetime>
+          <ion-datetime size="large" displayFormat="HH:mm" pickerFormat="DDD MMM YYYY H mm" [(ngModel)]="date">
+          </ion-datetime>
         </ion-button>
         <!------- Date picker used for enter/leave buttons ------>
         <!--ion-datetime displayFormat="HH:mm" pickerFormat="DDD MMM YYYY H mm" [(ngModel)]="date"></ion-datetime-->
+      </ion-col>
+    </ion-row>
+    <hr/>
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-grid>
+            <ion-row>
+              <ion-col>
+                <ion-label>von</ion-label>
+                <ion-input type="time" [(ngModel)]="enterTime"></ion-input>
+              </ion-col>
+              <ion-col>
+                <ion-label>bis</ion-label>
+                <ion-input type="time" [(ngModel)]="goTime"></ion-input>
+              </ion-col>
+              <ion-col>
+                <ion-button (click)="addEnterGo()">
+                  <ion-icon name="checkmark"></ion-icon>
+                </ion-button>
+                <ion-button (click)="resetEnterGo()">
+                  <ion-icon name="refresh"></ion-icon>
+                </ion-button>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
       </ion-col>
     </ion-row>
     <ion-row>

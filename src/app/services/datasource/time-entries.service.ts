@@ -78,7 +78,7 @@ export class TimeEntriesService extends DatabaseService {
           this.loadEntriesByDate(dt);
         },
         (err) => {
-          super.handleError(err)
+          //super.handleError(err)
           this.loadEntriesByDate(dt);
           throw new Error(err);
         }
@@ -103,7 +103,7 @@ export class TimeEntriesService extends DatabaseService {
     const date: number = new Date(dt).getTime();
 
     this.GET(`/api/entries?busy=${date}`)
-      .pipe(retry(2), catchError(super.handleError))
+      .pipe(retry(2), /*catchError(super.handleError)*/)
       .subscribe((data) => {
         this.logger.log(data);
         this.entryStats.totalWorkload = this.millisecToReadbleTime(
