@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
@@ -24,22 +24,25 @@ export class AuthService extends DatabaseService {
     private storage: Storage,
     protected httpClient: HttpClient,
     protected alertCtrl: AlertController,
-    protected logger: LogService
+    protected logger: LogService,
   ) {
     super(httpClient, alertCtrl, logger);
     console.log('Constructor of AuthService');
-    storage.create()
     this.loadToken()
   }
 
   async loadToken() {
-    this.logger.log('load token');
+    this.logger.log('load access token...');
+    await this.storage.create();
     const token = await this.storage.get(ACCESS_TOKEN_KEY);
-    if (token && token.value) {
-      this.currentAccessToken = token.value;
+
+    if (token) {
+      this.currentAccessToken = token;
       this.isAuthenticated.next(true);
+      console.log('... is authenticated (says AuthService)')
     } else {
       this.isAuthenticated.next(false);
+      console.log('... is not authenticated (says AuthService)')
     }
   }
 
@@ -80,7 +83,7 @@ export class AuthService extends DatabaseService {
 
   async logout() {
     const token = await this.storage.get(REFRESH_TOKEN_KEY);
-    return this.POST(`/api/auth/logout`, {token}).pipe(
+    return this.POST(`/api/auth/logout`, { token }).pipe(
       catchError(this.handleError),
       take(1),
       switchMap(_ => {
@@ -97,13 +100,13 @@ export class AuthService extends DatabaseService {
 
   // Load the refresh token from storage
   // then attach it as the header for one specific API call
-  getNewAccessToken():Observable<any> {
+  getNewAccessToken(): Observable<any> {
     return from(this.storage.get(REFRESH_TOKEN_KEY)).pipe(
       switchMap(token => {
         console.log(token);
         if (token) {
           console.log("refreshToken " + token);
-          return this.POST(`/api/auth/token`, {token});
+          return this.POST(`/api/auth/token`, { token });
         } else {
           console.log("no refreshToken available");
           // No stored refresh token

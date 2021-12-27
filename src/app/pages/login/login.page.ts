@@ -29,7 +29,7 @@ export class LoginPage implements OnInit {
     this.authService.login(form.value).subscribe(
       async _ => {
         await loading.dismiss();
-        this.router.navigateByUrl('/members');
+        this.router.navigateByUrl('/members/entries');
       },
       async (res) => {        
         await loading.dismiss();
