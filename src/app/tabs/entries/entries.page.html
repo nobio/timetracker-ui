@@ -15,6 +15,7 @@
   </ion-header>
 
   <ion-grid padding>
+
     <ion-row>
       <!------ enter and leave buttons ------>
       <ion-col size="12" size-sm="8" offset-sm="2">
@@ -41,15 +42,18 @@
         <ion-button color="warning" outline disabled={{hasNoFailedDates}} [routerLink]="['./fails']">
           <ion-icon name="hammer"></ion-icon>
         </ion-button>
-        <ion-button color="light">
-          <ion-datetime size="large" displayFormat="HH:mm" pickerFormat="DDD MMM YYYY H mm" [(ngModel)]="date">
-          </ion-datetime>
+        <ion-button id="open-date-input-entries">
+          <ion-icon icon="calendar"></ion-icon>
         </ion-button>
-        <!------- Date picker used for enter/leave buttons ------>
-        <!--ion-datetime displayFormat="HH:mm" pickerFormat="DDD MMM YYYY H mm" [(ngModel)]="date"></ion-datetime-->
+        <ion-popover trigger="open-date-input-entries" show-backdrop="true">
+          <ng-template>
+            <ion-datetime #popoverDatetime presentation="time-date" (ionChange)="date = popoverDatetime.value" first-day-of-week="1">
+            </ion-datetime>
+          </ng-template>
+        </ion-popover>
       </ion-col>
     </ion-row>
-    <hr/>
+    <hr />
     <ion-row>
       <ion-col>
         <ion-item>

@@ -4,11 +4,11 @@ import { Util } from 'src/app/libs/Util';
 import * as Leaflet from "leaflet";
 import { antPath } from "leaflet-ant-path";
 import { hotline } from "leaflet-hotline";
-import "leaflet/dist/images/marker-shadow.png";
-import "leaflet/dist/images/marker-icon-2x.png";
+//import "leaflet/dist/images/marker-shadow.png";
+//import "leaflet/dist/images/marker-icon-2x.png";
 import { GeoTrackService } from 'src/app/services/datasource/geo-track.service';
 import { GeoTrack } from 'src/app/models/geo-track';
-import moment from 'moment';
+import * as moment from 'moment';
 import { TimeBox } from 'src/app/models/time-box';
 import { ToastController } from '@ionic/angular';
 

@@ -1,11 +1,10 @@
-import { Component } from "@angular/core";
+import { Component, ViewChild } from "@angular/core";
 import { TimeEntriesService } from "../../services/datasource/time-entries.service";
 import { Entry } from "../../models/entry";
-import { ToastController } from "@ionic/angular";
+import { IonDatetime, ToastController } from "@ionic/angular";
 import { ActivatedRoute } from "@angular/router";
-import moment from 'moment';
+import * as moment from 'moment';
 import { Util } from 'src/app/libs/Util';
-import { THIS_EXPR } from "@angular/compiler/src/output/output_ast";
 
 @Component({
   selector: "app-entries",

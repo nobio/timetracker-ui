@@ -29,10 +29,15 @@
         <ion-button (click)="setAhead()">
           <ion-icon name="arrow-forward"></ion-icon>
         </ion-button>
-        <ion-button color="light">
-          <ion-datetime displayFormat="DD.MM" pickerFormat="DDD MMM YYYY" [(ngModel)]="date">
-          </ion-datetime>
+        <ion-button id="open-date-input-map">
+          <ion-icon icon="calendar"></ion-icon>
         </ion-button>
+        <ion-popover trigger="open-date-input-map" show-backdrop="true">
+          <ng-template>
+            <ion-datetime #popoverDatetime presentation="time-date" (ionChange)="date = popoverDatetime.value"
+              first-day-of-week="1"></ion-datetime>
+          </ng-template>
+        </ion-popover>
         <ion-fab horizontal="end" edge>
           <ion-fab-button>
             <ion-icon name="add"></ion-icon>

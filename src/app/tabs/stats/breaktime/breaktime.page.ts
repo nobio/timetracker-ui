@@ -1,9 +1,9 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { NavController, AlertController } from '@ionic/angular';
-import { StatisticsService } from 'src/app/services/datasource/statistics.service';
-import { BreakTimes } from 'src/app/models/break-time';
+import { Component, ViewChild } from '@angular/core';
+import { AlertController, NavController } from '@ionic/angular';
 import { Chart } from 'chart.js';
 import { Util } from 'src/app/libs/Util';
+import { BreakTimes } from 'src/app/models/break-time';
+import { StatisticsService } from 'src/app/services/datasource/statistics.service';
 
 @Component({
   selector: 'app-breaktime',
@@ -22,17 +22,17 @@ export class BreaktimePage {
   }
 
   private lineChart: Chart;
-  private _interval:number = 5;
-  private _realData:boolean = true;
+  private _interval: number = 5;
+  private _realData: boolean = true;
 
   constructor(
     public navCtrl: NavController,
     private alertCtrl: AlertController,
     private statsSrv: StatisticsService,
-  ) {}
+  ) { }
 
   set realData(realData: boolean) {
-    if(realData != this._realData) {
+    if (realData != this._realData) {
       //this.logger.log('set realData: ' + realData);
       this._realData = realData;
       this.loadGraphData();
@@ -45,7 +45,7 @@ export class BreaktimePage {
 
   /* setter/getter for _interval */
   set interval(interval: number) {
-    if(interval < 1) {
+    if (interval < 1) {
       this._interval = 1; // minimum value is 1
     } else {
       this._interval = interval;
@@ -62,30 +62,22 @@ export class BreaktimePage {
   private initGraph() {
     this.lineChart = new Chart(this.lineCanvas.nativeElement, {
       type: "bar",
-      responsive: true,
       data: {
         datasets: [
           {
             label: "Pausendauer pro Minute",
-            fill: false,
+            //fill: false,
             backgroundColor: "rgb(52, 102, 189)",
             borderColor: "rgb(52, 102, 189)",
             hoverBackgroundColor: "rgb(6, 175, 34)",
             hoverBorderColor: "rgb(6, 175, 34)",
-            hoverBorderWidth: 4
+            hoverBorderWidth: 4,
+            data: [{ x: 0, y: 0 }]
           }
         ]
       },
       options: {
-        scales: {
-          xAxes: [
-            {
-              ticks: {
-                maxRotation: 60
-              }
-            }
-          ]
-        }
+        responsive: true,
       }
     });
   }
@@ -105,7 +97,7 @@ export class BreaktimePage {
         //this.logger.error(error)
       });
 
-    }
+  }
 
   /**
    * takes statistics data and updates the Graph accordingly
@@ -129,6 +121,6 @@ export class BreaktimePage {
       easing: "easeOutBounce"
     });
   }
-    
+
 
 }

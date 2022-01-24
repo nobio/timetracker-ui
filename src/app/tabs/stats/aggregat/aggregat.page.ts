@@ -1,11 +1,11 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
+import { Component, ViewChild } from "@angular/core";
+import { AlertController, NavController } from '@ionic/angular';
+import Chart from 'chart.js/auto';
+import * as moment from 'moment';
+import { Util } from 'src/app/libs/Util';
 import { TimeUnit } from "src/app/models/enums";
 import { Statistics } from "src/app/models/statistics";
-import { isDate } from "util";
-import { Chart } from "chart.js";
-import { NavController, AlertController } from '@ionic/angular';
 import { StatisticsService } from 'src/app/services/datasource/statistics.service';
-import { Util } from 'src/app/libs/Util';
 import { LogService } from "src/app/services/log.service";
 
 @Component({
@@ -38,9 +38,9 @@ export class AggregatPage {
    * initializes Graph object; data and labels are missing!
    */
   private initGraph() {
+
     this.lineChart = new Chart(this.lineCanvas.nativeElement, {
       type: "line",
-      responsive: true,
       data: {
         datasets: [
           {
@@ -53,6 +53,7 @@ export class AggregatPage {
             hoverBorderColor: 'rgba(255,159,64, 0.9)',
             hoverBorderWidth: 4,
             pointRadius: 0,
+            data: [{ x: 0, y: 0 }]
           },
           {
             label: 'Durchschnitt',
@@ -61,20 +62,17 @@ export class AggregatPage {
             borderWidth: 1,
             //backgroundColor: 'rgba(255,250,225, 0.2)', // array should have same number of elements as number of dataset
             fill: false,
-
+            data: [{ x: 0, y: 0 }]
           },
         ],
       },
       options: {
-        scales: {
-          xAxes: [
-            {
-              ticks: {
-                maxRotation: 60,
-              },
-            },
-          ],
-        },
+        responsive: true,
+        plugins: {
+          legend: {
+            display: true,
+          },
+        }
       },
     });
   }
@@ -97,7 +95,7 @@ export class AggregatPage {
    * takes statistics data and updates the Graph accordingly
    * @param stats statistic data
    */
-  private updateGraph(stats: Statistics, lineChart: any) {
+  private updateGraph(stats: Statistics, lineChart: Chart) {
     let label: string[] = [];
     let data: number[] = [];
     let movingAvg: number[] = [];
@@ -108,7 +106,7 @@ export class AggregatPage {
     for (let n = 0; n < stats.data.length; n++) {
       // reverse data order because server delivers data with the latest upfront
       //      label.push(stats.data[n].x);
-      if (isDate(stats.data[n].x)) {
+      if (moment.isDate(stats.data[n].x)) {
         label.push(new Date(stats.data[n].x).toLocaleDateString());
       } else {
         label.push(stats.data[n].x);
@@ -132,18 +130,17 @@ export class AggregatPage {
     //console.log(lineChart.data.datasets[1].data);
 
     if (this.timeUnit == TimeUnit.weekday || this.timeUnit == TimeUnit.year) {
-      lineChart.type = 'bar';
+      lineChart.config.type = 'bar';
     } else {
-      lineChart.type = 'line';
+      lineChart.config.type = 'line';
     }
 
     //lineChart.options.scales.yAxes[0].ticks.max = max;
+    /*
     lineChart.options.scales.yAxes[0].ticks.min = yMin;
     lineChart.data.datasets[0].label = lineChart.options.scales.yAxes[0].ticks.min;
-    lineChart.update({
-      duration: 600,
-      easing: "easeOutBounce",
-    });
+    */
+    lineChart.update('normal');
   }
 
   /*

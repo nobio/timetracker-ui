@@ -3,13 +3,11 @@ import { AlertController } from '@ionic/angular';
 import { TimeUnit, SwipeDirection } from '../../models/enums';
 import { StatisticsService } from '../../services/datasource/statistics.service';
 import { Statistics } from '../../models/statistics';
-import { Chart } from 'chart.js';
+import Chart from 'chart.js/auto';
 import { Util } from '../../libs/Util';
 import { TimeBox } from 'src/app/models/time-box';
 import { PropertyReader } from 'src/app/services/datasource/property-reader.service';
 import { LogService } from 'src/app/services/log.service';
-
-const CHART_TYPES: Array<string> = ['line'/*, 'bar', 'radar'*/];
 
 @Component({
   selector: 'app-stats',
@@ -103,25 +101,20 @@ export class StatsPage {
 
 
   /**
-   * initializes Graph object; data and labels are missing!
    */
   private initGraph() {
+    if(this.lineChart!=null) this.lineChart.destroy();
+
     this.lineChart = new Chart(this.lineCanvas.nativeElement, {
-      type: CHART_TYPES[0],
-      responsive: true,
+      type: 'line',
       data: {
         datasets: [
           {
             label: "Anwesenheit",
             fill: false,
-            lineTension: 0.4,
-            //backgroundColor: "rgba(148, 159, 177, 0.2)",
-            //borderColor: "rgba(148, 159, 177, 1)",
             backgroundColor: 'rgb(38, 194, 129, 1)', // array should have same number of elements as number of dataset
             borderColor: 'rgb(38, 194, 129)',// array should have same number of elements as number of dataset
-            //pointBackgroundColor: "rgba(148, 159, 177, 1)",
             pointBackgroundColor: "rgba(148, 10, 19, 1)",
-
             pointBorderColor: "#fff",
             pointHoverBackgroundColor: "#fff",
             pointHoverBorderColor: "rgba(148, 159, 177, 0.8)",
@@ -137,21 +130,26 @@ export class StatsPage {
             pointStyle: "circle",
             spanGaps: false,
             cubicInterpolationMode: "monotone",
+            data: [{ x: 0, y: 0 }],
           },
           {
             label: "Durchschnitt",
             pointRadius: 0,
             backgroundColor: 'rgba(255,250,225, 0.2)', // array should have same number of elements as number of dataset
+            data: [{ x: 0, y: 0 }],
           }
         ]
       },
-      //this.lineChart.options.legend.display = false;
       options: {
-        legend: {
-          display: false,
-        },
+        responsive: true,
+        plugins: {
+          legend: {
+            display: false,
+          },
+        }
       },
     });
+
   }
 
 
@@ -192,10 +190,7 @@ export class StatsPage {
     lineChart.data.labels = label;
     lineChart.data.datasets[0].data = data;
     lineChart.data.datasets[1].data = avg;
-    lineChart.update({
-      duration: 600,
-      easing: "easeOutBounce"
-    });
+    lineChart.update('normal');
   }
 
 }

@@ -104,8 +104,8 @@ export class StatisticsService extends DatabaseService {
         .pipe(retry(2), catchError(super.handleError))
         .subscribe(
           res => {
-            this.logger.log("aggregated data successfully loaded: " + JSON.stringify(res));
-            this.logger.log(res['chart_data']['main'][0]['data'])
+            //this.logger.log("aggregated data successfully loaded: " + JSON.stringify(res));
+            //this.logger.log(res['chart_data']['main'][0]['data'])
             let stats = {} as Statistics;
             stats.actualWorkingTime = res['actual_working_time'];
             stats.averageWorkingTime = res['average_working_time'];

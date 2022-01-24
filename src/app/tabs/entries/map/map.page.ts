@@ -2,8 +2,8 @@ import { Component } from "@angular/core";
 import { TimeEntriesService } from "src/app/services/datasource/time-entries.service";
 import * as Leaflet from "leaflet";
 //import { antPath } from "leaflet-ant-path";
-import "leaflet/dist/images/marker-shadow.png";
-import "leaflet/dist/images/marker-icon-2x.png";
+//import "leaflet/dist/images/marker-shadow.png";
+//import "leaflet/dist/images/marker-icon-2x.png";
 import { NavController } from '@ionic/angular';
 
 @Component({
@@ -44,6 +44,7 @@ export class MapPage {
       attribution: "edupala.com © Angular LeafLet",
     }).addTo(this.map);
 
+    /*
     const markPoint = Leaflet.marker([
       this.timeEntryService.selectedEntry.latitude,
       this.timeEntryService.selectedEntry.longitude,
@@ -51,7 +52,7 @@ export class MapPage {
     //markPoint.bindPopup("<p>Tashi Delek - Bangalore.</p>");
 
     this.map.addLayer(markPoint);
-
+    */
     /*
     // https://edupala.com/how-to-add-leaflet-map-in-ionic/
     antPath(

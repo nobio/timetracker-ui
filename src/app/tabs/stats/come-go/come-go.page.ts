@@ -1,10 +1,10 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { NavController, AlertController, ActionSheetController } from '@ionic/angular';
+import { Component, ViewChild } from '@angular/core';
+import { ActionSheetController, AlertController, NavController } from '@ionic/angular';
 import { Chart } from "chart.js";
-import { StatisticsService } from 'src/app/services/datasource/statistics.service';
-import { Statistics } from 'src/app/models/statistics';
-import { Direction } from 'src/app/models/enums';
 import { Util } from 'src/app/libs/Util';
+import { Direction } from 'src/app/models/enums';
+import { Statistics } from 'src/app/models/statistics';
+import { StatisticsService } from 'src/app/services/datasource/statistics.service';
 
 @Component({
   selector: 'app-come-go',
@@ -15,15 +15,15 @@ export class ComeGoPage {
   @ViewChild("lineCanvas") lineCanvas;
 
   private lineChart: Chart;
-  private _interval:number = 40;
-  private _direction:Direction = undefined;
+  private _interval: number = 40;
+  private _direction: Direction = undefined;
 
   constructor(
     public navCtrl: NavController,
     private alertCtrl: AlertController,
     private statsSrv: StatisticsService,
     private actionSheetCtrl: ActionSheetController,
-  ) {}
+  ) { }
 
   ionViewDidEnter() {
     // initialize Graph
@@ -34,7 +34,7 @@ export class ComeGoPage {
 
   /* setter/getter for _interval */
   set interval(interval: number) {
-    if(interval < 1) {
+    if (interval < 1) {
       this._interval = 1; // minimum value is 1
     } else {
       this._interval = interval;
@@ -47,7 +47,7 @@ export class ComeGoPage {
 
   /* setter/getter for _direction */
   set direction(direction: Direction) {
-    if('all' === direction.toString()) {
+    if ('all' === direction.toString()) {
       this._direction = undefined;  // 'all' is not in Direction enum. We need to translate to undefined
     } else {
       this._direction = direction;
@@ -64,30 +64,21 @@ export class ComeGoPage {
   private initGraph() {
     this.lineChart = new Chart(this.lineCanvas.nativeElement, {
       type: "bar",
-      responsive: true,
       data: {
         datasets: [
           {
             label: "Anwesenheit pro Zeiteinheit",
-            fill: false,
             backgroundColor: "rgb(52, 102, 189)",
             borderColor: "rgb(52, 102, 189)",
             hoverBackgroundColor: "rgb(6, 175, 34)",
             hoverBorderColor: "rgb(6, 175, 34)",
-            hoverBorderWidth: 4
+            hoverBorderWidth: 4,
+            data: [{ x: 0, y: 0 }],
           }
         ]
       },
       options: {
-        scales: {
-          xAxes: [
-            {
-              ticks: {
-                maxRotation: 60
-              }
-            }
-          ]
-        }
+        responsive: true,
       }
     });
   }
@@ -107,7 +98,7 @@ export class ComeGoPage {
         //this.logger.log(error);
       });
 
-    }
+  }
 
   /**
    * takes statistics data and updates the Graph accordingly
@@ -131,14 +122,14 @@ export class ComeGoPage {
       easing: "easeOutBounce"
     });
   }
-    
+
   async showDirectionDialog() {
     const actionSheet = await this.actionSheetCtrl.create({
       header: 'Richtung (Kommen/Gehen)',
       buttons: [
-        { text: 'Alle', handler: () => {this.direction = Direction.none} },
-        { text: 'Kommen', icon: 'enter', handler: () => {this.direction = Direction.enter}  },
-        { text: 'Gehen', icon: 'exit', handler: () => {this.direction = Direction.go} },
+        { text: 'Alle', handler: () => { this.direction = Direction.none } },
+        { text: 'Kommen', icon: 'enter', handler: () => { this.direction = Direction.enter } },
+        { text: 'Gehen', icon: 'exit', handler: () => { this.direction = Direction.go } },
         { text: 'Abbrechen', role: 'cancel' }
       ]
     });
