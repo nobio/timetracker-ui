@@ -155,20 +155,21 @@ export class Util {
   /**
    * looksup the current geo location coordinates
    */
-  static lookUpGeoLocation(): Promise<GeoCoord> {
+  static async lookUpGeoLocation(): Promise<GeoCoord | null> {
     const geoCoord = {} as GeoCoord
 
-    return new Promise((resolve, reject) => {
-      Geolocation.getCurrentPosition()
-        .then(geoLocPos => {
-          if (geoLocPos && geoLocPos.coords) {
-            geoCoord.latitude = geoLocPos.coords.latitude;
-            geoCoord.longitude = geoLocPos.coords.longitude;
-          }
-          resolve(geoCoord);
-        })
-        //.catch(err => reject(err))
-        .catch(err => resolve(null));
-    });
+    try {
+
+      const geoLocPos = await Geolocation.getCurrentPosition();
+      if (geoLocPos && geoLocPos.coords) {
+        geoCoord.latitude = geoLocPos.coords.latitude;
+        geoCoord.longitude = geoLocPos.coords.longitude;
+      }
+
+      return geoCoord;
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
   }
 }
