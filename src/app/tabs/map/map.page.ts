@@ -1,23 +1,24 @@
 import { Component, OnInit } from '@angular/core';
-import { LineStyle, TimeUnit } from '../../models/enums';
-import { Util } from 'src/app/libs/Util';
+import { ToastController, ViewWillEnter, ViewWillLeave } from '@ionic/angular';
 import * as Leaflet from "leaflet";
 import { antPath } from "leaflet-ant-path";
 import { hotline } from "leaflet-hotline";
-//import "leaflet/dist/images/marker-shadow.png";
-//import "leaflet/dist/images/marker-icon-2x.png";
-import { GeoTrackService } from 'src/app/services/datasource/geo-track.service';
-import { GeoTrack } from 'src/app/models/geo-track';
 import * as moment from 'moment';
+import { Util } from 'src/app/libs/Util';
+import { GeoTrack } from 'src/app/models/geo-track';
 import { TimeBox } from 'src/app/models/time-box';
-import { ToastController } from '@ionic/angular';
+import { Topics, WsReceivable } from 'src/app/models/ws-receivable';
+import { GeoTrackService } from 'src/app/services/datasource/geo-track.service';
+import { WebSocketService } from 'src/app/services/web-socket.service';
+import { LineStyle, TimeUnit } from '../../models/enums';
 
 @Component({
   selector: 'app-map',
   templateUrl: './map.page.html',
   styleUrls: ['./map.page.scss'],
 })
-export class MapPage {
+export class MapPage implements ViewWillEnter, ViewWillLeave, WsReceivable {
+
   private timeBox: TimeBox = new TimeBox();
   timeUnit: TimeUnit = TimeUnit.day;
   private map: Leaflet.Map;
@@ -32,9 +33,10 @@ export class MapPage {
   constructor(
     private geoTrackService: GeoTrackService,
     private toastController: ToastController,
+    private websockService: WebSocketService
   ) {
     // ATTENTION: needed to set this object in the constructor
-    // because of the new Date().toISOString() call; it did not 
+    // because of the new Date().toISOString() call; it did not
     // work as long the class has not been instanitated
     // Default is the center of Germany :-)
     this.defaultTrack = {
@@ -46,7 +48,19 @@ export class MapPage {
       date: new Date().toISOString(),
     };
 
+  }
 
+  ionViewWillEnter() {
+    // register at Websocket Service to receive messages
+    if (!this.websockService.connected()) {
+      console.log('reconnecting Websocket from map.page.ts')
+      this.websockService.initWebsocketConnection();
+    }
+    this.websockService.register(this);
+  }
+  ionViewWillLeave() {
+    // unregister a listener
+    this.websockService.unregister(this);
   }
 
   // ==== getter/setter for date
@@ -70,6 +84,27 @@ export class MapPage {
     }).addTo(this.map);
     this.setToday();
   }
+
+  /**
+   * implements WsReceivable
+   * @param data the data received by WebSocket; expexted to contain a GeoTrack object
+   */
+  receiveWebsocketMessage(data: any): void {
+    console.log(`Maps class received data: ${JSON.stringify(data)}`);
+    const loc: GeoTrack = data.message; // expect a GeoTrack JSON
+    this.geoTrackData.push(loc);
+    this.reloadDataNeeded = false;
+    this.reInitMap();
+  }
+
+  /**
+   * implements WsReceivable
+   * @returns the topic this class is interested in
+   */
+  topic(): Topics {
+    return Topics.GEOLOC;
+  }
+
   /**
    * substract one time unit to current date variable and repaint
    */
@@ -132,7 +167,7 @@ export class MapPage {
    * Parameter useed: this.lineStyle, date
    */
   private async reInitMap() {
-    // load geo tracking data from database 
+    // load geo tracking data from database
     await this.loadTrackingData();
 
     // prepare path data
@@ -170,11 +205,6 @@ export class MapPage {
     if (this.lineStyle == LineStyle.ANT) this.pathLayer = antPath(path, this.getAntPathOptions(this.geoTrackData)).addTo(this.map);
     if (this.lineStyle == LineStyle.VELOCITY) this.pathLayer = hotline(path, this.getVelocityPathOptions(this.geoTrackData)).addTo(this.map);
     if (this.lineStyle == LineStyle.ALTITUDE) this.pathLayer = hotline(path, this.getAltitudePathOptions(this.geoTrackData)).addTo(this.map);
-
-    console.log("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
-    console.log(this.pathLayer.options)
-    console.log(path);
-    console.log("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
 
     this.map.fitBounds(this.pathLayer.getBounds());
   }
