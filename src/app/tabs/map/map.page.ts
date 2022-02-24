@@ -28,7 +28,8 @@ export class MapPage implements ViewWillEnter, ViewWillLeave, WsReceivable {
   private defaultTrack: any;
   private circleOptions = { radius: 2, fillColor: "#ff9000", color: "#ff7800", weight: 2, opacity: 0 };
   private lineStyle: string = LineStyle.ANT;
-  private reloadDataNeeded = false;
+  private needsReloadData = false;
+  private needsResize = false;
 
   constructor(
     private geoTrackService: GeoTrackService,
@@ -66,7 +67,7 @@ export class MapPage implements ViewWillEnter, ViewWillLeave, WsReceivable {
   // ==== getter/setter for date
   set date(dt: string) {
     this.timeBox.set(dt);
-    this.reloadDataNeeded = true;
+    this.needsReloadData = true;
     this.reInitMap();
   }
   get date(): string {
@@ -93,7 +94,8 @@ export class MapPage implements ViewWillEnter, ViewWillLeave, WsReceivable {
     console.log(`Maps class received data: ${JSON.stringify(data)}`);
     const loc: GeoTrack = data.message; // expect a GeoTrack JSON
     this.geoTrackData.push(loc);
-    this.reloadDataNeeded = false;
+    this.needsReloadData = false;
+    this.needsResize = false;
     this.reInitMap();
   }
 
@@ -110,7 +112,8 @@ export class MapPage implements ViewWillEnter, ViewWillLeave, WsReceivable {
    */
   public setBefore(): any {
     this.date = Util.setBefore(this.timeUnit, this.date);
-    this.reloadDataNeeded = true;
+    this.needsReloadData = true;
+    this.needsResize = true;
     this.reInitMap();
   }
   /**
@@ -119,14 +122,16 @@ export class MapPage implements ViewWillEnter, ViewWillLeave, WsReceivable {
    */
   public setToday(): any {
     this.date = Util.setToday(this.timeUnit);
-    this.reloadDataNeeded = true;
+    this.needsReloadData = true;
+    this.needsResize = true;
     this.reInitMap();
   }
   /**
    * Method to relaod data regarding it's time unit
    */
   public setDate(): any {
-    this.reloadDataNeeded = true;
+    this.needsReloadData = true;
+    this.needsResize = true;
     this.reInitMap();
   }
   /**
@@ -134,7 +139,8 @@ export class MapPage implements ViewWillEnter, ViewWillLeave, WsReceivable {
    */
   public setAhead(): any {
     this.date = Util.setAhead(this.timeUnit, this.date);
-    this.reloadDataNeeded = true;
+    this.needsReloadData = true;
+    this.needsResize = true;
     this.reInitMap();
   }
   public async setStyle(style: string) {
@@ -206,11 +212,13 @@ export class MapPage implements ViewWillEnter, ViewWillLeave, WsReceivable {
     if (this.lineStyle == LineStyle.VELOCITY) this.pathLayer = hotline(path, this.getVelocityPathOptions(this.geoTrackData)).addTo(this.map);
     if (this.lineStyle == LineStyle.ALTITUDE) this.pathLayer = hotline(path, this.getAltitudePathOptions(this.geoTrackData)).addTo(this.map);
 
-    this.map.fitBounds(this.pathLayer.getBounds());
+    if (this.needsResize) {
+      this.map.fitBounds(this.pathLayer.getBounds());
+    }
   }
 
   private async loadTrackingData() {
-    if (this.reloadDataNeeded) {
+    if (this.needsReloadData) {
       const startend = this.getStartEndByDateTimeUnit();
       this.geoTrackData = await this.geoTrackService.loadGeoTrackingDataByDate(
         startend.dtStart,
@@ -223,7 +231,7 @@ export class MapPage implements ViewWillEnter, ViewWillLeave, WsReceivable {
         this.geoTrackData = new Array();
         this.geoTrackData.push(this.defaultTrack);
       }
-      this.reloadDataNeeded = false;
+      this.needsReloadData = false;
     }
   }
 
