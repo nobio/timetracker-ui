@@ -3,6 +3,13 @@
     <ion-title>
       Statistiken
     </ion-title>
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-text color="primary">{{ date | date: 'dd.MM.yy' }}</ion-text>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
   </ion-toolbar>
   <online-status-component displaySize="small"></online-status-component>
 </ion-header>
@@ -34,7 +41,8 @@
         </ion-button>
         <ion-popover trigger="open-date-input-stats" show-backdrop="true">
           <ng-template>
-            <ion-datetime #popoverDatetime presentation="time-date" (ionChange)="date = popoverDatetime.value" first-day-of-week="1">
+            <ion-datetime #popoverDatetime presentation="time-date" (ionChange)="date = popoverDatetime.value"
+              first-day-of-week="1">
             </ion-datetime>
           </ng-template>
         </ion-popover>
