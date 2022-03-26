@@ -31,7 +31,7 @@ export class LoginPage implements OnInit {
         await loading.dismiss();
         this.router.navigateByUrl('/members/entries');
       },
-      async (res) => {        
+      async (res) => {
         await loading.dismiss();
       }
     )

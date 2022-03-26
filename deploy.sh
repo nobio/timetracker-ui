@@ -4,7 +4,7 @@ export USER=nobio
 export TARGET_DIR=/share/Web/timetracker
 
 echo ========= build project ========
-ionic build --prod                    
+ionic build --prod
 tar cvfz www.tgz www/*
 
 echo ========= deploy project to qnap ========

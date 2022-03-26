@@ -8,10 +8,11 @@
   <form #form="ngForm" (ngSubmit)="login(form)">
     <div class="input-group">
       <ion-item>
-        <ion-input name="username" type="email" placeholder="your@email.com" ngModel required></ion-input>
+        <ion-input name="username" type="email" placeholder="your@email.com | User Name" ngModel required></ion-input>
       </ion-item>
       <ion-item>
-        <ion-input name="password" type="password" placeholder="Password" (keyup.enter)="login(form)" ngModel required></ion-input>
+        <ion-input name="password" type="password" placeholder="Password" (keyup.enter)="login(form)" ngModel required>
+        </ion-input>
       </ion-item>
     </div>
     <ion-col align-self-center size-md="6" size-lg="5" size-xs="12">
