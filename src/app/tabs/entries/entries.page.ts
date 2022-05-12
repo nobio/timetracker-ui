@@ -16,6 +16,7 @@ export class EntriesPage {
   hasNoFailedDates: boolean = false;
   enterTime: string = null;
   goTime: string = null;
+  timeHasChanged: boolean = false;
 
   constructor(
     public timeEntryService: TimeEntriesService,
@@ -29,6 +30,7 @@ export class EntriesPage {
     this.timeEntryService.loadEntriesByDate(this.date);
     this.timeEntryService.loadWorkingTime(this.date);
     this.timeEntryService.loadDatesWithFailedEntries().then((res: []) => this.hasNoFailedDates = res.length === 0)
+    this.timeHasChanged = false;
   }
 
   /** enters a new entry 'enter' to the database */
@@ -41,18 +43,18 @@ export class EntriesPage {
   }
   public async addEnterGo() {
     let date: string;
-    console.log(this.enterTime, this.goTime, this.date, `${moment(this.date).format('YYYY-MM-DD')} ${this.enterTime}` );
+    console.log(this.enterTime, this.goTime, this.date, `${moment(this.date).format('YYYY-MM-DD')} ${this.enterTime}`);
 
-    if(this.enterTime) {
-      if(moment(this.enterTime, "HH:mm", true).isValid()) {
+    if (this.enterTime) {
+      if (moment(this.enterTime, "HH:mm", true).isValid()) {
         date = moment(`${moment(this.date).format('YYYY-MM-DD')} ${this.enterTime}`).toISOString();
         await this.createEntry("enter", date);
       }
     }
     console.log(date);
 
-    if(this.goTime) {
-      if(moment(this.goTime, "HH:mm", true).isValid()) {
+    if (this.goTime) {
+      if (moment(this.goTime, "HH:mm", true).isValid()) {
         date = moment(`${moment(this.date).format('YYYY-MM-DD')} ${this.goTime}`).toISOString();
         await this.createEntry("go", date);
       }
@@ -65,9 +67,17 @@ export class EntriesPage {
   }
 
   private async createEntry(direction: string, date?: string) {
+
     const entry = {} as Entry;
     entry.direction = direction;
-    entry.entryDate = (date) ? date : this.date;
+
+    if (!date && this.timeHasChanged) {
+      entry.entryDate = this.date;
+    } else if (!date && !this.timeHasChanged) {
+      entry.entryDate = new Date().toISOString();
+    } else {
+      entry.entryDate = date
+    }
 
     try {
       const geoCoord = await Util.lookUpGeoLocation();
@@ -87,6 +97,7 @@ export class EntriesPage {
     this._date = dt;
     this.timeEntryService.loadEntriesByDate(this.date);
     this.timeEntryService.loadWorkingTime(this.date);
+    this.timeHasChanged = true;
   }
   get date(): string {
     return this._date;
@@ -96,14 +107,17 @@ export class EntriesPage {
     let yesterday = new Date(this.date);
     yesterday.setDate(yesterday.getDate() - 1);
     this.date = yesterday.toISOString();
+    this.timeHasChanged = true;
   }
   public setToday(): void {
     this.date = new Date().toISOString();
+    this.timeHasChanged = false;
   }
   public setTomorrow(): void {
     let tomorrow = new Date(this.date);
     tomorrow.setDate(tomorrow.getDate() + 1);
     this.date = tomorrow.toISOString();
+    this.timeHasChanged = true;
   }
   /* ===================== Time handling ===================== */
 
