@@ -15,3 +15,6 @@ rm www.tgz
 
 echo ========= deploy project to firebase ========
 firebase deploy
+
+echo ========= deploy on iPhone, opens XCode ============
+ionic capacitor build ios --prod
