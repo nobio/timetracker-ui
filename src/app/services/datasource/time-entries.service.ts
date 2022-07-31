@@ -57,12 +57,13 @@ export class TimeEntriesService extends DatabaseService {
         },
         (err) => {
           super.handleError(err)
+          this.logger.error(err);
           throw new Error(err);
         }
       );
   }
 
-  createEntry(entry: Entry, dt: string) {
+  async createEntry(entry: Entry, dt: string) {
 
     const body = {
       direction: entry.direction,
@@ -72,13 +73,14 @@ export class TimeEntriesService extends DatabaseService {
     };
 
     this.POST('/api/entries/', body)
-      //.pipe(retry(2), catchError(super.handleError))
+      .pipe(retry(2), catchError(super.handleError))
       .subscribe(
         (res) => {
           this.loadEntriesByDate(dt);
         },
         (err) => {
           //super.handleError(err)
+          this.logger.error(err);
           this.loadEntriesByDate(dt);
           throw new Error(err);
         }
