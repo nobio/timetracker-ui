@@ -37,6 +37,9 @@ jobs:
             type=ref,event=tag
             type=ref,event=pr
 
+      - name Install angular
+        run: npm i -D -E @angular/cli
+
       - name: Use coturiv/setup-ionic
         uses: coturiv/setup-ionic@v1
 
