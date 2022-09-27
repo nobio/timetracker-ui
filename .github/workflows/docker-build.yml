@@ -44,7 +44,7 @@ jobs:
         uses: coturiv/setup-ionic@v1
 
       - name: Build App
-        run: ionic build --prod
+        run: ionic build -c k8s
 
       - name: Login to DockerHub
         uses: docker/login-action@v1
