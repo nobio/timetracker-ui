@@ -15,10 +15,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    #strategy:
-    #matrix:
-    #node-version: [14.x, 16.x, 17.x]
-    #node-version: [v18]
+    strategy:
+      matrix:
+        node-version: [v18]
     # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
     steps:
       - name: Checkout
@@ -40,8 +39,6 @@ jobs:
 
       - name: Use coturiv/setup-ionic
         uses: coturiv/setup-ionic@v1
-        with:
-          java-version: 8
 
       - name: Build App
         run: ionic build --prod
