@@ -83,6 +83,8 @@ export class AuthService extends DatabaseService {
 
   async logout() {
     const token = await this.storage.get(REFRESH_TOKEN_KEY);
+    if(!token) return;
+    
     return this.POST(`/api/auth/logout`, { token }).pipe(
       catchError(this.handleError),
       take(1),
