@@ -51,9 +51,9 @@ export class AuthService extends DatabaseService {
       "accessToken": "eyJhbJ9.eyJuYW1lIjoibm4OTg0Mn0.kgR2dN1VsZ_1Vd8\",",
       "refreshToken": "eyIjshJ9.eyJOOksW1lIjdasdihg0Mn0.kgR2dNsda2d8\","
     }
-   * 
-   * @param credentials 
-   * @returns 
+   *
+   * @param credentials
+   * @returns
    */
   login(credentials: { username: string, password: string }): Observable<any> {
 
@@ -82,9 +82,14 @@ export class AuthService extends DatabaseService {
   }
 
   async logout() {
-    const token = await this.storage.get(REFRESH_TOKEN_KEY);
-    if(!token) return;
-    
+    let token = await this.storage.get(REFRESH_TOKEN_KEY);
+
+    if(!token) {
+      this.isAuthenticated.next(false);
+      this.router.navigateByUrl('/', { replaceUrl: true });
+      return;
+    };
+
     return this.POST(`/api/auth/logout`, { token }).pipe(
       catchError(this.handleError),
       take(1),
