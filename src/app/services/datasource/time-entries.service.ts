@@ -73,7 +73,7 @@ export class TimeEntriesService extends DatabaseService {
     };
 
     this.POST('/api/entries/', body)
-      .pipe(retry(2), catchError(super.handleError))
+      .pipe(retry(2))
       .subscribe(
         (res) => {
           this.loadEntriesByDate(dt);
