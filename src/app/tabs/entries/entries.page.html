@@ -74,11 +74,11 @@
             <ion-row>
               <ion-col>
                 <ion-label>von</ion-label>
-                <ion-input type="time" [(ngModel)]="enterTime"></ion-input>
+                <ion-input (keyup)="addEnterGo($event)" type="time" [(ngModel)]="enterTime"></ion-input>
               </ion-col>
               <ion-col>
                 <ion-label>bis</ion-label>
-                <ion-input type="time" [(ngModel)]="goTime"></ion-input>
+                <ion-input (keyup)="addEnterGo($event)" type="time" [(ngModel)]="goTime"></ion-input>
               </ion-col>
               <ion-col>
                 <ion-button (click)="addEnterGo()">

@@ -41,7 +41,10 @@ export class EntriesPage {
   public leave() {
     this.createEntry("go");
   }
-  public async addEnterGo() {
+  public async addEnterGo(evt = {key: 'Button'}) {
+    console.log(evt)
+    if(evt.key !== 'Button' && evt.key !== 'Enter') return;
+    console.log(evt)
     let date: string;
     console.log(this.enterTime, this.goTime, this.date, `${moment(this.date).format('YYYY-MM-DD')} ${this.enterTime}`);
 
