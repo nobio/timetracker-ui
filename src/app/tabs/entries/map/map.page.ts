@@ -34,15 +34,21 @@ export class MapPage {
     }
 
     // init the map
-    this.map.setView(
-      [
-        this.timeEntryService.selectedEntry.latitude,
-        this.timeEntryService.selectedEntry.longitude,
-      ], 17
+    this.map.setView([
+      this.timeEntryService.selectedEntry.latitude,
+      this.timeEntryService.selectedEntry.longitude,
+    ], 17
     );
+
     Leaflet.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
       attribution: "edupala.com © Angular LeafLet",
     }).addTo(this.map);
+
+    Leaflet.marker([
+      this.timeEntryService.selectedEntry.latitude,
+      this.timeEntryService.selectedEntry.longitude,
+    ],
+    ).addTo(this.map);
 
     /*
     const markPoint = Leaflet.marker([

@@ -9,11 +9,18 @@ const routes: Routes = [
   },
   {
     path: 'user',
-    loadChildren: () => import('./users/users.module').then( m => m.UsersPageModule)
+    loadChildren: () => import('./users/users.module').then(m => m.UsersPageModule)
   },
   {
     path: 'user/:id',
-    loadChildren: () => import('./user/user.module').then( m => m.UserPageModule)
+    loadChildren: () => import('./user/user.module').then(m => m.UserPageModule)
+  },
+  {
+    path: 'geofence',
+    loadChildren: () => import('./geofences/geofences.module').then(m => m.GeofencesPageModule)
+  }, {
+    path: 'geofence/:id',
+    loadChildren: () => import('./geofence/geofence.module').then(m => m.GeofencePageModule)
   },
 ];
 
@@ -21,4 +28,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class AdminPageRoutingModule {}
+export class AdminPageRoutingModule { }
