@@ -20,10 +20,7 @@ export class GeofencePage {
   ) { }
 
   async ionViewWillEnter() {
-    console.log(this.route.snapshot.params);
-
     this.geoFence = await this.geoFenceService.loadGeofence(this.route.snapshot.params.id);
-    console.log(this.geoFence);
   }
 
 }
