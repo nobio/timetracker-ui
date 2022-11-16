@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { TimeEntriesService } from "src/app/services/datasource/time-entries.service";
 import * as Leaflet from "leaflet";
 //import { antPath } from "leaflet-ant-path";
@@ -11,13 +11,20 @@ import { NavController } from '@ionic/angular';
   templateUrl: "./map.page.html",
   styleUrls: ["./map.page.scss"],
 })
-export class MapPage {
+export class MapPage implements OnInit {
   private map: Leaflet.Map;
 
   constructor(
     private timeEntryService: TimeEntriesService,
     private navCtrl: NavController,
   ) { }
+
+  ngOnInit() {
+    Leaflet.Icon.Default.imagePath = "assets/leaflet/"
+    if (!this.map) {
+      this.map = Leaflet.map("map-entry");
+    }
+  }
 
   ionViewDidEnter() {
     if (!this.map) {
@@ -49,31 +56,5 @@ export class MapPage {
       this.timeEntryService.selectedEntry.longitude,
     ],
     ).addTo(this.map);
-
-    /*
-    const markPoint = Leaflet.marker([
-      this.timeEntryService.selectedEntry.latitude,
-      this.timeEntryService.selectedEntry.longitude,
-    ]);
-    //markPoint.bindPopup("<p>Tashi Delek - Bangalore.</p>");
-
-    this.map.addLayer(markPoint);
-    */
-    /*
-    // https://edupala.com/how-to-add-leaflet-map-in-ionic/
-    antPath(
-      [
-        [
-          this.timeEntryService.selectedEntry.latitude,
-          this.timeEntryService.selectedEntry.longitude,
-        ],
-        [
-          this.timeEntryService.selectedEntry.latitude,
-          this.timeEntryService.selectedEntry.longitude,
-        ],
-      ],
-      { color: "#FF0000", weight: 5, opacity: 0.6 }
-    ).addTo(this.map);
-*/
   }
 }

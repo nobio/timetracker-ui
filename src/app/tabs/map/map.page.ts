@@ -17,7 +17,7 @@ import { LineStyle, TimeUnit } from '../../models/enums';
   templateUrl: './map.page.html',
   styleUrls: ['./map.page.scss'],
 })
-export class MapPage implements ViewWillEnter, ViewWillLeave, WsReceivable {
+export class MapPage implements ViewWillEnter, ViewWillLeave, WsReceivable, OnInit {
 
   private timeBox: TimeBox = new TimeBox();
   timeUnit: TimeUnit = TimeUnit.day;
@@ -50,6 +50,8 @@ export class MapPage implements ViewWillEnter, ViewWillLeave, WsReceivable {
     };
 
   }
+
+  ngOnInit() { Leaflet.Icon.Default.imagePath = "assets/leaflet/" }
 
   ionViewWillEnter() {
     // register at Websocket Service to receive messages
@@ -173,6 +175,11 @@ export class MapPage implements ViewWillEnter, ViewWillLeave, WsReceivable {
    * Parameter useed: this.lineStyle, date
    */
   private async reInitMap() {
+    // remove map to avoid error 'map container is already initialized'
+    console.log('reInitMap this.map.remove')
+    if (!this.map) { this.map.remove(); }
+    console.log('reInitMap this.map.remove end')
+
     // load geo tracking data from database
     await this.loadTrackingData();
 
