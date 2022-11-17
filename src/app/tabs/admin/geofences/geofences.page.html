@@ -14,9 +14,18 @@
       <ion-list>
         <ion-item *ngFor="let geoFence of geoFences" [routerLink]="['.', geoFence.id]">
           <ion-icon name="navigate-circle-outline"></ion-icon>&nbsp;
+
           <ion-label>
-            {{ geoFence.description }} - eingecheckt: {{ geoFence.isCheckedIn ? "Ja" : "Nein" }}
+            {{ geoFence.description }}
           </ion-label>
+
+          <!-- checked in status -->
+          <div *ngIf="geoFence.isCheckedIn === true; else offlineTemplate">
+            <ion-icon color="success" name="checkmark-circle-outline"></ion-icon>
+          </div>
+          <ng-template #offlineTemplate>
+            <ion-icon color="danger" name="alert-circle-outline"></ion-icon>
+          </ng-template>
         </ion-item>
       </ion-list>
     </ion-col>
