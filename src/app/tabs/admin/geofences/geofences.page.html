@@ -21,10 +21,10 @@
 
           <!-- checked in status -->
           <div *ngIf="geoFence.isCheckedIn === true; else offlineTemplate">
-            <ion-icon color="success" name="checkmark-circle-outline"></ion-icon>
+            <ion-icon color="success" name="checkmark-circle-outline" size="large"></ion-icon>
           </div>
           <ng-template #offlineTemplate>
-            <ion-icon color="danger" name="alert-circle-outline"></ion-icon>
+            <ion-icon color="danger" name="alert-circle-outline" size="large"></ion-icon>
           </ng-template>
         </ion-item>
       </ion-list>
