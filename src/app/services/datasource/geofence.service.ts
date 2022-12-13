@@ -26,6 +26,7 @@ export class GeofenceService extends DatabaseService {
             data.forEach((el) => {
               geoFenceData.push({
                 id: el.id,
+                enabled: el.enabled,
                 longitude: el.longitude,
                 latitude: el.latitude,
                 radius: el.radius,
@@ -59,6 +60,7 @@ export class GeofenceService extends DatabaseService {
             {
               geoFenceData = {
                 id: data.id,
+                enabled: data.enabled,
                 longitude: data.longitude,
                 latitude: data.latitude,
                 radius: data.radius,
