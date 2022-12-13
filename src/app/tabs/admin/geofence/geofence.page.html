@@ -21,7 +21,14 @@
       </ion-item>
       <ion-item>
         <ion-label position="inline" color="primary">Aktiv</ion-label>
-        <ion-label>{{ geoFence.enabled }}</ion-label>
+        <ion-label>
+          <div *ngIf="geoFence.enabled === true; else disabledTemplate">
+            aktiv
+          </div>
+          <ng-template #disabledTemplate>
+            inaktiv
+          </ng-template>
+        </ion-label>
       </ion-item>
       <ion-item>
         <ion-label position="inline" color="primary">Latitude</ion-label>

@@ -14,14 +14,19 @@
       <ion-list>
         <ion-item *ngFor="let geoFence of geoFences" [routerLink]="['.', geoFence.id]">
           <ion-icon name="navigate-circle-outline"></ion-icon>&nbsp;
-
+          <!-- description -->
           <ion-label>
             {{ geoFence.description }}
           </ion-label>
+          <!-- enabled? -->
           <ion-label>
-            {{ geoFence.enabled }}
+            <div *ngIf="geoFence.enabled === true; else disabledTemplate">
+              aktiv
+            </div>
+            <ng-template #disabledTemplate>
+              inaktiv
+            </ng-template>
           </ion-label>
-
           <!-- checked in status -->
           <div *ngIf="geoFence.isCheckedIn === true; else offlineTemplate">
             <ion-icon color="success" name="checkmark-circle-outline" size="large"></ion-icon>
