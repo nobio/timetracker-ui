@@ -18,6 +18,9 @@
           <ion-label>
             {{ geoFence.description }}
           </ion-label>
+          <ion-label>
+            {{ geoFence.enabled }}
+          </ion-label>
 
           <!-- checked in status -->
           <div *ngIf="geoFence.isCheckedIn === true; else offlineTemplate">
