@@ -47,16 +47,13 @@
       </ion-item>
     </ion-col>
   </ion-row>
-
-  <div align="center">
-    <ion-button color="danger" (click)="delete()">
-      <ion-icon name="trash">&nbsp;Löschen</ion-icon>
-    </ion-button>
-    &nbsp;
-    <ion-button color="primary" (click)="save()">
-      <ion-icon name="save">&nbsp;Speichern</ion-icon>
-    </ion-button>
-  </div>
+  <ion-row>
+    <ion-col>
+      <ion-button color="primary" (click)="save()">
+        <ion-icon name="save">&nbsp;Speichern</ion-icon>
+      </ion-button>
+    </ion-col>
+  </ion-row>
 
   <div #map id="map-geofence" style="height:80%;"></div>
 </ion-content>
