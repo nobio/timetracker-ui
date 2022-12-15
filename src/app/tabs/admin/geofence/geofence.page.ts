@@ -5,6 +5,7 @@ import { GeofenceService } from 'src/app/services/datasource/geofence.service';
 import { LogService } from 'src/app/services/log.service';
 
 import * as Leaflet from "leaflet";
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-geofence',
@@ -19,7 +20,8 @@ export class GeofencePage implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private geoFenceService: GeofenceService,
-    private logger: LogService
+    private logger: LogService,
+    private navCtrl: NavController,
   ) { }
 
   ngOnInit() {
@@ -56,6 +58,22 @@ export class GeofencePage implements OnInit {
       this.geoFence.longitude,
     ],
     ).addTo(this.map);
+
+  }
+
+  /**
+   * Save the geoFence data
+   */
+  save() {
+    this.geoFenceService.save(this.geoFence)
+      .then(e => this.navCtrl.navigateBack('/members/admin/geofence'))
+      .catch(err => this.logger.error(err))
+  }
+
+  /**
+   * delete this geofence
+   */
+  delete() {
 
   }
 

@@ -15,6 +15,10 @@ export class GeofenceService extends DatabaseService {
     super(httpClient, alertCtrl, logger);
   }
 
+  /**
+   * load all geofences (list)
+   * @returns
+   */
   loadGeofences(): Promise<GeoFence[]> {
     let geoFenceData: GeoFence[] = new Array<GeoFence>();
 
@@ -48,7 +52,11 @@ export class GeofenceService extends DatabaseService {
 
   };
 
-
+  /**
+   * load a specific geo fence by it's id
+   * @param id
+   * @returns
+   */
   loadGeofence(id: string): Promise<GeoFence> {
     let geoFenceData: GeoFence = new GeoFence();
 
@@ -81,4 +89,32 @@ export class GeofenceService extends DatabaseService {
     });
 
   };
+
+  /**
+   * save a geoFence object
+   * @param geoFence
+   * @returns
+   */
+  save(geoFence: GeoFence): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.PUT(`/api/geofences/${geoFence.id}`, {
+        enabled: geoFence.enabled,
+        radius: geoFence.radius,
+        longitude: geoFence.longitude,
+        latitude: geoFence.latitude,
+        description: geoFence.description,
+        isCheckedIn: geoFence.isCheckedIn,
+        lastChange: geoFence.lastChange,
+      })
+        .subscribe(
+          (user) => resolve(),
+          (err) => {
+            super.handleError(err);
+            this.logger.error(`failed to update geofence ${geoFence}: ${err}`);
+            reject("Error updating geofence " + geoFence.description + " " + err);
+          }
+        );
+    });
+  }
+
 }
