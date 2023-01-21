@@ -59,8 +59,8 @@
         </ion-button>
         <ion-popover trigger="open-date-input-entries" show-backdrop="true">
           <ng-template>
-            <ion-datetime #popoverDatetime presentation="time-date" (ionChange)="date = popoverDatetime.value"
-              first-day-of-week="1">
+            <ion-datetime #popoverDatetime presentation="time-date" (ionChange)="date = popoverDatetime.value[0]"
+              first-day-of-week="1" [showDefaultButtons]="true">
             </ion-datetime>
           </ng-template>
         </ion-popover>
