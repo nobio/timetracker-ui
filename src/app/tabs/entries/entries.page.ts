@@ -42,9 +42,9 @@ export class EntriesPage {
     this.createEntry("go");
   }
   public async addEnterGo(evt = {key: 'Button'}) {
-    console.log(evt)
+    // console.log(evt)
     if(evt.key !== 'Button' && evt.key !== 'Enter') return;
-    console.log(evt)
+    // console.log(evt)
     let date: string;
     console.log(this.enterTime, this.goTime, this.date, `${moment(this.date).format('YYYY-MM-DD')} ${this.enterTime}`);
 
@@ -54,7 +54,7 @@ export class EntriesPage {
         await this.createEntry("enter", date);
       }
     }
-    console.log(date);
+    // console.log(date);
 
     if (this.goTime) {
       if (moment(this.goTime, "HH:mm", true).isValid()) {
@@ -62,7 +62,7 @@ export class EntriesPage {
         await this.createEntry("go", date);
       }
     }
-    console.log(date);
+    // console.log(date);
   }
   resetEnterGo() {
     this.enterTime = null;
