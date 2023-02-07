@@ -41,9 +41,9 @@ export class EntriesPage {
   public leave() {
     this.createEntry("go");
   }
-  public async addEnterGo(evt = {key: 'Button'}) {
+  public async addEnterGo(evt = { key: 'Button' }) {
     // console.log(evt)
-    if(evt.key !== 'Button' && evt.key !== 'Enter') return;
+    if (evt.key !== 'Button' && evt.key !== 'Enter') return;
     // console.log(evt)
     let date: string;
     console.log(this.enterTime, this.goTime, this.date, `${moment(this.date).format('YYYY-MM-DD')} ${this.enterTime}`);
@@ -93,6 +93,16 @@ export class EntriesPage {
       this.presentMessage(error, 20000);
     }
 
+  }
+
+  /* returns true if the button to "enter" is supposed to be displayed or not */
+  get showEnter(): boolean {
+    const length = this.timeEntryService.entriesByDate.length;
+    if (length === 0) {
+      return true;
+    } else {
+      return (length % 2) === 0;
+    }
   }
 
   /* ===================== Time handling ===================== */
