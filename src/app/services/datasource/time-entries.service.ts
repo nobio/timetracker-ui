@@ -7,6 +7,7 @@ import { catchError, retry } from "rxjs/operators";
 import { Entry } from "src/app/models/entry";
 import { EntryStatistics } from "src/app/models/entry-statistics";
 import { FailDate } from "src/app/models/fail-date";
+import { Tuple } from "src/app/models/tuple";
 import { LogService } from "../log.service";
 import { DatabaseService } from "./database.service";
 
@@ -16,6 +17,7 @@ import { DatabaseService } from "./database.service";
 })
 export class TimeEntriesService extends DatabaseService {
   public entriesByDate: Entry[] = [];
+  public entriesTuplesByDate: Tuple<Entry>[] = [];
   public selectedEntry: Entry = new Entry();
   public entryStats: EntryStatistics = new EntryStatistics();
 
@@ -29,6 +31,8 @@ export class TimeEntriesService extends DatabaseService {
    * @param dt the given date in ISO-String format
    */
   loadEntriesByDate(dt: string): void {
+    let n = 0;
+
     this.logger.log("loading entries for " + dt);
     const date: number = new Date(dt).getTime();
 
@@ -36,10 +40,23 @@ export class TimeEntriesService extends DatabaseService {
       .pipe(retry(2))
       .subscribe((data: Entry[]) => {
         this.entriesByDate = [];
+        this.entriesTuplesByDate = [];
+
         data.forEach((element) => {
           let e: Entry = new Entry();
           e.encodeEntry(element);
           this.entriesByDate.push(e);
+
+          // make a 2 object line of the list
+          if (n === 0) {
+            this.entriesTuplesByDate.push(new Tuple<Entry>());
+            this.entriesTuplesByDate[this.entriesTuplesByDate.length - 1].one = e;
+            n = 1;
+          } else {
+            this.entriesTuplesByDate[this.entriesTuplesByDate.length - 1].two = e;
+            n = 0;
+          }
+
         });
       });
   }
