@@ -6,6 +6,7 @@ export const environment = {
   production: false,
   baseUrl: 'https://localhost:30443',
   websocketUrl: 'wss://localhost:30443/ws',
+  env: 'development',
 };
 
 /*
