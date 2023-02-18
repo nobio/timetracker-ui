@@ -3,6 +3,7 @@ import { Injectable } from "@angular/core";
 import { AlertController } from '@ionic/angular';
 import { catchError, retry } from "rxjs/operators";
 import { ServerInformation } from "src/app/models/server-information";
+import { environment } from "src/environments/environment";
 import { LogService } from "../log.service";
 import { DatabaseService } from "./database.service";
 
@@ -20,7 +21,7 @@ export class StatusService extends DatabaseService {
    * asks for online status and stores in in local variable "onlineStatus"
    */
   ping(): void {
-  
+
     this.GET('/api/ping', {}, false)
       .pipe(retry(2))
       .subscribe(
@@ -46,6 +47,8 @@ export class StatusService extends DatabaseService {
         (data) => {
           this.serverInfo.serverBuildVersion = data['version'];
           this.serverInfo.serverBuildTime = data['last_build'];
+          this.serverInfo.baseUrl = environment.baseUrl;
+          this.serverInfo.env = environment.env;
           this.logger.log(this.serverInfo);
         },
         (err) => {
