@@ -17,7 +17,9 @@
 
   <ion-grid padding>
     <ion-row>
-      <!------ enter and leave buttons ------>
+      <!----------------------------------------------------------------------------------------->
+      <!-- enter and leave buttons                                                             -->
+      <!----------------------------------------------------------------------------------------->
       <ion-col size="12" size-sm="8" offset-sm="2">
         <div *ngIf="showEnter===true; else showGo">
           <ion-button class="button button-full" icon-left color="primary" (click)="enter()">
@@ -44,8 +46,10 @@
       </ion-col>
     </ion-row>
     <ion-row>
+      <!----------------------------------------------------------------------------------------->
+      <!-- Navigation Buttons                                                                  -->
+      <!----------------------------------------------------------------------------------------->
       <ion-col size="12" size-sm="8" offset-sm="2">
-        <!------- Navigation Buttons ------>
         <ion-button (click)="setYesterday()">
           <ion-icon name="arrow-back"></ion-icon>
         </ion-button>
@@ -97,6 +101,9 @@
         </ion-item>
       </ion-col>
     </ion-row>
+    <!----------------------------------------------------------------------------------------->
+    <!-- Lower part with time entries                                                        -->
+    <!----------------------------------------------------------------------------------------->
     <ion-row>
       <ion-col size="12" size-sm="8" offset-sm="2">
         <!-- statistic for selected day -->
@@ -109,22 +116,24 @@
         </ion-item>
         <!-- list of entries of given date (see date picker) -->
         <ion-list>
-          <ion-item *ngFor="let entry of timeEntryService.entriesByDate" [routerLink]="['./entries', entry.id]">
-            <ion-icon size="large" name="{{ entry.ion_direction_icon }}" color="{{ entry.ion_color }}"></ion-icon>
+          <ion-item *ngFor="let tupel of timeEntryService.entriesTuplesByDate">
+            <ion-icon [routerLink]="['./entries', tupel.one.id]" size="large" name="{{ tupel.one.ion_direction_icon }}"
+              color="{{ tupel.one.ion_color }}"></ion-icon>
             &nbsp;
             <!-- Time and mode (enter/go)-->
-            <ion-label lot="end">
-              {{ entry.entryDate | date: 'HH:mm' }} Uhr
+            <ion-label [routerLink]="['./entries', tupel.one.id]" lot="end">
+              {{ tupel.one.entryDate | date: 'HH:mm' }} Uhr
             </ion-label>
-            <ion-label slot="end" color="{{ entry.ion_color }}">
-              {{ entry.direction_translated }}
+            <ion-icon [routerLink]="['./entries', tupel.two.id]" size="large" name="{{ tupel.two.ion_direction_icon }}"
+              color="{{ tupel.two.ion_color }}"></ion-icon>
+            &nbsp;
+            <!-- Time and mode (enter/go)-->
+            <ion-label [routerLink]="['./entries', tupel.two.id]" lot="end">
+              {{ tupel.two.entryDate | date: 'HH:mm' }} Uhr
             </ion-label>
           </ion-item>
         </ion-list>
       </ion-col>
     </ion-row>
   </ion-grid>
-  <!----------------------------------------------------------------------------------------->
-
-  <!----------------------------------------------------------------------------------------->
 </ion-content>
