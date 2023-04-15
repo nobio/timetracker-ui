@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
+import jwt_decode from 'jwt-decode';
 import { BehaviorSubject, from, Observable, of } from 'rxjs';
 import { catchError, switchMap, take, tap } from 'rxjs/operators';
 import { LogService } from '../log.service';
@@ -18,6 +19,7 @@ const REFRESH_TOKEN_KEY = 'refresh-token'
 export class AuthService extends DatabaseService {
   public isAuthenticated = new BehaviorSubject<boolean>(null);
   public currentAccessToken = null;
+  public currentRefreshToken = null;
 
   constructor(
     private router: Router,
@@ -34,15 +36,20 @@ export class AuthService extends DatabaseService {
   async loadToken() {
     this.logger.log('load access token...');
     await this.storage.create();
-    const token = await this.storage.get(ACCESS_TOKEN_KEY);
 
-    if (token) {
-      this.currentAccessToken = token;
+    const accessToken = await this.storage.get(ACCESS_TOKEN_KEY);
+    if (accessToken) {
+      this.currentAccessToken = accessToken;
       this.isAuthenticated.next(true);
       console.log('... is authenticated (says AuthService)')
     } else {
       this.isAuthenticated.next(false);
       console.log('... is not authenticated (says AuthService)')
+    }
+
+    const refreshToken = await this.storage.get(REFRESH_TOKEN_KEY);
+    if (refreshToken) {
+      this.currentRefreshToken = refreshToken;
     }
   }
 
@@ -68,6 +75,7 @@ export class AuthService extends DatabaseService {
           const accessToken = token['accessToken'];
           const refreshToken = token['refreshToken'];
           this.currentAccessToken = accessToken;
+          this.currentRefreshToken = refreshToken;
 
           const storageAccess = this.storage.set(ACCESS_TOKEN_KEY, accessToken);
           const storageRefresh = this.storage.set(REFRESH_TOKEN_KEY, refreshToken);
@@ -84,7 +92,7 @@ export class AuthService extends DatabaseService {
   async logout() {
     let token = await this.storage.get(REFRESH_TOKEN_KEY);
 
-    if(!token) {
+    if (!token) {
       this.isAuthenticated.next(false);
       this.router.navigateByUrl('/', { replaceUrl: true });
       return;
@@ -127,5 +135,20 @@ export class AuthService extends DatabaseService {
   storeAccessToken(accessToken) {
     this.currentAccessToken = accessToken;
     return from(this.storage.set(ACCESS_TOKEN_KEY, accessToken));
+  }
+
+  getAccessToken(): Object {
+    if (this.currentAccessToken) {
+      return jwt_decode(this.currentAccessToken);
+    } else {
+      return {};
+    }
+  }
+  getRefresehToken(): Object {
+    if (this.currentRefreshToken) {
+      return jwt_decode(this.currentRefreshToken);
+    } else {
+      return {};
+    }
   }
 }
