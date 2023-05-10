@@ -37,7 +37,7 @@ export class Util {
   }
 
   /**
-   * Sets the current date to today; 
+   * Sets the current date to today;
    * Please mind that for timeUnit = week we set the date to this week's monday
    * @param timeUnit
    * @param date
@@ -88,7 +88,7 @@ export class Util {
   /**
    * returns a Date Object representing the Monday of the very same week;
    * Time remains the same
-   * @param dt 
+   * @param dt
    * @returns Date a Monday
    */
   static getMonday(dt: Date): Date {
@@ -105,16 +105,19 @@ export class Util {
   /**
    * Takes a date and TimeUnit and converts this to milliseconds representing
    * the date without any time information
-   * 
-   * @param date 
-   * @param unit 
+   *
+   * @param date
+   * @param unit
+   * @param offsetInHours
    */
-  static convertToDateInMillis(date: string, unit: TimeUnit) {
+  static convertToDateInMillis(date: string, unit: TimeUnit, offsetInHours?: number) {
     let dt = new Date(date);
-    dt.setHours(0);
+    if (offsetInHours) dt.setHours(offsetInHours);
+    else dt.setHours(0);
     dt.setMinutes(0);
     dt.setSeconds(0);
     dt.setMilliseconds(0);
+
     if (TimeUnit.week == unit) {
       // todo: dt.setDate(<1. der Woche>);
     } else if (TimeUnit.month == unit) {
@@ -128,10 +131,10 @@ export class Util {
 
   /**
    * Helper function to display an alert
-   * @param alertCtrl 
-   * @param msg 
-   * @param title 
-   * @param subTitle 
+   * @param alertCtrl
+   * @param msg
+   * @param title
+   * @param subTitle
    */
   static async alert(alertCtrl: AlertController, msg: string, title: string = 'Fehler', subTitle: string = '') {
     const alert = alertCtrl.create({

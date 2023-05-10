@@ -1,13 +1,14 @@
 import { Component, ViewChild } from '@angular/core';
 import { AlertController } from '@ionic/angular';
-import { TimeUnit, SwipeDirection } from '../../models/enums';
-import { StatisticsService } from '../../services/datasource/statistics.service';
-import { Statistics } from '../../models/statistics';
 import Chart from 'chart.js/auto';
-import { Util } from '../../libs/Util';
+import moment from 'moment';
 import { TimeBox } from 'src/app/models/time-box';
 import { PropertyReader } from 'src/app/services/datasource/property-reader.service';
 import { LogService } from 'src/app/services/log.service';
+import { Util } from '../../libs/Util';
+import { SwipeDirection, TimeUnit } from '../../models/enums';
+import { Statistics } from '../../models/statistics';
+import { StatisticsService } from '../../services/datasource/statistics.service';
 
 @Component({
   selector: 'app-stats',
@@ -103,7 +104,7 @@ export class StatsPage {
   /**
    */
   private initGraph() {
-    if(this.lineChart!=null) this.lineChart.destroy();
+    if (this.lineChart != null) this.lineChart.destroy();
 
     this.lineChart = new Chart(this.lineCanvas.nativeElement, {
       type: 'line',
@@ -178,6 +179,7 @@ export class StatsPage {
 
     for (let n = 0; n < stats.data.length; n++) {
       // label.push(stats.data[n].x);
+      const dtMoment = moment(stats.data[n].x);
       label.push(new Date(stats.data[n].x).toLocaleDateString());
       data.push(stats.data[n].y);
       if (this.accumulate) {

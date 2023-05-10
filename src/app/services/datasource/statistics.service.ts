@@ -20,21 +20,21 @@ export class StatisticsService extends DatabaseService {
 
   /**
    * Loads historic data for a given date and a given time unit
-   * 
+   *
    * /stats/1451602800000?timeUnit=year
    * /stats/1507461589327?timeUnit=3
-   * 
+   *
    * @param date as ISO string representation of the given data
    * @param unit time unit: year, month, week, day
    */
   loadStatisticDataByUnit(date: string, unit: TimeUnit, accumulate: boolean, fill: boolean): Promise<Statistics> {
-    let dateInMilliSeconds = Util.convertToDateInMillis(date, unit);
+    let dateInMilliSeconds = Util.convertToDateInMillis(date, unit, 3);  // 3 hours offset
     const timeUnit: string = TimeUnit[unit];
     //this.logger.log("loading data for " + date + "(" + dateInMilliSeconds + ") and time unit " + unit) + "(" + timeUnit + ")";
 
     return new Promise<Statistics>((resolve, reject) => {
       this.GET(`/api/stats/${dateInMilliSeconds}/${timeUnit}?accumulate=${accumulate}&fill=${fill}`)
-        .pipe(retry(2), catchError(super.handleError))
+        .pipe(retry(1), catchError(super.handleError))
         .subscribe(
           res => {
             // this.logger.log("statistics data successfully loaded");
@@ -57,7 +57,7 @@ export class StatisticsService extends DatabaseService {
   }
 
   /**
-   * loads statistics for break time 
+   * loads statistics for break time
    */
   loadStatisticBreakTime(realData: boolean, interval: number): Promise<BreakTimes> {
     return new Promise<BreakTimes>((resolve, reject) => {
@@ -90,9 +90,9 @@ export class StatisticsService extends DatabaseService {
 
   /**
  * Loads historic aggregated data for all the data (time) and a given time unit
- * 
+ *
  * /statistics/aggregate?timeUnit=month
- * 
+ *
  * @param unit time unit: day, week, month
  */
   loadStatisticAggregatedDataByUnit(unit: TimeUnit): Promise<Statistics> {
@@ -123,9 +123,9 @@ export class StatisticsService extends DatabaseService {
   }
 
   /**
- * 
- * @param interval 
- * @param direction 
+ *
+ * @param interval
+ * @param direction
  */
   loadStatisticHistogramDataByInterval(interval: Number, direction: Direction): Promise<Statistics> {
 
