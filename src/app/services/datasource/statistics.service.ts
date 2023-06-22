@@ -28,7 +28,7 @@ export class StatisticsService extends DatabaseService {
    * @param unit time unit: year, month, week, day
    */
   loadStatisticDataByUnit(date: string, unit: TimeUnit, accumulate: boolean, fill: boolean): Promise<Statistics> {
-    let dateInMilliSeconds = Util.convertToDateInMillis(date, unit, 3);  // 3 hours offset
+    let dateInMilliSeconds = Util.convertToDateInMillis(date, unit, 0);  // 3 hours offset
     const timeUnit: string = TimeUnit[unit];
     //this.logger.log("loading data for " + date + "(" + dateInMilliSeconds + ") and time unit " + unit) + "(" + timeUnit + ")";
 
