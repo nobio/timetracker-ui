@@ -23,33 +23,33 @@ export class GeoTrackService extends DatabaseService {
     return new Promise((resolve, reject) => {
 
       this.GET(`/api/geotrack/?dateStart=${dateStart}&dateEnd=${dateEnd}`)
-      .pipe(retry(2), catchError(super.handleError))
-      .subscribe(
-        // Attention: the data from database is not deliberately of type GeoTrack; 
-        // it's just a coincidence.... maybe needs to be changed
-        (data: GeoTrack[]) => {
+        .pipe(retry(2), catchError(super.handleError))
+        .subscribe(
+          // Attention: the data from database is not deliberately of type GeoTrack;
+          // it's just a coincidence.... maybe needs to be changed
+          (data: GeoTrack[]) => {
 
-          data.forEach((el) => {
-            geoTrackingData.push({
-              longitude: el.longitude,
-              latitude: el.latitude,
-              accuracy: el.accuracy,
-              altitude: el.altitude,
-              velocity: el.velocity,
-              date: el.date,
-              source: el.source,
+            data.forEach((el) => {
+              geoTrackingData.push({
+                longitude: el.longitude,
+                latitude: el.latitude,
+                accuracy: el.accuracy,
+                altitude: el.altitude,
+                velocity: el.velocity,
+                date: el.date,
+                source: el.source,
+              });
             });
-          });
 
-          resolve(geoTrackingData);
+            resolve(geoTrackingData);
 
-        },
-        (err) => {
-          super.handleError(err);
-          this.logger.error(err);
-          reject("Fehler beim Laden der Daten mit fehlerhaften Einträgen: " + err);
-        }
-      );
+          },
+          (err) => {
+            super.handleError(err);
+            this.logger.error(err);
+            reject("Fehler beim Laden der Daten mit fehlerhaften Einträgen: " + err);
+          }
+        );
     });
   };
 
@@ -62,15 +62,15 @@ export class GeoTrackService extends DatabaseService {
    *     "stdt": 31.955759312983297
    *   }
    * }
-   * @param dateStart 
-   * @param dateEnd 
+   * @param dateStart
+   * @param dateEnd
    */
   loadGeoTrackingMetaDataByDate(dateStart: string, dateEnd: string): Promise<GeoTrackingMetaData> {
     return new Promise((resolve, reject) => {
       this.GET(`/api/geotrack/metadata?dateStart=${dateStart}&dateEnd=${dateEnd}`)
         .pipe(retry(2), catchError(super.handleError))
         .subscribe(
-          // Attention: the data from database is not deliberately of type GeoTrack; 
+          // Attention: the data from database is not deliberately of type GeoTrack;
           // it's just a coincidence.... maybe needs to be changed
           (metaData: GeoTrackingMetaData) => {
             this.logger.log(metaData);

@@ -177,13 +177,18 @@ export class StatsPage {
     let data: number[] = [];
     let avg: number[] = [];
 
-    for (let n = 0; n < stats.data.length; n++) {
-      // label.push(stats.data[n].x);
-      const dtMoment = moment(stats.data[n].x);
-      label.push(new Date(stats.data[n].x).toLocaleDateString());
-      data.push(stats.data[n].y);
+    //    for (let n = 0; n < stats.data.length; n++) {
+    for (const stat of stats.data) {
+      // label.push(data.x);
+      const dtMoment = moment(stat.x);
+      if (this.timeUnit == TimeUnit.week) {
+        label.push(moment(stat.x, 'YYYY-MM-DD').format('dd, DD.MM'));
+      } else {
+        label.push(new Date(stat.x).toLocaleDateString());
+      }
+      data.push(stat.y);
       if (this.accumulate) {
-        avg.push(stats.compData[n].y);
+        //avg.push(stats.compData[n].y);
       } else {
         avg.push(stats.averageWorkingTime);
       }
