@@ -193,6 +193,9 @@ export class StatsPage {
         avg.push(stats.averageWorkingTime);
       }
     }
+    console.log('-----DATA TRANSFORMED FOR DISPLAY------')
+    console.log(label);
+    console.log('---------------------------------------')
 
     lineChart.data.labels = label;
     lineChart.data.datasets[0].data = data;
