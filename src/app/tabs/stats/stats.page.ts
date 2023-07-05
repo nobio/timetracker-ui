@@ -18,9 +18,9 @@ import { StatisticsService } from '../../services/datasource/statistics.service'
 
 export class StatsPage {
 
-  @ViewChild("lineCanvas") lineCanvas;
+  @ViewChild("graphCanvas") graphCanvas;
 
-  lineChart: Chart;
+  chart: Chart;
   private timeBox: TimeBox = new TimeBox();
   timeUnit: TimeUnit = TimeUnit.month;
   private _accumulate: boolean = false;
@@ -104,16 +104,16 @@ export class StatsPage {
   /**
    */
   private initGraph() {
-    if (this.lineChart != null) this.lineChart.destroy();
+    if (this.chart != null) this.chart.destroy();
 
-    this.lineChart = new Chart(this.lineCanvas.nativeElement, {
-      type: 'line',
+    this.chart = new Chart(this.graphCanvas.nativeElement, {
+      type: (this.timeUnit === TimeUnit.week ? 'bar' : 'line'),
       data: {
         datasets: [
           {
             label: "Anwesenheit",
             fill: false,
-            backgroundColor: 'rgb(38, 194, 129, 1)', // array should have same number of elements as number of dataset
+            backgroundColor: 'rgb(58, 114, 255, 1)', // array should have same number of elements as number of dataset
             borderColor: 'rgb(38, 194, 129)',// array should have same number of elements as number of dataset
             pointBackgroundColor: "rgba(148, 10, 19, 1)",
             pointBorderColor: "#fff",
@@ -131,6 +131,10 @@ export class StatsPage {
             pointStyle: "circle",
             spanGaps: false,
             cubicInterpolationMode: "monotone",
+            // ------------------ bar chart; ignored by line chart ------------------
+            borderRadius: 20,
+            barThickness: 30,
+            // ----------------------------------------------------------------------
             data: [{ x: 0, y: 0 }],
           },
           {
@@ -161,7 +165,7 @@ export class StatsPage {
     this.statsSrv.loadStatisticDataByUnit(this.date, this.timeUnit, this.accumulate, this.fill)
       .then((resp: Statistics) => {
         //this.logger.log(resp);
-        this.updateGraph(resp, this.lineChart);
+        this.updateGraph(resp, this.chart);
       })
       .catch((error: string) => {
         Util.alert(this.alertCtrl, error);
@@ -172,7 +176,7 @@ export class StatsPage {
  * takes statistics data and updates the Graph accordingly
  * @param stats statistic data
  */
-  private updateGraph(stats: Statistics, lineChart: Chart) {
+  private updateGraph(stats: Statistics, chart: Chart) {
     let label: string[] = [];
     let data: number[] = [];
     let avg: number[] = [];
@@ -197,10 +201,21 @@ export class StatsPage {
     console.log(label);
     console.log('---------------------------------------')
 
-    lineChart.data.labels = label;
-    lineChart.data.datasets[0].data = data;
-    lineChart.data.datasets[1].data = avg;
-    lineChart.update('normal');
+    /*
+    if (this.timeUnit == TimeUnit.week) {
+      console.log("**************** B A R *********************");
+      //chart.type = 'bar'; //(this.timeUnit === TimeUnit.week ? 'bar' : 'line');
+      chart.config.type = 'bar';
+    } else {
+      console.log("**************** L I N E *********************");
+      chart.config.type = 'line';
+    }
+    */
+    chart.config.type = (this.timeUnit == TimeUnit.week ? 'bar' : 'line');
+    chart.data.labels = label;
+    chart.data.datasets[0].data = data;
+    chart.data.datasets[1].data = avg;
+    chart.update('normal');
   }
 
 }
