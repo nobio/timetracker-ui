@@ -107,15 +107,15 @@ export class StatsPage {
     if (this.chart != null) this.chart.destroy();
 
     this.chart = new Chart(this.graphCanvas.nativeElement, {
-      type: (this.timeUnit === TimeUnit.week ? 'bar' : 'line'),
+      type: 'line',
       data: {
         datasets: [
           {
             label: "Anwesenheit",
-            fill: false,
-            backgroundColor: 'rgb(58, 114, 255, 1)', // array should have same number of elements as number of dataset
-            borderColor: 'rgb(38, 194, 129)',// array should have same number of elements as number of dataset
-            pointBackgroundColor: "rgba(148, 10, 19, 1)",
+            fill: true,
+            backgroundColor: 'rgb(12, 23, 250, 0.1)', // array should have same number of elements as number of dataset
+            borderColor: 'rgb(57, 114, 255)',// array should have same number of elements as number of dataset
+            pointBackgroundColor: "rgba(12, 23, 250, 1)",
             pointBorderColor: "#fff",
             pointHoverBackgroundColor: "#fff",
             pointHoverBorderColor: "rgba(148, 159, 177, 0.8)",
@@ -132,8 +132,8 @@ export class StatsPage {
             spanGaps: false,
             cubicInterpolationMode: "monotone",
             // ------------------ bar chart; ignored by line chart ------------------
-            borderRadius: 20,
-            barThickness: 30,
+            // borderRadius: 20,
+            // barThickness: 30,
             // ----------------------------------------------------------------------
             data: [{ x: 0, y: 0 }],
           },
@@ -177,7 +177,7 @@ export class StatsPage {
  * @param stats statistic data
  */
   private updateGraph(stats: Statistics, chart: Chart) {
-    let label: string[] = [];
+    let label: string[] = [''];
     let data: number[] = [];
     let avg: number[] = [];
 
@@ -201,17 +201,7 @@ export class StatsPage {
     console.log(label);
     console.log('---------------------------------------')
 
-    /*
-    if (this.timeUnit == TimeUnit.week) {
-      console.log("**************** B A R *********************");
-      //chart.type = 'bar'; //(this.timeUnit === TimeUnit.week ? 'bar' : 'line');
-      chart.config.type = 'bar';
-    } else {
-      console.log("**************** L I N E *********************");
-      chart.config.type = 'line';
-    }
-    */
-    chart.config.type = (this.timeUnit == TimeUnit.week ? 'bar' : 'line');
+
     chart.data.labels = label;
     chart.data.datasets[0].data = data;
     chart.data.datasets[1].data = avg;
