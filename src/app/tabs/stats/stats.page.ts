@@ -111,9 +111,10 @@ export class StatsPage {
       data: {
         datasets: [
           {
+            type: 'bar',
             label: "Anwesenheit",
-            fill: true,
-            backgroundColor: 'rgb(12, 23, 250, 0.1)', // array should have same number of elements as number of dataset
+            fill: false,
+            backgroundColor: 'rgb(50, 50, 250, 0.8)', // array should have same number of elements as number of dataset
             borderColor: 'rgb(57, 114, 255)',// array should have same number of elements as number of dataset
             pointBackgroundColor: "rgba(12, 23, 250, 1)",
             pointBorderColor: "#fff",
@@ -131,16 +132,16 @@ export class StatsPage {
             pointStyle: "circle",
             spanGaps: false,
             cubicInterpolationMode: "monotone",
-            // ------------------ bar chart; ignored by line chart ------------------
-            // borderRadius: 20,
-            // barThickness: 30,
-            // ----------------------------------------------------------------------
+            scaleShowGridLines: true,
             data: [{ x: 0, y: 0 }],
           },
           {
             label: "Durchschnitt",
+            type: 'line',
+            fill: true,
             pointRadius: 0,
-            backgroundColor: 'rgba(255,250,225, 0.2)', // array should have same number of elements as number of dataset
+            backgroundColor: 'rgb(12, 23, 150, 0.1)',
+            borderDash: [5, 5],
             data: [{ x: 0, y: 0 }],
           }
         ]
@@ -177,7 +178,7 @@ export class StatsPage {
  * @param stats statistic data
  */
   private updateGraph(stats: Statistics, chart: Chart) {
-    let label: string[] = [''];
+    let label: string[] = [];
     let data: number[] = [];
     let avg: number[] = [];
 
@@ -197,15 +198,36 @@ export class StatsPage {
         avg.push(stats.averageWorkingTime);
       }
     }
-    console.log('-----DATA TRANSFORMED FOR DISPLAY------')
-    console.log(label);
-    console.log('---------------------------------------')
 
+    if (this.timeUnit == TimeUnit.week) {
+      this.chart.data.datasets[0].type = 'bar';
+      const barThickness = this.chart.width / data.length;
+      this.chart.data.datasets[0]['barThickness'] = barThickness - barThickness / 3;
+      this.chart.data.datasets[0]['borderRadius'] = barThickness / 1
+    } else {
+      this.chart.data.datasets[0].type = 'line';
+    }
+    this.chart.options.scales.y.min = this.getMinVal(data);
 
     chart.data.labels = label;
     chart.data.datasets[0].data = data;
     chart.data.datasets[1].data = avg;
     chart.update('normal');
+  }
+
+  private getMinVal(data: number[]): number {
+    const min = data.reduce((acc, val) => {
+      //console.log('acc=' + acc, 'val=' + val)
+      if (val == null && acc == Number.MAX_SAFE_INTEGER) {
+        return Number.MAX_SAFE_INTEGER;
+      } else if (val == null && acc != Number.MAX_SAFE_INTEGER) {
+        return acc;
+      } else {
+        return Math.min(acc, val);
+      }
+    }, Number.MAX_SAFE_INTEGER)
+
+    return Math.floor(min);
   }
 
 }
