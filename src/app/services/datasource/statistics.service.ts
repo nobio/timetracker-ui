@@ -45,9 +45,9 @@ export class StatisticsService extends DatabaseService {
             stats.plannedWorkingTime = res['planned_working_time'];
             stats.data = res['chart_data'].main[0].data;
             stats.compData = res['chart_data'].comp[0].data;
-            console.log('------DATA RECEIVED FROM MW------------')
-            console.log(stats.data)
-            console.log('---------------------------------------')
+            //console.log('------DATA RECEIVED FROM MW------------')
+            //console.log(stats.data)
+            //console.log('---------------------------------------')
             resolve(stats);
           },
           err => {
