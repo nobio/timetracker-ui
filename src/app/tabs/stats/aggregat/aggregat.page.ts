@@ -16,7 +16,7 @@ import { LogService } from "src/app/services/log.service";
 export class AggregatPage {
   @ViewChild("lineCanvas") lineCanvas;
 
-  private lineChart: Chart;
+  private chart: Chart;
   timeUnit: TimeUnit = TimeUnit.month;
 
 
@@ -39,8 +39,8 @@ export class AggregatPage {
    */
   private initGraph() {
 
-    this.lineChart = new Chart(this.lineCanvas.nativeElement, {
-      type: "line",
+    this.chart = new Chart(this.lineCanvas.nativeElement, {
+      type: "bar",
       data: {
         datasets: [
           {
@@ -62,6 +62,7 @@ export class AggregatPage {
             borderWidth: 1,
             //backgroundColor: 'rgba(255,250,225, 0.2)', // array should have same number of elements as number of dataset
             fill: false,
+            hidden: true,
             data: [{ x: 0, y: 0 }]
           },
         ],
@@ -84,7 +85,7 @@ export class AggregatPage {
     this.statsSrv.loadStatisticAggregatedDataByUnit(this.timeUnit)
       .then((resp: Statistics) => {
         //this.logger.log(resp);
-        this.updateGraph(resp, this.lineChart);
+        this.updateGraph(resp, this.chart);
       })
       .catch((error: string) => {
         Util.alert(this.alertCtrl, error);
@@ -95,7 +96,7 @@ export class AggregatPage {
    * takes statistics data and updates the Graph accordingly
    * @param stats statistic data
    */
-  private updateGraph(stats: Statistics, lineChart: Chart) {
+  private updateGraph(stats: Statistics, chart: Chart) {
     let label: string[] = [];
     let data: number[] = [];
     let movingAvg: number[] = [];
@@ -106,6 +107,7 @@ export class AggregatPage {
     for (let n = 0; n < stats.data.length; n++) {
       // reverse data order because server delivers data with the latest upfront
       //      label.push(stats.data[n].x);
+      // console.log(stats.data[n]);
       if (moment.isDate(stats.data[n].x)) {
         label.push(new Date(stats.data[n].x).toLocaleDateString());
       } else {
@@ -118,41 +120,24 @@ export class AggregatPage {
       yMin = stats.data[n].y < yMin ? stats.data[n].y : yMin;
     }
 
-    // recalculate min
-    yMin = yMin - yMin / 100; // substract 1% of the value
-    yMin = Math.floor(yMin * 10) / 10; // round down but taking the 1 decimal digit after comma into account (8,453 -> 84,53 -> 84 -> 8,4)
-
-    lineChart.data.labels = label;
-    lineChart.data.datasets[0].data = data;
-    lineChart.data.datasets[1].data = movingAvg;
+    chart.options.scales.y.min = Util.min(data);
+    chart.data.labels = label;
+    chart.data.datasets[0].data = data;
+    chart.data.datasets[1].data = movingAvg;
 
     //console.log(lineChart.data.datasets[0].data);
     //console.log(lineChart.data.datasets[1].data);
 
     if (this.timeUnit == TimeUnit.weekday || this.timeUnit == TimeUnit.year) {
-      lineChart.config.type = 'bar';
+      chart.config.type = 'bar';
+      chart.getDatasetMeta(1).hidden = true;
     } else {
-      lineChart.config.type = 'line';
+      chart.config.type = 'line';
+      chart.getDatasetMeta(1).hidden = false;
     }
 
-    //lineChart.options.scales.yAxes[0].ticks.max = max;
-    /*
-    lineChart.options.scales.yAxes[0].ticks.min = yMin;
-    lineChart.data.datasets[0].label = lineChart.options.scales.yAxes[0].ticks.min;
-    */
-    lineChart.update('normal');
+    chart.update('normal');
   }
-
-  /*
-  private getRandomRGBa(): string {
-    const r = Math.floor(Math.random() * 256); // Random number between [0..255]
-    const g = Math.floor(Math.random() * 256); // Random number between [0..255]
-    const b = Math.floor(Math.random() * 256); // Random number between [0..255]
-    const t = Math.random() * 0.5 + 0.5; // Random number between [0.5 .. 1.0]
-
-    return "rgba(" + r + "," + g + "," + b + "," + t + ")";
-  }
-  */
 
   setTimeUnit() {
     //this.logger.log(this.timeUnit);

@@ -207,27 +207,12 @@ export class StatsPage {
     } else {
       this.chart.data.datasets[0].type = 'line';
     }
-    this.chart.options.scales.y.min = this.getMinVal(data);
+    this.chart.options.scales.y.min = Util.min(data);
 
     chart.data.labels = label;
     chart.data.datasets[0].data = data;
     chart.data.datasets[1].data = avg;
     chart.update('normal');
-  }
-
-  private getMinVal(data: number[]): number {
-    const min = data.reduce((acc, val) => {
-      //console.log('acc=' + acc, 'val=' + val)
-      if (val == null && acc == Number.MAX_SAFE_INTEGER) {
-        return Number.MAX_SAFE_INTEGER;
-      } else if (val == null && acc != Number.MAX_SAFE_INTEGER) {
-        return acc;
-      } else {
-        return Math.min(acc, val);
-      }
-    }, Number.MAX_SAFE_INTEGER)
-
-    return Math.floor(min);
   }
 
 }

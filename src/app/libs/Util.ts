@@ -175,4 +175,26 @@ export class Util {
       return null;
     }
   }
+
+  /**
+   * Calculate a reasonable minimum of a given array.
+   * @param data array of numbers used to find a reasonable minimum
+   * @returns
+   */
+  static min(data: number[]): number {
+    const min = data.reduce((acc, val) => {
+      //console.log('acc=' + acc, 'val=' + val)
+      if (val == null && acc == Number.MAX_SAFE_INTEGER) {
+        return Number.MAX_SAFE_INTEGER;
+      } else if (val == null && acc != Number.MAX_SAFE_INTEGER) {
+        return acc;
+      } else {
+        return Math.min(acc, val);
+      }
+    }, Number.MAX_SAFE_INTEGER)
+
+    return Math.floor(min);
+  }
+
+
 }
