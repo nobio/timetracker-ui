@@ -13,9 +13,10 @@
     <ion-row>
       <ion-col size="12" size-sm="8" offset-sm="2">
         <ion-item>
-          <ion-range min="1" max="60" step="1" snaps="false" pin="true" color="primary" debounce="500" [(ngModel)]="interval">
+          <ion-range min="1" max="60" step="1" snaps="false" pin="true" color="primary" debounce="500"
+            [(ngModel)]="interval">
           </ion-range>
-          <ion-button slot="end" (click) = "showDirectionDialog()">Direction</ion-button>
+          <ion-button slot="end" (click)="showDirectionDialog()">Direction</ion-button>
         </ion-item>
       </ion-col>
     </ion-row>
@@ -23,7 +24,7 @@
       <ion-col size="12" size-sm="8" offset-sm="2">
         <ion-card>
           <ion-card-content>
-            <canvas height="400px" #lineCanvas></canvas>
+            <canvas height="400px" #graphCanvas></canvas>
           </ion-card-content>
         </ion-card>
       </ion-col>

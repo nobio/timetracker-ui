@@ -12,9 +12,9 @@ import { StatisticsService } from 'src/app/services/datasource/statistics.servic
   styleUrls: ['./come-go.page.scss'],
 })
 export class ComeGoPage {
-  @ViewChild("lineCanvas") lineCanvas;
+  @ViewChild("graphCanvas") graphCanvas;
 
-  private lineChart: Chart;
+  private chart: Chart;
   private _interval: number = 40;
   private _direction: Direction = undefined;
 
@@ -62,7 +62,7 @@ export class ComeGoPage {
    * initializes Graph object; data and labels are missing!
    */
   private initGraph() {
-    this.lineChart = new Chart(this.lineCanvas.nativeElement, {
+    this.chart = new Chart(this.graphCanvas.nativeElement, {
       type: "bar",
       data: {
         datasets: [
@@ -91,7 +91,7 @@ export class ComeGoPage {
     this.statsSrv.loadStatisticHistogramDataByInterval(this.interval, this.direction)
       .then((resp: Statistics) => {
         //this.logger.log(resp);
-        this.updateGraph(resp, this.lineChart);
+        this.updateGraph(resp, this.chart);
       })
       .catch((error: string) => {
         Util.alert(this.alertCtrl, error);
