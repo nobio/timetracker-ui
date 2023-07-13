@@ -149,7 +149,7 @@ export class StatisticsService extends DatabaseService {
               data.push(
                 {
                   //                  "x": new Date(histogramData[n]['time']).getUTCHours() + ':00',
-                  "x": moment(histogramData[n]['time']).tz('Europe/Berlin').format('hh:mm'),
+                  "x": moment(histogramData[n]['time']).tz('Europe/Berlin').format('HH:mm'),
                   "y": histogramData[n]['histValue']
                 }
               );
