@@ -8,7 +8,7 @@ import { Direction, TimeUnit } from 'src/app/models/enums';
 import { Statistics } from 'src/app/models/statistics';
 import { LogService } from '../log.service';
 import { DatabaseService } from './database.service';
-import moment from 'moment';
+import moment from 'moment-timezone';
 
 @Injectable({
   providedIn: 'root'
@@ -149,7 +149,7 @@ export class StatisticsService extends DatabaseService {
               data.push(
                 {
                   //                  "x": new Date(histogramData[n]['time']).getUTCHours() + ':00',
-                  "x": moment(histogramData[n]['time']).format('hh:mm'),
+                  "x": moment(histogramData[n]['time']).tz('Europe/Berlin').format('hh:mm'),
                   "y": histogramData[n]['histValue']
                 }
               );
