@@ -46,7 +46,7 @@ export class EntriesPage {
     if (evt.key !== 'Button' && evt.key !== 'Enter') return;
     // console.log(evt)
     let date: string;
-    console.log(this.enterTime, this.goTime, this.date, `${moment(this.date).format('YYYY-MM-DD')} ${this.enterTime}`);
+    // console.log(this.enterTime, this.goTime, this.date, `${moment(this.date).format('YYYY-MM-DD')} ${this.enterTime}`);
 
     if (this.enterTime) {
       if (moment(this.enterTime, "HH:mm", true).isValid()) {

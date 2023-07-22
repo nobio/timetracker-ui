@@ -67,12 +67,10 @@ export class ComeGoPage {
       data: {
         datasets: [
           {
-            label: "Anwesenheit pro Zeiteinheit",
-            backgroundColor: "rgb(52, 102, 189)",
-            borderColor: "rgb(52, 102, 189)",
-            hoverBackgroundColor: "rgb(6, 175, 34)",
-            hoverBorderColor: "rgb(6, 175, 34)",
-            hoverBorderWidth: 4,
+            label: "Anwesenheitsverteilung",
+            backgroundColor: "rgb(100, 120, 50)",
+            hoverBackgroundColor: "rgb(70, 70, 70)",
+            borderRadius: 1000,
             data: [{ x: 0, y: 0 }],
           }
         ]

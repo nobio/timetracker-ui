@@ -143,12 +143,12 @@ export class StatisticsService extends DatabaseService {
         .pipe(retry(2), catchError(super.handleError))
         .subscribe(
           (histogramData: []) => {
-            console.log(histogramData);
+            // console.log(histogramData);
             let data: any = [];
             for (let n = 0; n < histogramData.length; n++) {
               data.push(
                 {
-                  //                  "x": new Date(histogramData[n]['time']).getUTCHours() + ':00',
+                  // "x": new Date(histogramData[n]['time']).getUTCHours() + ':00',
                   "x": moment(histogramData[n]['time']).tz('Europe/Berlin').format('HH:mm'),
                   "y": histogramData[n]['histValue']
                 }
