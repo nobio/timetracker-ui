@@ -26,7 +26,7 @@ export class MapPage implements ViewWillEnter, ViewWillLeave, WsReceivable, OnIn
   private pathLayer: any;
   private circles: Array<any> = new Array();
   private defaultTrack: any;
-  private circleOptions = { radius: 2, fillColor: "#ff9000", color: "#ff7800", weight: 2, opacity: 0 };
+  private circleOptions = { radius: 2, fillColor: "#ff9000", color: "#404040", weight: 2, opacity: 3 };
   private lineStyle: string = LineStyle.ANT;
   private needsReloadData = false;
   private needsResize = false;
@@ -183,6 +183,17 @@ export class MapPage implements ViewWillEnter, ViewWillLeave, WsReceivable, OnIn
     // load geo tracking data from database
     await this.loadTrackingData();
 
+    // remove the old polyline layer, otherwise we add one layer over another
+    if (this.pathLayer) {
+      this.pathLayer.remove();
+    }
+    // remove old circles
+    this.circles.forEach(layer => {
+      layer.remove();
+    });
+    // resetting circle Marker
+    this.circles = new Array();
+
     // prepare path data
     let path: Array<Array<number>> = new Array();
     this.geoTrackData.forEach(gtd => {
@@ -202,18 +213,6 @@ export class MapPage implements ViewWillEnter, ViewWillLeave, WsReceivable, OnIn
 
       this.circles.push(circleLayer);
     });
-
-    // remove the old polyline layer, otherwise we add one layer over another
-    if (this.pathLayer) {
-      this.pathLayer.remove();
-    }
-    // remove old circles
-    this.circles.forEach(layer => {
-      layer.remove();
-    });
-    // resetting circle Marker
-    this.circles = new Array();
-
 
     if (this.lineStyle == LineStyle.ANT) this.pathLayer = antPath(path, this.getAntPathOptions(this.geoTrackData)).addTo(this.map);
     if (this.lineStyle == LineStyle.VELOCITY) this.pathLayer = hotline(path, this.getVelocityPathOptions(this.geoTrackData)).addTo(this.map);
