@@ -34,7 +34,9 @@ export class AdminPage {
     this.props.set('de.nobio.timetracker.FILL', `${fill}`);
   }
   get fill(): boolean {
-    return this.props.get('de.nobio.timetracker.FILL') == 'true';  }
+    return this.props.get('de.nobio.timetracker.FILL') == 'true';
+  }
+
   /**
    * initiate the recalcuation of statistics
    */
@@ -81,9 +83,9 @@ export class AdminPage {
       });
   }
 
-  /** 
+  /**
    * evaluate data; i.e. check TimeEntries for each day and check the order and if data is complete.
-   * Results are stored in database and can be read by another endpoint   * 
+   * Results are stored in database and can be read by another endpoint   *
    */
   evaluateData() {
     this.presentMessage('Daten werden untersucht...', 2000);
@@ -118,8 +120,8 @@ export class AdminPage {
 
   /**
    * shows message box at the bottom (toast)
-   * @param msg 
-   * @param duration 
+   * @param msg
+   * @param duration
    */
   async presentMessage(msg: string, duration: number) {
     const toast = await this.toastCtrl.create({

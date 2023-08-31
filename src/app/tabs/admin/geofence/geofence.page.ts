@@ -36,6 +36,25 @@ export class GeofencePage implements OnInit {
     this.initMap();
   }
 
+  set geoFenceIsEnabled(enabled: boolean) {
+    this.geoFence.enabled = enabled;
+    this.geoFenceService.save(this.geoFence)
+      .catch(err => this.logger.error(err))
+
+  }
+  get geoFenceIsEnabled(): boolean {
+    return this.geoFence.enabled;
+  }
+
+  set geoFenceIsCheckedIn(isCheckedIn: boolean) {
+    this.geoFence.isCheckedIn = isCheckedIn;
+    this.geoFenceService.save(this.geoFence)
+      .catch(err => this.logger.error(err))
+  }
+  get geoFenceIsCheckedIn(): boolean {
+    return this.geoFence.isCheckedIn;
+  }
+
   initMap() {
     // if no valid values in selected entry, redirect to root
     if (!this.geoFence.latitude || !this.geoFence.longitude) {

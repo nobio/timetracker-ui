@@ -21,10 +21,14 @@
           <!-- enabled? -->
           <ion-label>
             <div *ngIf="geoFence.enabled === true; else disabledTemplate">
-              aktiv
+              <ion-text color="primary">
+                aktiv
+              </ion-text>
             </div>
             <ng-template #disabledTemplate>
-              inaktiv
+              <ion-text color="tertiary">
+                inaktiv
+              </ion-text>
             </ng-template>
           </ion-label>
           <!-- checked in status -->
