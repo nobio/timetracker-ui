@@ -52,6 +52,11 @@
             <ion-label>Datenladen ohne Lücken</ion-label>
             <ion-toggle [(ngModel)]="fill" (ionChange)="fill"></ion-toggle>
           </ion-item>
+          <ion-item>
+            <ion-label>Debug Geofencing</ion-label>
+            <ion-toggle [(ngModel)]="toggles.evaluateData.toggle" (ionChange)="saveToggle('GEOFENCE_DEBUG')">
+            </ion-toggle>
+          </ion-item>
         </ion-list>
       </ion-col>
     </ion-row>

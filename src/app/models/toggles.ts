@@ -8,6 +8,7 @@ export class Toggles {
     recalculate: Toggle;
     serverStartUp: Toggle;
     evaluateData: Toggle;
+    debugGeofence: Toggle;
 
     constructor() {
         this.createEntry = new Toggle();
@@ -17,6 +18,7 @@ export class Toggles {
         this.recalculate = new Toggle();
         this.serverStartUp = new Toggle();
         this.evaluateData = new Toggle();
+        this.debugGeofence = new Toggle();
     }
 
 
@@ -35,6 +37,8 @@ export class Toggles {
             return this.serverStartUp;
         } else if (toggleName == 'EVALUATE_DATA') {
             return this.evaluateData;
+        } else if (toggleName == 'GEOFENCE_DEBUG') {
+            return this.debugGeofence;
         } else {
             return new Toggle();
         }
@@ -58,6 +62,8 @@ export class Toggles {
             this.serverStartUp = t;
         } else if (toggle.name == 'EVALUATE_DATA') {
             this.evaluateData = t;
+        } else if (toggle.name == 'GEOFENCE_DEBUG') {
+            this.debugGeofence = t;
         }
     }
 
