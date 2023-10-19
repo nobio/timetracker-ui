@@ -16,6 +16,7 @@ export class GeofencePage implements OnInit {
 
   public geoFence: GeoFence = new GeoFence();
   private map: Leaflet.Map;
+  private circleOptions = { radius: 2, fillColor: "#ff9000", color: "#404040", weight: 2, opacity: 3 };
 
   constructor(
     private route: ActivatedRoute,
@@ -61,22 +62,20 @@ export class GeofencePage implements OnInit {
       return;
     }
 
+    const latlng: Array<number> = new Array();
+    latlng.push(this.geoFence.latitude);
+    latlng.push(this.geoFence.longitude);
+
     // init the map
-    this.map.setView([
-      this.geoFence.latitude,
-      this.geoFence.longitude,
-    ], 17
-    );
+    this.map.setView(latlng, 17);
+    this.circleOptions.radius = this.geoFence.radius;
 
     Leaflet.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
       attribution: "edupala.com © Angular LeafLet",
     }).addTo(this.map);
 
-    Leaflet.marker([
-      this.geoFence.latitude,
-      this.geoFence.longitude,
-    ],
-    ).addTo(this.map);
+    Leaflet.marker(latlng).addTo(this.map);
+    Leaflet.circleMarker(latlng, this.circleOptions).addTo(this.map);
 
   }
 

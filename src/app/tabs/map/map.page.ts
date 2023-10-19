@@ -25,8 +25,8 @@ export class MapPage implements ViewWillEnter, ViewWillLeave, WsReceivable, OnIn
   private geoTrackData: GeoTrack[];
   private pathLayer: any;
   private circles: Array<any> = new Array();
-  private defaultTrack: any;
   private circleOptions = { radius: 2, fillColor: "#ff9000", color: "#404040", weight: 2, opacity: 3 };
+  private defaultTrack: any;
   private lineStyle: string = LineStyle.ANT;
   private needsReloadData = false;
   private needsResize = false;

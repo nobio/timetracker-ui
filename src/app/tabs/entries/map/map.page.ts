@@ -47,6 +47,7 @@ export class MapPage implements OnInit {
     ], 17
     );
 
+
     Leaflet.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
       attribution: "edupala.com © Angular LeafLet",
     }).addTo(this.map);
