@@ -9,15 +9,19 @@ const routes: Routes = [
   },
   {
     path: 'breaktime',
-    loadChildren: () => import('./breaktime/breaktime.module').then( m => m.BreaktimePageModule)
+    loadChildren: () => import('./breaktime/breaktime.module').then(m => m.BreaktimePageModule)
   },
   {
     path: 'come-go',
-    loadChildren: () => import('./come-go/come-go.module').then( m => m.ComeGoPageModule)
+    loadChildren: () => import('./come-go/come-go.module').then(m => m.ComeGoPageModule)
   },
   {
     path: 'aggregat',
-    loadChildren: () => import('./aggregat/aggregat.module').then( m => m.AggregatPageModule)
+    loadChildren: () => import('./aggregat/aggregat.module').then(m => m.AggregatPageModule)
+  },
+  {
+    path: 'extrahour',
+    loadChildren: () => import('./extrahour/extrahour.module').then(m => m.ExtrahourPageModule)
   },
 ];
 
@@ -25,4 +29,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class StatsPageRoutingModule {}
+export class StatsPageRoutingModule { }
