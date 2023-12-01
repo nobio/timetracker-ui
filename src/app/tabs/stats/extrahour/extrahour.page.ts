@@ -15,8 +15,8 @@ import { LogService } from 'src/app/services/log.service';
 export class ExtrahourPage {
 
   private chart: Chart;
-  timeUnit: TimeUnit = TimeUnit.week;
-  private _accumulate: boolean = false;
+  timeUnit: TimeUnit = TimeUnit.day;
+  private _accumulate: boolean = true;
   @ViewChild("canvas") canvas;
 
   constructor(
@@ -67,15 +67,23 @@ export class ExtrahourPage {
         datasets: [
           {
             label: "Überstunden",
-            backgroundColor: "rgb(200, 100, 8)",
+            backgroundColor: "#377ed4",
             hoverBackgroundColor: "rgb(70, 70, 70)",
-            borderRadius: 1000,
+            borderRadius: 10,
             data: [{ x: 0, y: 0 }],
           }
         ]
       },
       options: {
         responsive: true,
+        scales: {
+          x: {
+            stacked: true,
+          },
+          y: {
+            stacked: true
+          }
+        }
       }
     });
   }
@@ -89,7 +97,7 @@ export class ExtrahourPage {
     const extraHoursData = extraHours.data;
 
     for (let n = 0; n < extraHoursData.length; n++) {
-      label.push(moment(extraHoursData[n].date).format('MM.DD.YY'));
+      label.push(moment(extraHoursData[n].date).format('ddd DD.MM.YY'));
       data.push(extraHoursData[n].extraHour);
     }
 
