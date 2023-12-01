@@ -1,0 +1,51 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button color="primary" text="Zurück" defaultHrf="/entries"></ion-back-button>
+    </ion-buttons>
+    <ion-title>ÜBERSTUNDEN</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12" size-sm="8" offset-sm="2">
+        <ion-item>
+          <ion-label>Akkumulieren:</ion-label>
+          <ion-toggle [(ngModel)]="accumulate" checked="false"></ion-toggle>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12" size-sm="8" offset-sm="2">
+        <ion-segment [(ngModel)]="timeUnit" color="primary">
+          <ion-segment-button (click)="setTimeUnit()" value="3">
+            Tag
+          </ion-segment-button>
+          <ion-segment-button (click)="setTimeUnit()" value="2">
+            Woche
+          </ion-segment-button>
+          <ion-segment-button (click)="setTimeUnit()" value="1">
+            Monat
+          </ion-segment-button>
+          <ion-segment-button (click)="setTimeUnit()" value="0">
+            Jahr
+          </ion-segment-button>
+        </ion-segment>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12" size-sm="8" offset-sm="2">
+        <ion-card>
+          <ion-card-content>
+            <canvas height="350px" #canvas></canvas>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+
+</ion-content>
