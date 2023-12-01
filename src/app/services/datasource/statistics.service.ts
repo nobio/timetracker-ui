@@ -9,6 +9,7 @@ import { Statistics } from 'src/app/models/statistics';
 import { LogService } from '../log.service';
 import { DatabaseService } from './database.service';
 import moment from 'moment-timezone';
+import { ExtraHours } from 'src/app/models/extra-hours';
 
 @Injectable({
   providedIn: 'root'
@@ -166,4 +167,33 @@ export class StatisticsService extends DatabaseService {
         );
     });
   }
+
+  loadExtraHours(accumulate: boolean, timeUnit: TimeUnit): Promise<ExtraHours> {
+    return new Promise((resolve, reject) => {
+
+      this.GET(`/api/statistics/extrahours?accumulate=${accumulate}&timeUnit=${TimeUnit[timeUnit]}`)
+        .pipe(retry(2), catchError(super.handleError))
+        .subscribe((exHrsData: []) => {
+
+          const data: any = [];
+          for (let n = 0; n < exHrsData.length; n++) {
+            data.push({
+              "date": moment(exHrsData[n]['date']),
+              "extraHour": exHrsData[n]['extra_hour'],
+              "hour": exHrsData[n]['hour'],
+            });
+          }
+          let extraHours = {} as ExtraHours;
+          extraHours.data = data;
+          resolve(extraHours);
+
+        }),
+        err => {
+          this.logger.log("failed to load extra hour data " + err);
+          throw Error("Fehler beim Laden der Überstunden Daten: " + err);
+        }
+    })
+
+  }
+
 }
