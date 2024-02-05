@@ -54,9 +54,7 @@ export class JwtInterceptor implements HttpInterceptor {
     private addToken(req: HttpRequest<any>) {
         if (this.authService.currentAccessToken) {
             return req.clone({
-                headers: new HttpHeaders({
-                    Authorization: `Bearer ${this.authService.currentAccessToken}`
-                })
+                headers: req.headers.set('Authorization', `Bearer ${this.authService.currentAccessToken}`)
             });
         } else {
             return req;
