@@ -6,15 +6,16 @@ import { Util } from 'src/app/libs/Util';
 import { environment } from 'src/environments/environment';
 import { LogService } from '../log.service';
 
+const BASEURL: string = environment.baseUrl;
+const API_KEY: string = environment.apiKey;
+
 @Injectable({
   providedIn: 'root'
 })
 export class DatabaseService {
-  // see src/environments/environment.ts and src/environments/environment.prod.ts 
-  static readonly BASEURL: string = environment.baseUrl;
 
   constructor(protected httpClient: HttpClient, protected alertCtrl: AlertController, protected logger: LogService) {
-    console.log('conneting to api ' + DatabaseService.BASEURL);
+    console.log('conneting to api ' + BASEURL);
   }
 
   // Http Options
@@ -22,29 +23,27 @@ export class DatabaseService {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
       'Accept': 'application/json',
-      'rejectUnauthorized': 'false',
-      'insecure': 'true',
-      'requestCert': 'false',
+      'api-key': API_KEY,
     })
   }
 
   protected GET(path: string, options: object = {}, doLogging: boolean = true): Observable<any> {
-    const url = DatabaseService.BASEURL + path;
+    const url = BASEURL + path;
     this.logger.log(`GET ${url}`);
     return this.httpClient.get(url, this.httpOptions);
   }
   protected PUT(path: string, body: object = null, options: object = {}, doLogging: boolean = true): Observable<any> {
-    const url = DatabaseService.BASEURL + path;
+    const url = BASEURL + path;
     this.logger.log(`PUT ${url} body: ${JSON.stringify(body, null, 2)}`);
     return this.httpClient.put(url, body, this.httpOptions);
   }
   protected POST(path: string, body: object = null, options: object = {}, doLogging: boolean = true): Observable<any> {
-    const url = DatabaseService.BASEURL + path;
+    const url = BASEURL + path;
     this.logger.log(`POST ${url} body: ${JSON.stringify(body, null, 2)}`);
     return this.httpClient.post(url, body, this.httpOptions);
   }
   protected DELETE(path: string, options: object = {}, doLogging: boolean = true): Observable<any> {
-    const url = DatabaseService.BASEURL + path;
+    const url = BASEURL + path;
     this.logger.log(`DELETE ${url}`);
     return this.httpClient.delete(url, this.httpOptions);
   }

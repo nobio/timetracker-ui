@@ -3,4 +3,5 @@ export const environment = {
   baseUrl: 'api-service',
   websocketUrl: 'wss://api-service/ws',
   env: 'kubernetes',
+  apiKey: 'Loak38Jue7Gtw5stGabYx6xb4sgXgsFS',
 };

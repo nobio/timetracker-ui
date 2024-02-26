@@ -7,6 +7,7 @@ export const environment = {
   baseUrl: 'http://localhost:30000',
   websocketUrl: 'wss://localhost:30443/ws',
   env: 'development',
+  apiKey: 'Loak38Jue7Gtw5stGabYx6xb4sgXgsFS',
 };
 
 /*
