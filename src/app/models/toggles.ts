@@ -3,6 +3,7 @@ import { Toggle } from "./toggle";
 export class Toggles {
     createEntry: Toggle;
     deleteEntry: Toggle;
+    updateEntry: Toggle;
     backupDB: Toggle;
     dumpFS: Toggle;
     recalculate: Toggle;
@@ -13,6 +14,7 @@ export class Toggles {
     constructor() {
         this.createEntry = new Toggle();
         this.deleteEntry = new Toggle();
+        this.updateEntry = new Toggle();
         this.backupDB = new Toggle();
         this.dumpFS = new Toggle();
         this.recalculate = new Toggle();
@@ -27,6 +29,8 @@ export class Toggles {
             return this.createEntry;
         } else if (toggleName == 'DELETE_ENTRY') {
             return this.deleteEntry;
+        } else if (toggleName == 'UPDATE_ENTRY') {
+            return this.updateEntry;
         } else if (toggleName == 'BACKUP_DB') {
             return this.backupDB;
         } else if (toggleName == 'DUMP_FS') {
@@ -52,6 +56,8 @@ export class Toggles {
             this.createEntry = t;
         } else if (toggle.name == 'DELETE_ENTRY') {
             this.deleteEntry = t;
+        } else if (toggle.name == 'UPDATE_ENTRY') {
+            this.updateEntry = t;
         } else if (toggle.name == 'BACKUP_DB') {
             this.backupDB = t;
         } else if (toggle.name == 'DUMP_FS') {

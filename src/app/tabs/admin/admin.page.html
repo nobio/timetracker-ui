@@ -27,6 +27,10 @@
             <ion-toggle [(ngModel)]="toggles.deleteEntry.toggle" (ionChange)="saveToggle('DELETE_ENTRY')"></ion-toggle>
           </ion-item>
           <ion-item>
+            <ion-label>Eintrag geändert</ion-label>
+            <ion-toggle [(ngModel)]="toggles.updateEntry.toggle" (ionChange)="saveToggle('UPDATE_ENTRY')"></ion-toggle>
+          </ion-item>
+          <ion-item>
             <ion-label>Statistiken berechnet</ion-label>
             <ion-toggle [(ngModel)]="toggles.recalculate.toggle" (ionChange)="saveToggle('RECALCULATE')"></ion-toggle>
           </ion-item>
