@@ -18,6 +18,7 @@ export class TabsPage {
     this.statusSrv.ping();
     setInterval(() => {
       this.statusSrv.ping();
+      //setInterval(() => { this.statusSrv.serverInfo.lastUpdate = new Date() }, 2000) // update timestamp several times within the ping period
     }, 20000);
   }
 }

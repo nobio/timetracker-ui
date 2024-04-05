@@ -39,3 +39,9 @@ export enum LineStyle {
   VELOCITY = "velocity",
   ALTITUDE = "altitude",
 }
+
+export enum OnlineSignal {
+  GREEN = 'green',
+  YELLOW = 'yellow',
+  RED = 'red',
+}
