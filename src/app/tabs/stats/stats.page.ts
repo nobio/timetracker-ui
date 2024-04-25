@@ -113,14 +113,8 @@ export class StatsPage {
           {
             type: 'bar',
             label: "Anwesenheit",
-            fill: false,
             backgroundColor: 'rgb(50, 50, 250, 0.8)', // array should have same number of elements as number of dataset
             borderColor: 'rgb(57, 114, 255)',// array should have same number of elements as number of dataset
-            pointBackgroundColor: "rgba(12, 23, 250, 1)",
-            pointBorderColor: "#fff",
-            pointHoverBackgroundColor: "#fff",
-            pointHoverBorderColor: "rgba(148, 159, 177, 0.8)",
-            borderCapStyle: "butt",
             borderDash: [],
             borderDashOffset: 0.0,
             borderJoinStyle: "bevel",
@@ -182,20 +176,25 @@ export class StatsPage {
     let data: number[] = [];
     let avg: number[] = [];
 
-    //    for (let n = 0; n < stats.data.length; n++) {
-    for (const stat of stats.data) {
-      // label.push(data.x);
-      const dtMoment = moment(stat.x);
-      if (this.timeUnit == TimeUnit.week) {
-        label.push(moment(stat.x, 'YYYY-MM-DD').format('dd, DD.MM'));
-      } else {
-        label.push(new Date(stat.x).toLocaleDateString());
-      }
-      data.push(stat.y);
-      if (this.accumulate) {
-        //avg.push(stats.compData[n].y);
-      } else {
-        avg.push(stats.averageWorkingTime);
+    console.log("Länge: " + stats.size)
+    if (stats.size == 0) {
+      data.push(0);
+      avg.push(0);
+    } else {
+      for (const stat of stats.data) {
+        // label.push(data.x);
+        const dtMoment = moment(stat.x);
+        if (this.timeUnit == TimeUnit.week) {
+          label.push(moment(stat.x, 'YYYY-MM-DD').format('dd, DD.MM'));
+        } else {
+          label.push(new Date(stat.x).toLocaleDateString());
+        }
+        data.push(stat.y);
+        if (this.accumulate) {
+          //avg.push(stats.compData[n].y);
+        } else {
+          avg.push(stats.averageWorkingTime);
+        }
       }
     }
 
