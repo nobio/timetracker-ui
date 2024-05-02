@@ -116,6 +116,7 @@ export class TimeEntriesService extends DatabaseService {
       this.entryStats.workingTime = "na.";
       this.entryStats.pause = "na.";
       this.entryStats.totalWorkload = "na.";
+      this.entryStats.workDone = 0;
       return;
     }
 
@@ -132,6 +133,7 @@ export class TimeEntriesService extends DatabaseService {
           data["busytime"]
         );
         this.entryStats.pause = this.millisecToReadbleTime(data["pause"]);
+        this.entryStats.workDone = Math.min(1, Math.max(0, Math.abs(data["busytime"] / (8 * 1000 * 60 * 60)))); // millisecons scale to hours; 8 hours nominal worktime
       });
   }
 

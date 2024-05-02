@@ -17,6 +17,7 @@ export class EntriesPage {
   enterTime: string = null;
   goTime: string = null;
   timeHasChanged: boolean = false;
+  workdone = 0;
 
   constructor(
     public timeEntryService: TimeEntriesService,
