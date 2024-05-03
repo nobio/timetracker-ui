@@ -40,11 +40,9 @@ jobs:
       - name: Install angular
         run: npm i -D -E @angular/cli
 
- #     - name: Use coturiv/setup-ionic
- #       uses: coturiv/setup-ionic@v1
-
       - name: Install Ionic
         run: npm install -g @ionic/cli
+      - run: ionic -v
 
       - name: Build App
         # run: ionic build -c k8s
