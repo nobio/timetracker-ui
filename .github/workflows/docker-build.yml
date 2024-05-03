@@ -40,8 +40,9 @@ jobs:
       - name: Install angular
         run: npm i -D -E @angular/cli
 
-      - name: Install Ionic
-        run: npm install -g @ionic/cli
+#      - name: Install Ionic
+#        run: npm install -g @ionic/cli
+      - run: npm install @ionic/angular@latest
       - run: ionic -v
 
       - name: Build App
