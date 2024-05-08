@@ -4,6 +4,16 @@
     <ion-buttons slot="start">
       <ion-back-button color="primary" text="Zurück" defaultHrf="/admin"></ion-back-button>
     </ion-buttons>
+    <!-- Action buttons -->
+    <div align="right">
+      <ion-button color="danger" (click)="delete()">
+        <ion-icon name="trash">&nbsp;Löschen</ion-icon>
+      </ion-button>
+      &nbsp;
+      <ion-button color="primary" (click)="save()">
+        <ion-icon name="save">&nbsp;Speichern</ion-icon>
+      </ion-button>
+    </div>
   </ion-toolbar>
 </ion-header>
 
@@ -27,24 +37,16 @@
       </ion-item>
       <!-- Mail Address -->
       <ion-item>
-        <ion-label position="stacked" color="primary">Mail Adresse <ion-icon name="pencil-outline"></ion-icon></ion-label>
+        <ion-label position="stacked" color="primary">Mail Adresse <ion-icon
+            name="pencil-outline"></ion-icon></ion-label>
         <ion-input type="username" disabled="false" [(ngModel)]="user.mailAddress"></ion-input>
       </ion-item>
       <!-- Password -->
       <ion-item>
         <ion-label position="stacked" color="primary">Passwort <ion-icon name="pencil-outline"></ion-icon></ion-label>
-        <ion-input type="password" placeholder="Password" clearInput disabled="false" [(ngModel)]="user.password" (change)="passwordHasChanged=true"></ion-input>
+        <ion-input type="password" placeholder="Password" clearInput disabled="false" [(ngModel)]="user.password"
+          (change)="passwordHasChanged=true"></ion-input>
       </ion-item>
-      <!-- Action buttons -->
-      <div align="center">
-        <ion-button color="danger" (click)="delete()">
-          <ion-icon name="trash">&nbsp;Löschen</ion-icon>
-        </ion-button>
-        &nbsp;
-        <ion-button color="primary" (click)="save()">
-          <ion-icon name="save">&nbsp;Speichern</ion-icon>
-        </ion-button>
-      </div>
     </ion-col>
   </ion-row>
 </ion-content>
