@@ -4,6 +4,12 @@
     <ion-buttons slot="start">
       <ion-back-button color="primary" text="Zurück" defaultHrf="/admin"></ion-back-button>
     </ion-buttons>
+    <!-- Action buttons -->
+    <div align="right">
+      <ion-button color="primary" (click)="save()">
+        <ion-icon name="save">&nbsp;Speichern</ion-icon>
+      </ion-button>
+    </div>
   </ion-toolbar>
 </ion-header>
 <ion-content padding>
@@ -47,13 +53,5 @@
       </ion-item>
     </ion-col>
   </ion-row>
-  <ion-row>
-    <ion-col>
-      <ion-button color="primary" (click)="save()">
-        <ion-icon name="save">&nbsp;Speichern</ion-icon>
-      </ion-button>
-    </ion-col>
-  </ion-row>
-
   <div #map id="map-geofence" style="height:80%;"></div>
 </ion-content>
