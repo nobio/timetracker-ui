@@ -112,6 +112,7 @@
             Gesamt {{ timeEntryService.entryStats.totalWorkload }} |
             Arbeit {{ timeEntryService.entryStats.workingTime }} |
             Pause {{ timeEntryService.entryStats.pause }} |
+            Ende {{ timeEntryService.entryStats.workEndsAt }}
             <ion-progress-bar [value]="timeEntryService.entryStats.workDone"></ion-progress-bar>
           </ion-label>
         </ion-item>

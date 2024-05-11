@@ -134,6 +134,15 @@ export class TimeEntriesService extends DatabaseService {
         );
         this.entryStats.pause = this.millisecToReadbleTime(data["pause"]);
         this.entryStats.workDone = Math.min(1, Math.max(0, Math.abs(data["busytime"] / (8 * 1000 * 60 * 60)))); // millisecons scale to hours; 8 hours nominal worktime
+
+        // calculate time, when working day will (probably) end
+        if (this.entriesByDate.length > 0) {
+          const calculatedEnd = moment(this.entriesByDate[0].entryDate)
+            .add(8, 'hours')
+            .add(this.entryStats.pause, 'minutes');
+
+          this.entryStats.workEndsAt = calculatedEnd.format('HH:mm');
+        }
       });
   }
 

@@ -65,7 +65,8 @@ export class EntriesPage {
     }
     // console.log(date);
   }
-  resetEnterGo() {
+
+  public resetEnterGo() {
     this.enterTime = null;
     this.goTime = null;
   }

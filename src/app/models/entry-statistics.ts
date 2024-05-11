@@ -3,4 +3,5 @@ export class EntryStatistics {
     pause: string = "";
     totalWorkload: string = "";
     workDone: number = 0;
+    workEndsAt: string = "";
 }
