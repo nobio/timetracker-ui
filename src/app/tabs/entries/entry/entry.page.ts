@@ -3,6 +3,7 @@ import { AlertController, NavController } from '@ionic/angular';
 import { TimeEntriesService } from 'src/app/services/datasource/time-entries.service';
 import { ActivatedRoute } from '@angular/router';
 import { Util } from 'src/app/libs/Util';
+import { Mark } from 'src/app/models/enums';
 
 @Component({
   selector: 'app-entry',
@@ -62,4 +63,8 @@ export class EntryPage {
       this.timeEntryService.selectedEntry.latitude = geoCoord.latitude;
     })
   }
+  get markIcon(): string {
+    return Util.markIcon(this.timeEntryService.selectedEntry.mark);
+  }
+
 }

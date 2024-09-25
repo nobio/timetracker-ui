@@ -10,6 +10,7 @@ import { FailDate } from "src/app/models/fail-date";
 import { Tuple } from "src/app/models/tuple";
 import { LogService } from "../log.service";
 import { DatabaseService } from "./database.service";
+import { Mark } from "src/app/models/enums";
 
 
 @Injectable({
@@ -146,6 +147,24 @@ export class TimeEntriesService extends DatabaseService {
       });
   }
 
+  async deleteEntry(entry: Entry) {
+    this.DELETE(`/api/entries/${entry.id}`)
+      .pipe(retry(1), catchError(super.handleError))
+      .subscribe((data: []) => { }),
+      (err) => {
+        super.handleError(err);
+        this.logger.error(err, 'Fehler beim Löschen von Einträgen');
+      };
+  }
+
+  async deleteAllTimeEntriesFromThisDate(dt) {
+    for await (const entry of this.entriesByDate) {
+      await this.deleteEntry(entry);
+    }
+    this.loadEntriesByDate(dt);
+    this.selectedEntry = new Entry(); // clear selected entry
+  }
+
   /**
    * deletes a time entry by it's id
    * @param id unique id of time entry
@@ -211,4 +230,27 @@ export class TimeEntriesService extends DatabaseService {
       (dt.getUTCMinutes() < 10 ? "0" + dt.getUTCMinutes() : dt.getUTCMinutes())
     );
   }
+
+  async markADay(mark: Mark, dt: string) {
+
+    const body = {
+      mark: mark,
+      entry_date: dt,
+    };
+
+    this.POST('/api/entries/mark', body)
+      .pipe(retry(2))
+      .subscribe(
+        (res) => {
+          this.loadEntriesByDate(dt);
+        },
+        (err) => {
+          //super.handleError(err)
+          this.logger.error(err);
+          this.loadEntriesByDate(dt);
+          throw new Error(err);
+        }
+      );
+  }
+
 }

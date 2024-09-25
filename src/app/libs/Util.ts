@@ -1,9 +1,8 @@
-import { TimeUnit } from '../models/enums';
+import { Mark, TimeUnit } from '../models/enums';
 import { AlertController } from '@ionic/angular';
 import { Plugins } from "@capacitor/core";
 import { GeoCoord } from '../models/geo-coord';
 import moment, { Moment } from 'moment';
-import { LogService } from '../services/log.service';
 
 const { Geolocation } = Plugins;
 
@@ -196,5 +195,14 @@ export class Util {
     return Math.floor(min);
   }
 
-
+  static markIcon(mark): string {
+    let icon;
+    switch(mark) {
+      case Mark.WORK: {icon = 'bag-outline'; break;}
+      case Mark.SICK_LEAVE: {icon = 'medkit-outline'; break;}
+      case Mark.VACATION: {icon = 'airplane-outline'; break;}
+      default : icon = ''; 
+    }
+    return icon;
+  }
 }

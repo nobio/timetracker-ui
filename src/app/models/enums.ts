@@ -45,3 +45,9 @@ export enum OnlineSignal {
   YELLOW = 'yellow',
   RED = 'red',
 }
+
+export enum Mark {
+  WORK = 'work',
+  VACATION = 'vacation',
+  SICK_LEAVE = 'sick-leave',
+}

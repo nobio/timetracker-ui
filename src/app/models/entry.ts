@@ -1,4 +1,5 @@
 import moment from 'moment';
+import { Mark } from './enums';
 
 export class Entry {
     public id: string;
@@ -7,6 +8,7 @@ export class Entry {
     public latitude: number;
     public lastChanged: string;
     public entryDate: string;
+    public mark: Mark;
 
     direction_translated: string;
     ion_direction_icon: string;
@@ -47,7 +49,8 @@ export class Entry {
         this.lastChanged = element.last_changed;
         this.entryDate = element.entry_date;
         this.longitude = element.longitude;
-        this.latitude = element.latitude
+        this.latitude = element.latitude;
+        this.mark = element.mark;
 
         if (this.direction == 'enter') {
             this.ion_direction_icon = 'enter';

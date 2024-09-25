@@ -5,6 +5,7 @@ import { IonDatetime, ToastController } from "@ionic/angular";
 import { ActivatedRoute } from "@angular/router";
 import * as moment from 'moment';
 import { Util } from 'src/app/libs/Util';
+import { Mark } from "src/app/models/enums";
 
 @Component({
   selector: "app-entries",
@@ -71,6 +72,27 @@ export class EntriesPage {
     this.goTime = null;
   }
 
+  markSickLeave() {
+    let dt = this.timeHasChanged ? this.date : new Date().toISOString().split('T')[0];
+    try {
+      this.timeEntryService.markADay(Mark.SICK_LEAVE, dt);
+    } catch (error) {
+      this.presentMessage(error, 20000);
+    }
+  }
+  markVacation() {
+    let dt = this.timeHasChanged ? this.date : new Date().toISOString().split('T')[0];
+    try {
+      this.timeEntryService.markADay(Mark.VACATION, dt);
+    } catch (error) {
+      this.presentMessage(error, 20000);
+    }
+  }
+  async deleteEntriesOfThisDate() {
+    let dt = this.timeHasChanged ? this.date : new Date().toISOString().split('T')[0];
+    await this.timeEntryService.deleteAllTimeEntriesFromThisDate(dt);
+  }
+
   private async createEntry(direction: string, date?: string) {
 
     const entry = {} as Entry;
@@ -116,6 +138,10 @@ export class EntriesPage {
   }
   get date(): string {
     return this._date;
+  }
+  
+  getMarkIcon(mark): string {
+    return Util.markIcon(mark);
   }
 
   public setYesterday(): void {
