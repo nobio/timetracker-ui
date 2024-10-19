@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [v20]
+        node-version: [v22]
     # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
     steps:
       - name: Checkout
@@ -68,7 +68,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [v20]
+        node-version: [v22]
     # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
     steps:
       - name: Checkout
