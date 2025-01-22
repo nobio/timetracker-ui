@@ -216,7 +216,7 @@ export class TimeEntriesService extends DatabaseService {
   millisecToReadbleTime(millisec: number): string {
     //this.logger.log(millisec + ' ms');
     if (!millisec) {
-      return "00:00";
+      return "0:00";
     }
     let dt = new Date();
     dt.setTime(millisec);
