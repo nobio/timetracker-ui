@@ -220,11 +220,8 @@ export class TimeEntriesService extends DatabaseService {
     }
     let dt = new Date();
     dt.setTime(millisec);
-    return (
-      (dt.getUTCHours() < 10 ? "0" + dt.getUTCHours() : dt.getUTCHours()) +
-      ":" +
-      (dt.getUTCMinutes() < 10 ? "0" + dt.getUTCMinutes() : dt.getUTCMinutes())
-    );
+    return dt.getUTCHours() + ":" + (dt.getUTCMinutes() < 10 ? "0" + dt.getUTCMinutes() : dt.getUTCMinutes());
+
   }
 
   async markADay(mark: Mark, dt: string) {
