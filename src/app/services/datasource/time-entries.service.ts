@@ -127,12 +127,8 @@ export class TimeEntriesService extends DatabaseService {
       .pipe(retry(2), /*catchError(super.handleError)*/)
       .subscribe((data) => {
         this.logger.log(data);
-        this.entryStats.totalWorkload = this.millisecToReadbleTime(
-          data["duration"]
-        );
-        this.entryStats.workingTime = this.millisecToReadbleTime(
-          data["busytime"]
-        );
+        this.entryStats.totalWorkload = this.millisecToReadbleTime(data["duration"]);
+        this.entryStats.workingTime = this.millisecToReadbleTime(data["busytime"]);
         this.entryStats.pause = this.millisecToReadbleTime(data["pause"]);
         this.entryStats.workDone = Math.min(1, Math.max(0, Math.abs(data["busytime"] / (8 * 1000 * 60 * 60)))); // millisecons scale to hours; 8 hours nominal worktime
 
@@ -220,7 +216,7 @@ export class TimeEntriesService extends DatabaseService {
   millisecToReadbleTime(millisec: number): string {
     //this.logger.log(millisec + ' ms');
     if (!millisec) {
-      return "";
+      return "00:00";
     }
     let dt = new Date();
     dt.setTime(millisec);
