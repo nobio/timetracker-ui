@@ -170,10 +170,10 @@ export class StatisticsService extends DatabaseService {
     });
   }
 
-  loadExtraHours(accumulate: boolean, timeUnit: TimeUnit): Promise<ExtraHours> {
+  loadExtraHours(accumulate: boolean, timeUnit: TimeUnit, startDate: string): Promise<ExtraHours> {
     return new Promise((resolve, reject) => {
 
-      this.GET(`/api/statistics/extrahours?accumulate=${accumulate}&timeUnit=${TimeUnit[timeUnit]}`)
+      this.GET(`/api/statistics/extrahours?accumulate=${accumulate}&timeUnit=${TimeUnit[timeUnit]}&startDate=${startDate}`)
         .pipe(retry(2), catchError(super.handleError))
         .subscribe((exHrsData: []) => {
 
