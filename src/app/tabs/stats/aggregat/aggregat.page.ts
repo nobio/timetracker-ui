@@ -128,7 +128,7 @@ export class AggregatPage {
     //console.log(lineChart.data.datasets[0].data);
     //console.log(lineChart.data.datasets[1].data);
 
-    if (this.timeUnit == TimeUnit.weekday || this.timeUnit == TimeUnit.year) {
+    if (this.timeUnit == TimeUnit.month || TimeUnit.weekday || this.timeUnit == TimeUnit.year) {
       chart.config.type = 'bar';
       chart.getDatasetMeta(1).hidden = true;
     } else {
