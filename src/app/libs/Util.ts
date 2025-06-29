@@ -192,16 +192,16 @@ export class Util {
       }
     }, Number.MAX_SAFE_INTEGER)
 
-    return Math.floor(min);
+    return Math.floor(min - min / 100) + 0.5;
   }
 
   static markIcon(mark): string {
     let icon;
-    switch(mark) {
-      case Mark.WORK: {icon = 'bag-outline'; break;}
-      case Mark.SICK_LEAVE: {icon = 'medkit-outline'; break;}
-      case Mark.VACATION: {icon = 'airplane-outline'; break;}
-      default : icon = ''; 
+    switch (mark) {
+      case Mark.WORK: { icon = 'bag-outline'; break; }
+      case Mark.SICK_LEAVE: { icon = 'medkit-outline'; break; }
+      case Mark.VACATION: { icon = 'airplane-outline'; break; }
+      default: icon = '';
     }
     return icon;
   }

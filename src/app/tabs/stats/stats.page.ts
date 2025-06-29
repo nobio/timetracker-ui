@@ -198,7 +198,7 @@ export class StatsPage {
       }
     }
 
-    if (this.timeUnit == TimeUnit.week) {
+    if (this.timeUnit == TimeUnit.week || this.timeUnit == TimeUnit.month) {
       this.chart.data.datasets[0].type = 'bar';
       const barThickness = this.chart.width / data.length;
       this.chart.data.datasets[0]['barThickness'] = barThickness - barThickness / 3;
