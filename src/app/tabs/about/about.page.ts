@@ -1,16 +1,26 @@
 import { Component } from "@angular/core";
-import moment from 'moment';
+import { FormsModule } from "@angular/forms";
+import { RouterModule } from "@angular/router";
+import { IonicModule } from "@ionic/angular";
+import * as moment from 'moment';
+import { OnlineStatusComponent } from "src/app/components/online-status/online-status.component";
 import { AuthService } from '../../services/datasource/auth.service';
 import { StatusService } from "../../services/datasource/status.service";
 @Component({
   selector: "app-about",
   templateUrl: "about.page.html",
   styleUrls: ["about.page.scss"],
+  imports: [
+    IonicModule,
+    FormsModule,
+    RouterModule,
+    OnlineStatusComponent
+  ],
 })
 export class AboutPage {
   expireRefresh: string = '';
   expireAccess: string = '';
-  intervalId: NodeJS.Timeout;
+  intervalId!: NodeJS.Timeout;
 
   constructor(public statusSrv: StatusService, public authSrv: AuthService) { }
 

@@ -1,11 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
 import { IonicModule } from '@ionic/angular';
-
 import { AggregatPageRoutingModule } from './aggregat-routing.module';
-
 import { AggregatPage } from './aggregat.page';
 
 @NgModule({
@@ -13,8 +10,8 @@ import { AggregatPage } from './aggregat.page';
     CommonModule,
     FormsModule,
     IonicModule,
-    AggregatPageRoutingModule
+    AggregatPageRoutingModule,
+    AggregatPage
   ],
-  declarations: [AggregatPage]
 })
-export class AggregatPageModule {}
+export class AggregatPageModule { }

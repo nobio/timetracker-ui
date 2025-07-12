@@ -11,7 +11,10 @@ import { DatabaseService } from './database.service';
 })
 export class GeofenceService extends DatabaseService {
 
-  constructor(protected httpClient: HttpClient, protected alertCtrl: AlertController, protected logger: LogService) {
+  constructor(
+    override httpClient: HttpClient,
+    override alertCtrl: AlertController,
+    override logger: LogService) {
     super(httpClient, alertCtrl, logger);
   }
 

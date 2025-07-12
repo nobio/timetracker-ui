@@ -1,20 +1,19 @@
-import { IonicModule } from '@ionic/angular';
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { AboutPage as AboutPage } from './about.page';
-
+import { IonicModule } from '@ionic/angular';
+import { AboutPage } from './about.page';
+import { OnlineStatusComponent } from 'src/app/components/online-status/online-status.component';
 import { AboutPageRoutingModule } from './about-routing.module';
-import { OnlineStatusComponentModule } from '../../components/online-status/online-status.module';
 
 @NgModule({
   imports: [
     IonicModule,
     CommonModule,
     FormsModule,
-    OnlineStatusComponentModule,
-    AboutPageRoutingModule
-  ],
-  declarations: [AboutPage]
+    OnlineStatusComponent,
+    AboutPageRoutingModule,
+    AboutPage
+  ]
 })
-export class AboutPageModule {}
+export class AboutPageModule { }

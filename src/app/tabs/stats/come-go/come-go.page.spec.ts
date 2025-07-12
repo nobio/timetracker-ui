@@ -9,7 +9,7 @@ describe('ComeGoPage', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ComeGoPage ],
+      declarations: [ComeGoPage],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 

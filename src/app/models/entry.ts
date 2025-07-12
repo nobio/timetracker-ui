@@ -1,4 +1,4 @@
-import moment from 'moment';
+import * as moment from 'moment';
 import { Mark } from './enums';
 
 export class Entry {

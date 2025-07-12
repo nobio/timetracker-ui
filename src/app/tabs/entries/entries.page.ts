@@ -1,16 +1,27 @@
-import { Component, ViewChild } from "@angular/core";
-import { TimeEntriesService } from "../../services/datasource/time-entries.service";
-import { Entry } from "../../models/entry";
-import { IonDatetime, ToastController } from "@ionic/angular";
-import { ActivatedRoute } from "@angular/router";
+import { CommonModule, DatePipe } from "@angular/common";
+import { Component } from "@angular/core";
+import { FormsModule } from "@angular/forms";
+import { ActivatedRoute, RouterModule } from "@angular/router";
+import { IonicModule, ToastController } from "@ionic/angular";
 import * as moment from 'moment';
+import { OnlineStatusComponent } from "src/app/components/online-status/online-status.component";
 import { Util } from 'src/app/libs/Util';
 import { Mark } from "src/app/models/enums";
+import { Entry } from "../../models/entry";
+import { TimeEntriesService } from "../../services/datasource/time-entries.service";
 
 @Component({
   selector: "app-entries",
   templateUrl: "entries.page.html",
   styleUrls: ["entries.page.scss"],
+  imports: [
+    IonicModule,
+    FormsModule,
+    RouterModule,
+    DatePipe,
+    OnlineStatusComponent,
+    CommonModule
+  ],
 })
 export class EntriesPage {
   private _date: string = new Date().toISOString();
@@ -27,7 +38,7 @@ export class EntriesPage {
   ) { }
 
   ionViewWillEnter() {
-    if (this.route.snapshot.params.date) this.date = moment(this.route.snapshot.params.date).toISOString();
+    if (this.route.snapshot.params['date']) this.date = moment(this.route.snapshot.params['date']).toISOString();
     if (!this.date) this.date = new Date().toISOString();
     this.timeEntryService.loadEntriesByDate(this.date);
     this.timeEntryService.loadWorkingTime(this.date);
@@ -139,7 +150,7 @@ export class EntriesPage {
   get date(): string {
     return this._date;
   }
-  
+
   getMarkIcon(mark): string {
     return Util.markIcon(mark);
   }

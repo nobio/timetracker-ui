@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
-import jwt_decode from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 import { BehaviorSubject, from, Observable, of } from 'rxjs';
 import { catchError, switchMap, take, tap } from 'rxjs/operators';
 import { LogService } from '../log.service';
@@ -24,9 +24,9 @@ export class AuthService extends DatabaseService {
   constructor(
     private router: Router,
     private storage: Storage,
-    protected httpClient: HttpClient,
-    protected alertCtrl: AlertController,
-    protected logger: LogService,
+    override httpClient: HttpClient,
+    override alertCtrl: AlertController,
+    override logger: LogService,
   ) {
     super(httpClient, alertCtrl, logger);
     console.log('Constructor of AuthService');
@@ -95,7 +95,7 @@ export class AuthService extends DatabaseService {
     if (!token) {
       this.isAuthenticated.next(false);
       this.router.navigateByUrl('/', { replaceUrl: true });
-      return;
+      return of(null);
     };
 
     return this.POST(`/api/auth/logout`, { token }).pipe(
@@ -139,14 +139,14 @@ export class AuthService extends DatabaseService {
 
   getAccessToken(): Object {
     if (this.currentAccessToken) {
-      return jwt_decode(this.currentAccessToken);
+      return jwtDecode(this.currentAccessToken);
     } else {
       return {};
     }
   }
   getRefresehToken(): Object {
     if (this.currentRefreshToken) {
-      return jwt_decode(this.currentRefreshToken);
+      return jwtDecode(this.currentRefreshToken);
     } else {
       return {};
     }

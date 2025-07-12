@@ -13,8 +13,8 @@ import { LogsDetailsPage } from './logs-details.page';
     CommonModule,
     FormsModule,
     IonicModule,
-    LogsDetailsPageRoutingModule
+    LogsDetailsPageRoutingModule,
+    LogsDetailsPage
   ],
-  declarations: [LogsDetailsPage]
 })
-export class LogsDetailsPageModule {}
+export class LogsDetailsPageModule { }

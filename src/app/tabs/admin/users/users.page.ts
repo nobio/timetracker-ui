@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { NavController } from '@ionic/angular';
+import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+import { IonicModule } from '@ionic/angular';
 import { User } from 'src/app/models/user';
 import { AdminService } from 'src/app/services/datasource/admin.service';
 import { LogService } from 'src/app/services/log.service';
@@ -9,15 +10,18 @@ import { LogService } from 'src/app/services/log.service';
   selector: 'app-user',
   templateUrl: './users.page.html',
   styleUrls: ['./users.page.scss'],
+  imports: [
+    IonicModule,
+    RouterModule,
+    FormsModule
+  ],
 })
 export class UsersPage implements OnInit {
 
   public users: User[] = [];
 
   constructor(
-    private route: ActivatedRoute,
     public adminService: AdminService,
-    private navCtrl: NavController,
     private logger: LogService
   ) { }
 

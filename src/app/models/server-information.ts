@@ -1,4 +1,4 @@
-import moment from "moment";
+import * as moment from 'moment';
 import { OnlineSignal } from "./enums";
 
 const YELLOW_DELAY = 10000;  // after 10 sec green status becomes yellow
@@ -31,13 +31,14 @@ export class ServerInformation {
     if (!this.isOnline) return OnlineSignal.RED;
     if (this.isOnline && diffDate >= YELLOW_DELAY) return OnlineSignal.YELLOW;
     if (this.isOnline && diffDate < YELLOW_DELAY) return OnlineSignal.GREEN;
+    return OnlineSignal.RED; // default fallback
   }
 
   public get serverBuildTimeAsString(): string {
     if (this.serverBuildTime) {
       return moment(this.serverBuildTime).format("DD.MM.YYYY HH:mm:ss");
     } else {
-      return undefined;
+      return '';
     }
   }
 

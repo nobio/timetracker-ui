@@ -13,8 +13,8 @@ import { GeofencePage } from './geofence.page';
     CommonModule,
     FormsModule,
     IonicModule,
-    GeofencePageRoutingModule
+    GeofencePageRoutingModule,
+    GeofencePage
   ],
-  declarations: [GeofencePage]
 })
-export class GeofencePageModule {}
+export class GeofencePageModule { }

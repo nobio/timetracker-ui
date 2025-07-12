@@ -13,8 +13,8 @@ import { ExtrahourPage } from './extrahour.page';
     CommonModule,
     FormsModule,
     IonicModule,
-    ExtrahourPageRoutingModule
-  ],
-  declarations: [ExtrahourPage]
+    ExtrahourPageRoutingModule,
+    ExtrahourPage
+  ]
 })
-export class ExtrahourPageModule {}
+export class ExtrahourPageModule { }

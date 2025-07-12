@@ -1,11 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
 import { IonicModule } from '@ionic/angular';
-
 import { FailsPageRoutingModule } from './fails-routing.module';
-
 import { FailsPage } from './fails.page';
 
 @NgModule({
@@ -13,8 +10,8 @@ import { FailsPage } from './fails.page';
     CommonModule,
     FormsModule,
     IonicModule,
-    FailsPageRoutingModule
+    FailsPageRoutingModule,
+    FailsPage
   ],
-  declarations: [FailsPage]
 })
-export class FailsPageModule {}
+export class FailsPageModule { }

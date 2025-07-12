@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { AlertController } from '@ionic/angular';
-import moment from 'moment';
+import * as moment from 'moment';
 import { Observable } from "rxjs";
 import { catchError, retry } from "rxjs/operators";
 import { Entry } from "src/app/models/entry";
@@ -22,7 +22,10 @@ export class TimeEntriesService extends DatabaseService {
   public selectedEntry: Entry = new Entry();
   public entryStats: EntryStatistics = new EntryStatistics();
 
-  constructor(protected httpClient: HttpClient, protected alertCtrl: AlertController, protected logger: LogService) {
+  constructor(
+    override httpClient: HttpClient,
+    override alertCtrl: AlertController,
+    override logger: LogService) {
     super(httpClient, alertCtrl, logger);
   }
 

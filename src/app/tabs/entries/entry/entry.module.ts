@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
 import { IonicModule } from '@ionic/angular';
 import { EntryPageRoutingModule } from './entry-routing.module';
 import { EntryPage } from './entry.page';
@@ -11,8 +10,8 @@ import { EntryPage } from './entry.page';
     CommonModule,
     FormsModule,
     IonicModule,
-    EntryPageRoutingModule
+    EntryPageRoutingModule,
+    EntryPage
   ],
-  declarations: [EntryPage]
 })
-export class EntryPageModule {}
+export class EntryPageModule { }

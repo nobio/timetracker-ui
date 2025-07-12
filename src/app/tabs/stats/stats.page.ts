@@ -1,7 +1,11 @@
+import { DatePipe } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
-import { AlertController } from '@ionic/angular';
+import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+import { AlertController, IonicModule } from '@ionic/angular';
 import Chart from 'chart.js/auto';
-import moment from 'moment';
+import * as moment from 'moment';
+import { OnlineStatusComponent } from 'src/app/components/online-status/online-status.component';
 import { TimeBox } from 'src/app/models/time-box';
 import { PropertyReader } from 'src/app/services/datasource/property-reader.service';
 import { LogService } from 'src/app/services/log.service';
@@ -13,7 +17,15 @@ import { StatisticsService } from '../../services/datasource/statistics.service'
 @Component({
   selector: 'app-stats',
   templateUrl: 'stats.page.html',
-  styleUrls: ['stats.page.scss']
+  styleUrls: ['stats.page.scss'],
+  imports: [
+    IonicModule,
+    FormsModule,
+    RouterModule,
+    OnlineStatusComponent,
+    DatePipe
+  ],
+  standalone: true,
 })
 
 export class StatsPage {
@@ -115,18 +127,7 @@ export class StatsPage {
             label: "Anwesenheit",
             backgroundColor: 'rgb(50, 50, 250, 0.8)', // array should have same number of elements as number of dataset
             borderColor: 'rgb(57, 114, 255)',// array should have same number of elements as number of dataset
-            borderDash: [],
-            borderDashOffset: 0.0,
-            borderJoinStyle: "bevel",
-            pointBorderWidth: 1,
-            pointHoverRadius: 5,
-            pointHoverBorderWidth: 2,
-            pointRadius: 3,
-            pointHitRadius: 30,
             pointStyle: "circle",
-            spanGaps: false,
-            cubicInterpolationMode: "monotone",
-            scaleShowGridLines: true,
             data: [{ x: 0, y: 0 }],
           },
           {
@@ -206,12 +207,12 @@ export class StatsPage {
     } else {
       this.chart.data.datasets[0].type = 'line';
     }
-    this.chart.options.scales.y.min = Util.min(data);
+    this.chart.options.scales['y'].min = Util.min(data);
 
     chart.data.labels = label;
     chart.data.datasets[0].data = data;
     chart.data.datasets[1].data = avg;
-    chart.update('normal');
+    chart.update('none');
   }
 
 }

@@ -4,12 +4,17 @@ import * as Leaflet from "leaflet";
 //import { antPath } from "leaflet-ant-path";
 //import "leaflet/dist/images/marker-shadow.png";
 //import "leaflet/dist/images/marker-icon-2x.png";
-import { NavController } from '@ionic/angular';
+import { IonicModule, NavController } from '@ionic/angular';
+import { FormsModule } from "@angular/forms";
+import { RouterModule } from "@angular/router";
 
 @Component({
   selector: "map",
   templateUrl: "./map.page.html",
   styleUrls: ["./map.page.scss"],
+  imports: [
+    IonicModule,
+  ],
 })
 export class MapPage implements OnInit {
   private map: Leaflet.Map;

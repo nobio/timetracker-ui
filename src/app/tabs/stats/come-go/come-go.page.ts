@@ -1,5 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
-import { ActionSheetController, AlertController, NavController } from '@ionic/angular';
+import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+import { ActionSheetController, AlertController, IonicModule, NavController } from '@ionic/angular';
 import { Chart } from "chart.js";
 import { Util } from 'src/app/libs/Util';
 import { Direction } from 'src/app/models/enums';
@@ -10,6 +12,12 @@ import { StatisticsService } from 'src/app/services/datasource/statistics.servic
   selector: 'app-come-go',
   templateUrl: './come-go.page.html',
   styleUrls: ['./come-go.page.scss'],
+  imports: [
+    IonicModule,
+    FormsModule,
+    RouterModule,
+  ],
+  standalone: true,
 })
 export class ComeGoPage {
   @ViewChild("graphCanvas") graphCanvas;

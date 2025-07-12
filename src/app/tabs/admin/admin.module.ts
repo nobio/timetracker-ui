@@ -1,22 +1,21 @@
-import { IonicModule } from '@ionic/angular';
-import { RouterModule } from '@angular/router';
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+import { IonicModule } from '@ionic/angular';
 import { AdminPage } from './admin.page';
-
-import { AdminPageRoutingModule } from './admin-routing.module'
-import { OnlineStatusComponentModule } from '../../components/online-status/online-status.module';
+import { OnlineStatusComponent } from 'src/app/components/online-status/online-status.component';
+import { AdminPageRoutingModule } from './admin-routing.module';
 
 @NgModule({
   imports: [
     IonicModule,
     CommonModule,
     FormsModule,
-    OnlineStatusComponentModule,
+    OnlineStatusComponent,
     RouterModule.forChild([{ path: '', component: AdminPage }]),
     AdminPageRoutingModule,
+    AdminPage
   ],
-  declarations: [AdminPage]
 })
-export class AdminPageModule {}
+export class AdminPageModule { }

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { AlertController, NavController } from '@ionic/angular';
+import { FormsModule } from '@angular/forms';
+import { ActivatedRoute, RouterModule } from '@angular/router';
+import { AlertController, IonicModule, NavController } from '@ionic/angular';
 import { User } from 'src/app/models/user';
 import { AdminService } from 'src/app/services/datasource/admin.service';
 import { LogService } from 'src/app/services/log.service';
@@ -9,6 +10,11 @@ import { LogService } from 'src/app/services/log.service';
   selector: 'app-user',
   templateUrl: './user.page.html',
   styleUrls: ['./user.page.scss'],
+  imports: [
+    IonicModule,
+    RouterModule,
+    FormsModule
+  ],
 })
 export class UserPage {
 
@@ -26,7 +32,7 @@ export class UserPage {
   ionViewWillEnter() {
     console.log(this.route.snapshot.params);
 
-    this.adminService.loadUser(this.route.snapshot.params.id)
+    this.adminService.loadUser(this.route.snapshot.params['id'])
       .then(user => this.user = user)
       .catch(err => this.logger.error(err))
 
@@ -48,8 +54,8 @@ export class UserPage {
           text: 'Löschen',
           handler: () => {
             this.adminService.deleteUser(this.user)
-            .then(e => this.navCtrl.navigateBack('/members/admin/user'))
-            .catch(err => this.logger.error(err))
+              .then(e => this.navCtrl.navigateBack('/members/admin/user'))
+              .catch(err => this.logger.error(err))
           }
         }
       ]
@@ -60,9 +66,9 @@ export class UserPage {
 
   save(): void {
     console.log(this.user)
-    if(this.passwordHasChanged) {
+    if (this.passwordHasChanged) {
       console.log("password has changed - setting password");
-      this.adminService.setPassword(this.user) 
+      this.adminService.setPassword(this.user)
     }
     this.adminService.updateUser(this.user)
       .then(e => this.navCtrl.navigateBack('/members/admin/user'))

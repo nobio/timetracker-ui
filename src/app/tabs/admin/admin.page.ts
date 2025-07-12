@@ -1,15 +1,26 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { Toggles } from '../../models/toggles';
-import { ToastController } from '@ionic/angular';
-import { AdminService } from '../../services/datasource/admin.service';
+import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+import { IonicModule, ToastController } from '@ionic/angular';
+import { OnlineStatusComponent } from 'src/app/components/online-status/online-status.component';
+import { AuthService } from 'src/app/services/datasource/auth.service';
 import { PropertyReader } from 'src/app/services/datasource/property-reader.service';
 import { LogService } from 'src/app/services/log.service';
-import { AuthService } from 'src/app/services/datasource/auth.service';
+import { Toggles } from '../../models/toggles';
+import { AdminService } from '../../services/datasource/admin.service';
 
 @Component({
   selector: 'app-admin',
   templateUrl: 'admin.page.html',
-  styleUrls: ['admin.page.scss']
+  styleUrls: ['admin.page.scss'],
+  imports: [
+    IonicModule,
+    RouterModule,
+    FormsModule,
+    OnlineStatusComponent,
+    CommonModule
+  ],
 })
 export class AdminPage {
   toggles: Toggles = new Toggles();

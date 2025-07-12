@@ -1,7 +1,9 @@
 import { Component, ViewChild } from '@angular/core';
-import { AlertController, NavController } from '@ionic/angular';
+import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+import { AlertController, IonicModule, NavController } from '@ionic/angular';
 import { Chart } from 'chart.js';
-import moment from 'moment';
+import * as moment from 'moment';
 import { Util } from 'src/app/libs/Util';
 import { TimeUnit } from 'src/app/models/enums';
 import { ExtraHours } from 'src/app/models/extra-hours';
@@ -10,6 +12,11 @@ import { StatisticsService } from 'src/app/services/datasource/statistics.servic
   selector: 'app-extrahour',
   templateUrl: './extrahour.page.html',
   styleUrls: ['./extrahour.page.scss'],
+  imports: [
+    IonicModule,
+    FormsModule,
+    RouterModule,
+  ],
 })
 export class ExtrahourPage {
 

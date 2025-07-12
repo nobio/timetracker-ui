@@ -1,9 +1,9 @@
-import moment, { Moment } from 'moment';
+import * as moment from 'moment';
 import { Util } from '../libs/Util';
 import { TimeUnit } from './enums';
 
 export class TimeBox {
-   private date: Moment;
+   private date: moment.Moment;
    public day: string;
    public week: string;
    public month: string;
@@ -48,13 +48,15 @@ export class TimeBox {
    getDateByTimeUnitISOString(tu: TimeUnit): string {
       if (TimeUnit.day == tu) {
          return this.day;
-       } else if (TimeUnit.week == tu) {
+      } else if (TimeUnit.week == tu) {
          return this.week;
-       } else if (TimeUnit.month == tu) {
+      } else if (TimeUnit.month == tu) {
          return this.month;
-       } else if (TimeUnit.year == tu) {
-          return this.year;
-       }
+      } else if (TimeUnit.year == tu) {
+         return this.year;
+      }
+      // Default return value if none of the conditions match
+      return '';
    }
 
    public toString(): string {

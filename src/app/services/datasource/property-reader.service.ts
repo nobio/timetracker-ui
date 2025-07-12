@@ -14,7 +14,9 @@ export class PropertyReader extends DatabaseService {
 
   /** temporary hard coded protperties */
 
-  constructor(protected httpClient: HttpClient, protected alertCtrl: AlertController, protected logger: LogService) {
+  constructor(override httpClient: HttpClient,
+    override alertCtrl: AlertController,
+    override logger: LogService) {
     super(httpClient, alertCtrl, logger);
     this.loadAll();
   }
@@ -38,8 +40,9 @@ export class PropertyReader extends DatabaseService {
 
   public get(key: string): string {
     if (this.properties.size > 0) {
-      return this.properties.get(key);
+      return this.properties.get(key) ?? '';
     }
+    return '';
   }
   public set(key: string, value: string): void {
     this.logger.log(`Property to set: '${key}' to '${value}'`)

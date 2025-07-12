@@ -1,16 +1,22 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { GeoFence } from 'src/app/models/geo-fence';
 import { GeofenceService } from 'src/app/services/datasource/geofence.service';
 import { LogService } from 'src/app/services/log.service';
 
 import * as Leaflet from "leaflet";
-import { NavController } from '@ionic/angular';
+import { IonicModule, NavController } from '@ionic/angular';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-geofence',
   templateUrl: './geofence.page.html',
   styleUrls: ['./geofence.page.scss'],
+  imports: [
+    IonicModule,
+    RouterModule,
+    FormsModule
+  ],
 })
 export class GeofencePage implements OnInit {
 
@@ -33,7 +39,7 @@ export class GeofencePage implements OnInit {
   }
 
   async ionViewWillEnter() {
-    this.geoFence = await this.geoFenceService.loadGeofence(this.route.snapshot.params.id);
+    this.geoFence = await this.geoFenceService.loadGeofence(this.route.snapshot.params['id']);
     this.initMap();
   }
 

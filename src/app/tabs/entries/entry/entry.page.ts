@@ -1,14 +1,22 @@
 import { Component } from '@angular/core';
-import { AlertController, NavController } from '@ionic/angular';
+import { AlertController, IonicModule, NavController } from '@ionic/angular';
 import { TimeEntriesService } from 'src/app/services/datasource/time-entries.service';
 import { ActivatedRoute } from '@angular/router';
 import { Util } from 'src/app/libs/Util';
-import { Mark } from 'src/app/models/enums';
+import { CommonModule, DatePipe, DecimalPipe } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-entry',
   templateUrl: './entry.page.html',
   styleUrls: ['./entry.page.scss'],
+  imports: [
+    IonicModule,
+    FormsModule,
+    DecimalPipe,
+    DatePipe,
+    CommonModule
+  ],
 })
 export class EntryPage {
 
@@ -23,7 +31,7 @@ export class EntryPage {
   ) { }
 
   ionViewWillEnter() {
-    this.timeEntryService.loadEntry(this.route.snapshot.params.id);
+    this.timeEntryService.loadEntry(this.route.snapshot.params['id']);
   }
 
   async delete() {
@@ -58,10 +66,10 @@ export class EntryPage {
 
   setGeoLocation(): void {
     Util.lookUpGeoLocation()
-    .then(geoCoord => {
-      this.timeEntryService.selectedEntry.longitude = geoCoord.longitude;
-      this.timeEntryService.selectedEntry.latitude = geoCoord.latitude;
-    })
+      .then(geoCoord => {
+        this.timeEntryService.selectedEntry.longitude = geoCoord.longitude;
+        this.timeEntryService.selectedEntry.latitude = geoCoord.latitude;
+      })
   }
   get markIcon(): string {
     return Util.markIcon(this.timeEntryService.selectedEntry.mark);

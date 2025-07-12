@@ -1,9 +1,13 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { ToastController, ViewWillEnter, ViewWillLeave } from '@ionic/angular';
-import * as Leaflet from "leaflet";
-import { antPath } from "leaflet-ant-path";
-import { hotline } from "leaflet-hotline";
+import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+import { IonicModule, ToastController, ViewWillEnter, ViewWillLeave } from '@ionic/angular';
+import * as Leaflet from 'leaflet';
+import { antPath } from 'leaflet-ant-path';
+import { hotline } from 'leaflet-hotline';
 import * as moment from 'moment';
+import { OnlineStatusComponent } from 'src/app/components/online-status/online-status.component';
 import { Util } from 'src/app/libs/Util';
 import { GeoTrack } from 'src/app/models/geo-track';
 import { TimeBox } from 'src/app/models/time-box';
@@ -16,6 +20,13 @@ import { LineStyle, TimeUnit } from '../../models/enums';
   selector: 'app-map',
   templateUrl: './map.page.html',
   styleUrls: ['./map.page.scss'],
+  imports: [
+    IonicModule,
+    FormsModule,
+    RouterModule,
+    OnlineStatusComponent,
+    DatePipe
+  ],
 })
 export class MapPage implements ViewWillEnter, ViewWillLeave, WsReceivable, OnInit {
 

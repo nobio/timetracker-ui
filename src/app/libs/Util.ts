@@ -1,10 +1,9 @@
 import { Mark, TimeUnit } from '../models/enums';
 import { AlertController } from '@ionic/angular';
-import { Plugins } from "@capacitor/core";
+import { Geolocation } from '@capacitor/geolocation';
 import { GeoCoord } from '../models/geo-coord';
-import moment, { Moment } from 'moment';
+import * as moment from 'moment';
 
-const { Geolocation } = Plugins;
 
 export class Util {
 
@@ -95,7 +94,7 @@ export class Util {
     let diff: number = dt.getDate() - day + (day == 0 ? -6 : 1); // adjust when day is sunday
     return new Date(dt.setDate(diff));
   }
-  static getMondayByMoment(dt: Moment): Moment {
+  static getMondayByMoment(dt: moment.Moment): moment.Moment {
     let day: number = dt.day();
     let diff: number = dt.day() - day + (day == 0 ? -6 : 1); // adjust when day is sunday
     return moment(dt).day(diff);

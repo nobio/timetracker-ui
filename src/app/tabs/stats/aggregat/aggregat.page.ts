@@ -1,5 +1,7 @@
 import { Component, ViewChild } from "@angular/core";
-import { AlertController, NavController } from '@ionic/angular';
+import { FormsModule } from "@angular/forms";
+import { RouterModule } from "@angular/router";
+import { AlertController, IonicModule, NavController } from '@ionic/angular';
 import Chart from 'chart.js/auto';
 import * as moment from 'moment';
 import { Util } from 'src/app/libs/Util';
@@ -12,6 +14,12 @@ import { LogService } from "src/app/services/log.service";
   selector: "app-aggregat",
   templateUrl: "./aggregat.page.html",
   styleUrls: ["./aggregat.page.scss"],
+  imports: [
+    IonicModule,
+    FormsModule,
+    RouterModule,
+  ],
+  standalone: true,
 })
 export class AggregatPage {
   @ViewChild("lineCanvas") lineCanvas;
@@ -45,23 +53,19 @@ export class AggregatPage {
         datasets: [
           {
             label: "Anwesenheit",
-            fill: true,
             backgroundColor: 'rgba(255,159,64, 0.5)',
             borderColor: 'rgba(255,159,64, 0.9)',
             borderWidth: 1,
             hoverBackgroundColor: 'rgba(255,159,64, 0.9)',
             hoverBorderColor: 'rgba(255,159,64, 0.9)',
             hoverBorderWidth: 4,
-            pointRadius: 0,
             data: [{ x: 0, y: 0 }]
           },
           {
             label: 'Durchschnitt',
-            pointRadius: 0,
             borderColor: 'rgba(0,0,0, 0.9)',
             borderWidth: 1,
             //backgroundColor: 'rgba(255,250,225, 0.2)', // array should have same number of elements as number of dataset
-            fill: false,
             hidden: true,
             data: [{ x: 0, y: 0 }]
           },
@@ -120,7 +124,7 @@ export class AggregatPage {
       yMin = stats.data[n].y < yMin ? stats.data[n].y : yMin;
     }
 
-    chart.options.scales.y.min = Util.min(data);
+    chart.options.scales['y'].min = Util.min(data);
     chart.data.labels = label;
     chart.data.datasets[0].data = data;
     chart.data.datasets[1].data = movingAvg;
@@ -129,14 +133,14 @@ export class AggregatPage {
     //console.log(lineChart.data.datasets[1].data);
 
     if (this.timeUnit == TimeUnit.month || TimeUnit.weekday || this.timeUnit == TimeUnit.year) {
-      chart.config.type = 'bar';
+      chart.config['type'] = 'bar';
       chart.getDatasetMeta(1).hidden = true;
     } else {
-      chart.config.type = 'line';
+      chart.config['type'] = 'line';
       chart.getDatasetMeta(1).hidden = false;
     }
 
-    chart.update('normal');
+    chart.update('default');
   }
 
   setTimeUnit() {

@@ -13,7 +13,10 @@ import { DatabaseService } from "./database.service";
 export class StatusService extends DatabaseService {
   public serverInfo = new ServerInformation();
 
-  constructor(protected httpClient: HttpClient, protected alertCtrl: AlertController, protected logger: LogService) {
+  constructor(
+    override httpClient: HttpClient,
+    override alertCtrl: AlertController,
+    override logger: LogService) {
     super(httpClient, alertCtrl, logger);
   }
 

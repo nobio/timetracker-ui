@@ -1,13 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { LoadingController } from '@ionic/angular';
+import { IonicModule, LoadingController } from '@ionic/angular';
 import { AuthService } from 'src/app/services/datasource/auth.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
+  imports: [
+    IonicModule,
+    FormsModule,
+  ],
 })
 export class LoginPage implements OnInit {
   credentials: FormGroup;

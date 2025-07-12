@@ -1,5 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
-import { AlertController, NavController } from '@ionic/angular';
+import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+import { AlertController, IonicModule, NavController } from '@ionic/angular';
 import { Chart } from 'chart.js';
 import { Util } from 'src/app/libs/Util';
 import { BreakTimes } from 'src/app/models/break-time';
@@ -9,6 +11,12 @@ import { StatisticsService } from 'src/app/services/datasource/statistics.servic
   selector: 'app-breaktime',
   templateUrl: './breaktime.page.html',
   styleUrls: ['./breaktime.page.scss'],
+  imports: [
+    IonicModule,
+    FormsModule,
+    RouterModule,
+  ],
+  standalone: true,
 })
 export class BreaktimePage {
 

@@ -1,11 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
 import { IonicModule } from '@ionic/angular';
-
 import { BreaktimePageRoutingModule } from './breaktime-routing.module';
-
 import { BreaktimePage } from './breaktime.page';
 
 @NgModule({
@@ -13,8 +10,8 @@ import { BreaktimePage } from './breaktime.page';
     CommonModule,
     FormsModule,
     IonicModule,
-    BreaktimePageRoutingModule
+    BreaktimePageRoutingModule,
+    BreaktimePage
   ],
-  declarations: [BreaktimePage]
 })
-export class BreaktimePageModule {}
+export class BreaktimePageModule { }

@@ -8,7 +8,7 @@ import { Direction, TimeUnit } from 'src/app/models/enums';
 import { Statistics } from 'src/app/models/statistics';
 import { LogService } from '../log.service';
 import { DatabaseService } from './database.service';
-import moment from 'moment-timezone';
+import * as moment from 'moment-timezone';
 import { ExtraHours } from 'src/app/models/extra-hours';
 
 @Injectable({
@@ -16,7 +16,10 @@ import { ExtraHours } from 'src/app/models/extra-hours';
 })
 export class StatisticsService extends DatabaseService {
 
-  constructor(protected httpClient: HttpClient, protected alertCtrl: AlertController, protected logger: LogService) {
+  constructor(
+    override httpClient: HttpClient,
+    override alertCtrl: AlertController,
+    override logger: LogService) {
     super(httpClient, alertCtrl, logger);
   }
 
