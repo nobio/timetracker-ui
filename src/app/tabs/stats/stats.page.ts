@@ -22,7 +22,7 @@ export class StatsPage {
 
   chart: Chart;
   private timeBox: TimeBox = new TimeBox();
-  timeUnit: TimeUnit = TimeUnit.month;
+  timeUnit: TimeUnit = TimeUnit.week;
   private _accumulate: boolean = false;
 
   constructor(
